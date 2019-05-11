@@ -16,8 +16,19 @@ fi
 assignment=$1
 assignment_number=${assignment: -1}
 
-cmake --build ./build --config Release --target $assignment_name
+echo "Building project $assignment"
 
-cd ./assignments/$assignment
-./../../build/assignments/$assignment/assignment$assignment_number $tes
+if [ "$assignment" != "tech_proj" ]
+then
+	cmake --build ./build --config Release --target $assignment_name
+
+	cd ./assignments/$assignment
+	./../../build/assignments/$assignment/assignment$assignment_number $tes
+else
+	cmake --build ./build --config Release --target $assignment
+
+	cd ./assignments/$assignment
+	./../../build/assignments/$assignment/$assignment $tes
+fi
+
 cd ../..
