@@ -1,0 +1,3 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (02_test_tri_intersection.dir\Release\) contains files shared from another project (02_test_tri_intersection.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  02_test_tri_intersection.cpp
+  02_test_tri_intersection.vcxproj -> C:\Users\boolz\Ubuntu\GitLab\dartmouth-cg-starter-code\dirt_basecode\build\Release\02_test_tri_intersection.exe

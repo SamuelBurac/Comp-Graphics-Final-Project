@@ -142,6 +142,7 @@ public:
 	void Sync_Simulation_And_Visualization_Data()
 	{
 		////if you want to animate your meshes or objects, implement this function
+		
 	}
 
 	////update simulation and visualization for each time step
@@ -210,7 +211,6 @@ protected:
 		for(int j=0;j<n;j++)for(int i=0;i<m;i++){Vector3 pos=Vector3::Zero();pos[axis_0]=(real)i*dx;pos[axis_1]=(real)j*dx;mesh->Vertices().push_back(pos);}
 	}
 	
-
 	//////////////////////////////////////////////////////////////////////////
 	////Calculate the bounding box of a set of vertices
 	void Bounding_Box(const Array<Vector3>& vertices,Vector3& min_corner,Vector3& max_corner)

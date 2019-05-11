@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\boolz\Ubuntu\GitLab\dartmouth-cg-starter-code\dirt_basecode\build\CMakeFiles\e1c0c9c63aa1e07b8d656822dd6aeb12\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{567A33CC-90D3-3848-AD2E-F045E66BADE4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

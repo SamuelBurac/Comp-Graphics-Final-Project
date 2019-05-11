@@ -1,0 +1,5 @@
+C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/build/CMakeFiles/dirt_lib.dir
+C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/build/CMakeFiles/01_dirt_tutorial.dir
+C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/build/CMakeFiles/dirt.dir
+C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/build/CMakeFiles/ZERO_CHECK.dir

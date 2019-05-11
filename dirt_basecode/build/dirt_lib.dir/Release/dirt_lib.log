@@ -1,0 +1,39 @@
+﻿  Building Custom Rule C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/CMakeLists.txt
+  CMake does not need to re-run because C:/Users/boolz/Ubuntu/GitLab/dartmouth-cg-starter-code/dirt_basecode/build/CMakeFiles/generate.stamp is up-to-date.
+  surfacegroup.cpp
+  bbh.cpp
+  color.cpp
+  common.cpp
+  image.cpp
+c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\bbh.cpp(28): warning C4189: 'minT': local variable is initialized but not referenced
+c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\bbh.cpp(29): warning C4189: 'maxT': local variable is initialized but not referenced
+  material.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\algorithm(1443): warning C4244: '=': conversion from 'int' to 'char', possible loss of data (compiling source file C:\Users\boolz\Ubuntu\GitLab\dartmouth-cg-starter-code\dirt_basecode\src\image.cpp)
+  c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\image.cpp(106): note: see reference to function template instantiation '_OutIt std::transform<std::_String_iterator<std::_String_val<std::_Simple_types<_Ty>>>,std::_String_iterator<std::_String_val<std::_Simple_types<_Ty>>>,int(__cdecl *)(int)>(const _InIt,const _InIt,_OutIt,_Fn)' being compiled
+          with
+          [
+              _OutIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
+              _Ty=char,
+              _InIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
+              _Fn=int (__cdecl *)(int)
+          ]
+  mesh.cpp
+  obj.cpp
+  parser.cpp
+  progress.cpp
+  quad.cpp
+  scene-parse.cpp
+  scene.cpp
+  sphere.cpp
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\algorithm(1443): warning C4244: '=': conversion from 'int' to 'char', possible loss of data (compiling source file C:\Users\boolz\Ubuntu\GitLab\dartmouth-cg-starter-code\dirt_basecode\src\scene-parse.cpp)
+  c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\scene-parse.cpp(85): note: see reference to function template instantiation '_OutIt std::transform<std::_String_iterator<std::_String_val<std::_Simple_types<_Ty>>>,std::_String_iterator<std::_String_val<std::_Simple_types<_Ty>>>,int(__cdecl *)(int)>(const _InIt,const _InIt,_OutIt,_Fn)' being compiled
+          with
+          [
+              _OutIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
+              _Ty=char,
+              _InIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
+              _Fn=int (__cdecl *)(int)
+          ]
+  surface.cpp
+  path.cpp
+  dirt_lib.vcxproj -> C:\Users\boolz\Ubuntu\GitLab\dartmouth-cg-starter-code\dirt_basecode\build\Release\dirt_lib.lib
