@@ -37,8 +37,12 @@ public:
 		Init_Shaders();
 		Init_Textures();
 		Init_Background();
+
 		Init_Bunny_Mesh();
 		Init_Plane_Mesh();
+		Init_Segment_Mesh();
+		Init_Sphere_Mesh();
+
 		Init_Lighting();
 	}
 
@@ -119,7 +123,6 @@ public:
 		////Initialize the mesh file, shader, and texture of the mesh
 		std::string shader_name = "lamb";
 
-		////Read mesh from obj file
 		OpenGLTriangleMesh* opengl_tri_mesh = Add_Interactive_Object<OpenGLTriangleMesh>();
 		////Create a mesh with vertices on a 5x5 lattice
 		Create_Plane_Mesh(5,5,1.,&opengl_tri_mesh->mesh,0,2);
@@ -127,6 +130,54 @@ public:
 
 		////Initialize the model matrix
 		opengl_tri_mesh->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+
+		////Other mesh initialization setups
+		Set_Mesh_Default_Options(opengl_tri_mesh);
+
+		////Bind an initialized shader to the mesh
+		opengl_tri_mesh->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader(shader_name));
+
+		////Add the triangle mesh to the array to access the mesh later
+		TriangleMesh<3>* triangle_mesh=&opengl_tri_mesh->mesh;
+		triangle_meshes.push_back(triangle_mesh);		
+	}
+
+	void Init_Segment_Mesh()
+	{
+		OpenGLSegmentMesh* opengl_seg_mesh = Add_Interactive_Object<OpenGLSegmentMesh>();
+		////Create a mesh with vertices on a 5x5 lattice
+		SegmentMesh<3>* segment_mesh=&opengl_seg_mesh->mesh;
+		std::vector<Vector3>& vertices=segment_mesh->Vertices();
+		std::vector<Vector2i>& segments=segment_mesh->Elements();
+		vertices.push_back(Vector3::Zero());
+		vertices.push_back(Vector3::Unit(1));
+		vertices.push_back(Vector3(-1,2,0));
+		vertices.push_back(Vector3(1,2,0));
+		segments.push_back(Vector2i(0,1));
+		segments.push_back(Vector2i(1,2));
+		segments.push_back(Vector2i(1,3));
+
+		////Other mesh initialization setups
+		opengl_seg_mesh->color=OpenGLColor(1,1,0,1);
+		opengl_seg_mesh->line_width=2.f;
+
+		opengl_seg_mesh->Set_Data_Refreshed();
+		opengl_seg_mesh->Initialize();
+
+		////OpenGLSegmentMesh has a default shader, so you don't need to bind one in the driver
+	}
+
+	void Init_Sphere_Mesh()
+	{
+		////Initialize the mesh file, shader, and texture of the mesh
+		std::string shader_name = "lamb";
+
+		OpenGLTriangleMesh* opengl_tri_mesh = Add_Interactive_Object<OpenGLTriangleMesh>();
+		Create_Sphere_Mesh(0.5,&opengl_tri_mesh->mesh,4);
+		Translate_Center_To(opengl_tri_mesh->mesh.Vertices(),Vector3::Zero());
+
+		////Initialize the model matrix
+		opengl_tri_mesh->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(-1, .5, 0));
 
 		////Other mesh initialization setups
 		Set_Mesh_Default_Options(opengl_tri_mesh);
@@ -246,6 +297,51 @@ protected:
 	{
 		Vector3 center=Center(vertices);
 		for(auto& v:vertices)v+=(target-center);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	////Initialize a sphere mesh
+	void Create_Sphere_Mesh(const real r,/*rst*/TriangleMesh<3>* mesh,const int sub)
+	{
+		Initialize_Icosahedron_Mesh(r,mesh);for(int i=0;i<sub;i++)Subdivide(mesh);
+		for(auto& v:mesh->Vertices()){real length=v.norm();real rs=r/length;v*=rs;}
+	}
+
+	void Initialize_Icosahedron_Mesh(const real scale,/*rst*/TriangleMesh<3>* mesh)
+	{
+		////http://donhavey.com/blog/tutorials/tutorial-3-the-icosahedron-sphere/
+		const real tao=1.61803399f;
+		real vtx_pos[12][3]={{1,tao,0},{-1,tao,0},{1,-tao,0},{-1,-tao,0},{0,1,tao},{0,-1,tao},{0,1,-tao},{0,-1,-tao},{tao,0,1},{-tao,0,1},{tao,0,-1},{-tao,0,-1}};
+		int ele[20][3]={{0,1,4},{1,9,4},{4,9,5},{5,9,3},{2,3,7},{3,2,5},{7,10,2},{0,8,10},{0,4,8},{8,2,10},{8,4,5},{8,5,2},{1,0,6},{11,1,6},{3,9,11},{6,10,7},{3,11,7},{11,6,7},{6,0,10},{9,1,11}};		
+
+		mesh->Clear();
+		int vtx_num=12;mesh->Vertices().resize(vtx_num);for(int i=0;i<vtx_num;i++){mesh->Vertices()[i]=Vector3(vtx_pos[i][0],vtx_pos[i][1],vtx_pos[i][2])*scale;}
+		int ele_num=20;mesh->elements.resize(ele_num);for(int i=0;i<ele_num;i++)mesh->elements[i]=Vector3i(ele[i][0],ele[i][1],ele[i][2]);
+	}
+
+	void Subdivide(TriangleMesh<3>* mesh)
+	{
+		Hashtable<Vector2i,int> edge_vtx_hashtable;
+		for(int k=0;k<mesh->elements.size();k++){
+			for(int j=0;j<3;j++){
+				Vector2i e(mesh->elements[k][j%3],mesh->elements[k][(j+1)%3]);
+				if(e[0]<e[1])continue;
+				Vector3 pos=(real).5*(mesh->Vertices()[e[0]]+mesh->Vertices()[e[1]]);
+				mesh->Vertices().push_back(pos);
+				int i=(int)mesh->Vertices().size()-1;
+				edge_vtx_hashtable.insert(std::make_pair(e,i));
+			}
+		}
+
+		auto n=mesh->elements.size();
+		for(auto i=0;i<n;i++){const Vector3i v=mesh->elements[i];int v3,v4,v5;
+			{auto search=edge_vtx_hashtable.find(Sorted(Vector2i(v[0],v[1])));if(search==edge_vtx_hashtable.end())continue;v3=search->second;}
+			{auto search=edge_vtx_hashtable.find(Sorted(Vector2i(v[1],v[2])));if(search==edge_vtx_hashtable.end())continue;v4=search->second;}
+			{auto search=edge_vtx_hashtable.find(Sorted(Vector2i(v[2],v[0])));if(search==edge_vtx_hashtable.end())continue;v5=search->second;}
+			mesh->elements.push_back(Vector3i(v[0],v3,v5));
+			mesh->elements.push_back(Vector3i(v3,v[1],v4));
+			mesh->elements.push_back(Vector3i(v5,v4,v[2]));
+			mesh->elements[i]=Vector3i(v3,v4,v5);}
 	}
 };
 

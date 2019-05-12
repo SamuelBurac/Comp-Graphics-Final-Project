@@ -79,11 +79,11 @@ class OpenGLSegmentMesh : public OpenGLMesh<SegmentMesh<3> >
 #ifndef __APPLE__
 		glLineWidth(line_width);
 #endif
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 		OpenGLUbos::Bind_Uniform_Block_To_Ubo(shader,"camera");
 		glBindVertexArray(vao);
 		glDrawElements(GL_LINES,ele_size,GL_UNSIGNED_INT,0);
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 		glLineWidth(old_line_width);
 		shader->End();}
     }
