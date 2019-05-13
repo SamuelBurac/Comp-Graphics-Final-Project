@@ -1,8 +1,0 @@
-﻿  01_dirt_tutorial.cpp
-c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\01_dirt_tutorial.cpp(158): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\01_dirt_tutorial.cpp(512): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\01_dirt_tutorial.cpp(513): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\01_dirt_tutorial.cpp(547): warning C4305: 'argument': truncation from 'double' to 'const float'
-c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\01_dirt_tutorial.cpp(548): warning C4305: 'argument': truncation from 'double' to 'const float'
-c:\users\boolz\ubuntu\gitlab\dartmouth-cg-starter-code\dirt_basecode\src\01_dirt_tutorial.cpp(549): warning C4305: 'argument': truncation from 'double' to 'const float'
-  01_dirt_tutorial.vcxproj -> C:\Users\boolz\Ubuntu\GitLab\dartmouth-cg-starter-code\dirt_basecode\build\Release\01_dirt_tutorial.exe
