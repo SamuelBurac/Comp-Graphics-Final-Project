@@ -59,7 +59,7 @@ bool Sphere::intersect(const Ray3f &ray, HitInfo &hit) const
 	//////////////////////////////////////////////////////////////////////////
 
     // check if computed param is within ray.mint and ray.maxt
-    t*=tray.d.norm();
+    t/=tray.d.norm();
 	if (t < tray.mint || t > tray.maxt)
         return false;
 
