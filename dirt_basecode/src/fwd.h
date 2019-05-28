@@ -40,6 +40,7 @@ class SurfaceGroup;
 class Timer;
 class Transform;
 class WavefrontOBJ;
+class Texture;
 
 
 // Dirt's basic Vector and Point data structures

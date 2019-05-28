@@ -67,7 +67,8 @@ protected:
 bool singleTriangleIntersect(const Ray3f& ray,
                              const Vector3f& v0, const Vector3f& v1, const Vector3f& v2,
                              const Normal3f* n0, const Normal3f* n1, const Normal3f* n2,
-                             HitInfo& isect,
+							 const Point2f* uv0, const Point2f* uv1, const Point2f* uv2,
+							 HitInfo& isect,
                              const Material * material = nullptr,
                              const Surface * surface = nullptr);
 

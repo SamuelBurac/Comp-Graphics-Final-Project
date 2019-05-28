@@ -70,11 +70,11 @@ public:
 class Lambertian : public Material
 {
 public:
-	Lambertian(const json & j = json::object());
+	Lambertian(const json & j = json::object(), const Scene* scene = nullptr);
 
 	bool scatter(const Ray3f &ray, const HitInfo &hit, Color3f &attenuation, Ray3f &scattered) const override;
 
-	Color3f albedo = Color3f(0.8f);     //!< The diffuse color (fraction of light that is reflected per color channel).
+	Texture* albedo;				   //!< The diffuse color (fraction of light that is reflected per color channel).
 };
 
 
@@ -82,12 +82,12 @@ public:
 class Metal : public Material
 {
 public:
-	Metal(const json & j = json::object());
+	Metal(const json & j = json::object(), const Scene* scene = nullptr);
 
 	bool scatter(const Ray3f &ray, const HitInfo &hit, Color3f &attenuation, Ray3f &scattered) const override;
 
-	Color3f albedo = Color3f(0.8f);     //!< The reflective color (fraction of light that is reflected per color channel).
-	float roughness = 0.f;              //!< A value between 0 and 1 indicating how smooth vs. rough the reflection should be.
+	Texture* albedo;					//!< The reflective color (fraction of light that is reflected per color channel).
+	Texture* roughness;					//!< A value between 0 and 1 indicating how smooth vs. rough the reflection should be.
 };
 
 
@@ -95,7 +95,7 @@ public:
 class Dielectric : public Material
 {
 public:
-	Dielectric(const json & j = json::object());
+	Dielectric(const json & j = json::object(), const Scene* scene = nullptr);
 
 	bool scatter(const Ray3f &ray, const HitInfo &hit, Color3f &attenuation, Ray3f &scattered) const override;
 
@@ -107,10 +107,10 @@ public:
 class DiffuseLight : public Material
 {
 public:
-	DiffuseLight(const json & j = json::object());
+	DiffuseLight(const json & j = json::object(), const Scene* scene = nullptr);
 
 	//! Returns a constant Color3f if the ray hits the surface on the front side.
 	Color3f emitted(const Ray3f &ray, const HitInfo &hit) const override;
 
-	Color3f emit;	//!< The emissive color of the light
+	Texture* emit;	//!< The emissive color of the light
 };

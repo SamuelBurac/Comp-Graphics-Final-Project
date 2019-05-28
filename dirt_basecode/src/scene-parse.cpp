@@ -23,6 +23,7 @@
 #include "bbh.h"
 #include "sphere.h"
 #include "quad.h"
+#include "texture.h"
 #include <iostream>
 
 // local functions
@@ -68,6 +69,7 @@ vector<Surface*> parseSurface(const Scene & scene, const json & j)
                             type.c_str(), j.dump());
 }
 
+
 SurfaceGroup* parseAccelerator(const Scene & scene, const json & j)
 {
     if (j.count("accelerator"))
@@ -104,17 +106,17 @@ Material* parseMaterial(const Scene & scene, const json & j)
 	catch (...)
 	{
 		warning("Missing \"type\" on material specification:\n\t%s\n Assuming \"lambertian\".\n", j.dump());
-        return new Lambertian(j);
+        return new Lambertian(j, &scene);
 	}
 
 	if (type == "lambertian")
-		return new Lambertian(j);
+		return new Lambertian(j, &scene);
 	else if (type == "metal")
-		return new Metal(j);
+		return new Metal(j, &scene);
     else if (type == "dielectric")
-        return new Dielectric(j);
+        return new Dielectric(j, &scene);
     else if (type == "diffuse light")
-        return new DiffuseLight(j);
+        return new DiffuseLight(j, &scene);
 	else
 		throw DirtException("Unknown material type \"%s\" in specification:\n\t%s",
 		                    type.c_str(), j.dump());

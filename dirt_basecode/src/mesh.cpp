@@ -24,7 +24,8 @@
 // n0, n1, n2 - optional per vertex normal data
 bool singleTriangleIntersect(const Ray3f& ray,
 	                           const Vector3f& p0, const Vector3f& p1, const Vector3f& p2,
-	                           const Normal3f* n0, const Normal3f* n1, const Normal3f* n2,
+							   const Normal3f* n0, const Normal3f* n1, const Normal3f* n2,
+							   const Point2f* uv0, const Point2f* uv1, const Point2f* uv2,
 	                           HitInfo& its,
 	                           const Material * material,
 	                           const Surface * surface)
@@ -83,6 +84,7 @@ bool Triangle::intersect(const Ray3f &ray, HitInfo &hit) const
 
     auto i0 = m_face->x(), i1 = m_face->y(), i2 = m_face->z();
     const Point3f p0 = m_mesh->V[i0], p1 = m_mesh->V[i1], p2 = m_mesh->V[i2];
+
     const Normal3f * n0 = nullptr, *n1 = nullptr, *n2 = nullptr;
     if (!m_mesh->N.empty())
     {
@@ -91,7 +93,20 @@ bool Triangle::intersect(const Ray3f &ray, HitInfo &hit) const
         n2 = &m_mesh->N[i2];
     }
 
-    return singleTriangleIntersect(ray, p0, p1, p2, n0, n1, n2, hit, m_material, this);
+	const Point2f* uv0 = nullptr, * uv1 = nullptr, * uv2 = nullptr;
+	if (!m_mesh->UV.empty())
+	{
+		uv0 = &m_mesh->UV[i0];
+		uv1 = &m_mesh->UV[i1];
+		uv2 = &m_mesh->UV[i2];
+	}
+
+    return singleTriangleIntersect(
+		ray, 
+		p0, p1, p2, 
+		n0, n1, n2, 
+		uv0, uv1, uv2, 
+		hit, m_material, this);
 }
 
 AABB3f Triangle::localBBox() const

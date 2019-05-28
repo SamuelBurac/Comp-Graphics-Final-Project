@@ -20,6 +20,7 @@
 #include "material.h"
 #include "parser.h"
 #include "scene.h"
+#include "texture.h"
 
 namespace
 {
@@ -61,35 +62,35 @@ const Material * Material::defaultMaterial()
 }
 
 
-Lambertian::Lambertian(const json & j)
+Lambertian::Lambertian(const json & j, const Scene* scene)
 {
-	albedo = j.value("albedo", albedo);
+	albedo = Texture::parse("albedo", j, Color3f(0.8f), scene);
 }
 
 bool Lambertian::scatter(const Ray3f &ray, const HitInfo &hit, Color3f &attenuation, Ray3f &scattered) const
 {
 	scattered = Ray3f(hit.p, hit.sn + randomInUnitSphere().normalized());
-	attenuation = albedo;
+	attenuation = albedo->sample(hit);
 	return true;
 }
 
 
-Metal::Metal(const json & j)
+Metal::Metal(const json& j, const Scene* scene)
 {
-	albedo = j.value("albedo", albedo);
-	roughness = clamp(j.value("roughness", roughness), 0.f, 1.f);
+	albedo =	Texture::parse("albedo", j, Color3f(0.8f), scene);
+	roughness = Texture::parse("roughness", j, Color3f(0.0f), scene);
 }
 
 bool Metal::scatter(const Ray3f &ray, const HitInfo &hit, Color3f &attenuation, Ray3f &scattered) const
 {
 	Vector3f reflected = reflect(ray.d.normalized(), hit.sn);
-	scattered = Ray3f(hit.p, reflected + roughness * randomInUnitSphere().normalized());
-	attenuation = albedo;
+	scattered = Ray3f(hit.p, reflected + roughness->sample(hit).r() * randomInUnitSphere().normalized());
+	attenuation = albedo->sample(hit);
 	return (scattered.d.dot(hit.sn) > 0);
 }
 
 
-Dielectric::Dielectric(const json & j)
+Dielectric::Dielectric(const json & j, const Scene* scene)
 {
 	ior = j.value("ior", ior);
 }
@@ -101,9 +102,9 @@ bool Dielectric::scatter(const Ray3f &ray, const HitInfo &hit, Color3f &attenuat
 }
 
 
-DiffuseLight::DiffuseLight(const json & j)
+DiffuseLight::DiffuseLight(const json & j, const Scene* scene)
 {
-	emit = j.value("emit", emit);
+	emit = Texture::parse("emit", j, Color3f(1.0f), scene);
 }
 
 Color3f DiffuseLight::emitted(const Ray3f &ray, const HitInfo &hit) const
@@ -112,5 +113,5 @@ Color3f DiffuseLight::emitted(const Ray3f &ray, const HitInfo &hit) const
 	if (ray.d.dot(hit.sn) > 0)
 		return Color3f(0,0,0);
 	else
-		return emit;
+		return emit->sample(hit);
 }

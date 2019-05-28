@@ -52,7 +52,6 @@ public:
 		vfov = deg2rad(j.value("vfov", vfov));
 	    m_size.y() = 2*tan(vfov/2) * m_focalDistance;
 	    m_size.x() = float(m_resolution.x())/m_resolution.y() * m_size.y();
-		m_size = Vector2f(2.f, 1.f);
     }
 
 	//! Return the camera's image resolution
