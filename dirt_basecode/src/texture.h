@@ -46,7 +46,7 @@ public:
 	}
 
 
-	static Texture* parse(const string& name, const json& j = json::object(), Color3f default = Color3f(), const Scene* scene = nullptr);
+	static Texture* parse(const string& name, const json& j = json::object(), Color3f defaultColor = Color3f(), const Scene* scene = nullptr);
 };
 
 class ConstantTexture : public Texture {
