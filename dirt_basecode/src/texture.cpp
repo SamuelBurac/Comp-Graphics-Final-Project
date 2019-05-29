@@ -21,7 +21,7 @@
 #include "scene.h"
 
 
-Texture* Texture::parse(const string& name, const json& j, Color3f default, const Scene* scene) {
+Texture* Texture::parse(const string& name, const json& j, Color3f defaultColor, const Scene* scene) {
 
 	json texture_desc;
 	try
@@ -32,7 +32,7 @@ Texture* Texture::parse(const string& name, const json& j, Color3f default, cons
 	{
 		return new ConstantTexture(
 			{ 
-				{ "value", default }
+				{ "value", defaultColor }
 			}, 
 			scene);
 	}
