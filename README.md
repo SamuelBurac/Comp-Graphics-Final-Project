@@ -1,4 +1,4 @@
-# COSC 77/177 Computer Graphics Starter Code Manual
+# COSC 77/277 Computer Graphics Starter Code Manual
 
 ## 0. Quick Guide
 
