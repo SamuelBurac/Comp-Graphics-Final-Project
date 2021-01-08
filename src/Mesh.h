@@ -22,7 +22,7 @@ public:
 	ArrayPtr<Vector4i> joints = nullptr;
 
 
-	Array<VectorEi> elements;
+	std::vector<VectorEi> elements;
 
 	////Constructors
 	SimplicialMesh(
@@ -33,22 +33,22 @@ public:
 		const ArrayPtr<Vector4> _weights = nullptr,
 		const ArrayPtr<Vector4i> _joints = nullptr)
 	{
-		if (_vertices == nullptr)vertices = std::make_shared<Array<VectorD> >();
+		if (_vertices == nullptr)vertices = std::make_shared<std::vector<VectorD> >();
 		else vertices = _vertices;
 
-		if (_normals == nullptr)normals = std::make_shared<Array<VectorD> >();
+		if (_normals == nullptr)normals = std::make_shared<std::vector<VectorD> >();
 		else normals = _normals;
 
-		if (_uvs == nullptr)uvs = std::make_shared<Array<Vector2> >();
+		if (_uvs == nullptr)uvs = std::make_shared<std::vector<Vector2> >();
 		else uvs = _uvs;
 	
-		if(_tangets ==nullptr)tangents =std::make_shared<Array<Vector4> >();
+		if(_tangets ==nullptr)tangents =std::make_shared<std::vector<Vector4> >();
 		else tangents = _tangets;
 
-		if (_weights == nullptr)weights = std::make_shared<Array<Vector4> >();
+		if (_weights == nullptr)weights = std::make_shared<std::vector<Vector4> >();
 		else weights = _weights;
 
-		if (_joints == nullptr)joints = std::make_shared<Array<Vector4i> >();
+		if (_joints == nullptr)joints = std::make_shared<std::vector<Vector4i> >();
 		else joints = _joints;
 	}
 
@@ -56,7 +56,7 @@ public:
 	SimplicialMesh(const SimplicialMesh<d,e_d>& copy){*this=copy;}
 	SimplicialMesh<d,e_d>& operator=(const SimplicialMesh<d,e_d>& copy)
 	{
-		if(vertices==nullptr)vertices=std::make_shared<Array<VectorD> >();
+		if(vertices==nullptr)vertices=std::make_shared<std::vector<VectorD> >();
 		*vertices = *(copy.vertices);
 		*normals = *(copy.normals);
 		*uvs = *(copy.uvs);
@@ -71,20 +71,20 @@ public:
 	////Access attributes
 	static constexpr int Dim() {return d;}
 	static constexpr int Element_Dim() {return e_d;}
-	virtual Array<VectorD>& Vertices(){return *vertices.get();}
-	virtual const Array<VectorD>& Vertices() const {return *vertices.get();}
-	virtual Array<VectorD>& Normals() { return *normals.get(); }
-	virtual const Array<VectorD>& Normals() const { return *normals.get(); }
-	virtual Array<Vector2>& Uvs() { return *uvs.get(); }
-	virtual const Array<Vector2>& Uvs() const { return *uvs.get(); }
-	virtual Array<Vector4>& Tangents() { return *tangents.get(); }
-	virtual const Array<Vector4>& Tangents() const { return *tangents.get(); }
-	virtual Array<Vector4>& Weights() { return *weights.get(); }
-	virtual const Array<Vector4>& Weights() const { return *weights.get(); }
-	virtual Array<Vector4i>& Joints() { return *joints.get(); }
-	virtual const Array<Vector4i>& Joints() const { return *joints.get(); }
-	virtual Array<VectorEi>& Elements(){return elements;}
-	virtual const Array<VectorEi>& Elements() const {return elements;}
+	virtual std::vector<VectorD>& Vertices(){return *vertices.get();}
+	virtual const std::vector<VectorD>& Vertices() const {return *vertices.get();}
+	virtual std::vector<VectorD>& Normals() { return *normals.get(); }
+	virtual const std::vector<VectorD>& Normals() const { return *normals.get(); }
+	virtual std::vector<Vector2>& Uvs() { return *uvs.get(); }
+	virtual const std::vector<Vector2>& Uvs() const { return *uvs.get(); }
+	virtual std::vector<Vector4>& Tangents() { return *tangents.get(); }
+	virtual const std::vector<Vector4>& Tangents() const { return *tangents.get(); }
+	virtual std::vector<Vector4>& Weights() { return *weights.get(); }
+	virtual const std::vector<Vector4>& Weights() const { return *weights.get(); }
+	virtual std::vector<Vector4i>& Joints() { return *joints.get(); }
+	virtual const std::vector<Vector4i>& Joints() const { return *joints.get(); }
+	virtual std::vector<VectorEi>& Elements(){return elements;}
+	virtual const std::vector<VectorEi>& Elements() const {return elements;}
 
 	virtual void Clear()
 	{
@@ -202,7 +202,7 @@ template<> struct hash<Vector4i>
 
 inline Vector3 Normal(const Vector3& p1,const Vector3& p2,const Vector3& p3){return (p2-p1).cross(p3-p1).normalized();}
 
-inline void Update_Normals(const TriangleMesh<3>& mesh,Array<Vector3>& normals)
+inline void Update_Normals(const TriangleMesh<3>& mesh,std::vector<Vector3>& normals)
 {
     normals.resize(mesh.Vertices().size(),Vector3::Zero());
     for(const auto& v:mesh.elements){Vector3 n=Normal(mesh.Vertices()[v[0]],mesh.Vertices()[v[1]],mesh.Vertices()[v[2]]);for(int j=0;j<3;j++){normals[v[j]]+=n;}}
@@ -280,19 +280,19 @@ inline void Update_Tangents(TriangleMesh<3>& mesh)
 	}
 }
 
-inline void Update_Uvs(const TriangleMesh<3>& mesh, Array<Vector2>& uvs)
+inline void Update_Uvs(const TriangleMesh<3>& mesh, std::vector<Vector2>& uvs)
 {
 	uvs.resize(mesh.Vertices().size(), Vector2::Zero());
 }
 
-inline int Element_Edges(const Vector3i& v,Array<Vector2i>& edges)
+inline int Element_Edges(const Vector3i& v,std::vector<Vector2i>& edges)
 {edges[0]=Vector2i(v[0],v[1]);edges[1]=Vector2i(v[1],v[2]);edges[2]=Vector2i(v[2],v[0]);return 3;}
 
 inline Vector2i Sorted(const Vector2i& v){return v[0]>v[1]?v:Vector2i(v[1],v[0]);}
 
-template<int d> void Get_Edges(const TriangleMesh<d>& mesh,Array<Vector2i>& edges)
+template<int d> void Get_Edges(const TriangleMesh<d>& mesh,std::vector<Vector2i>& edges)
 {
-	Hashset<Vector2i> edge_hashset;Array<Vector2i> element_edges(3);
+	Hashset<Vector2i> edge_hashset;std::vector<Vector2i> element_edges(3);
 	for(const auto& vtx:mesh.elements){
 		int n=Element_Edges(vtx,element_edges);
 		for(int i=0;i<n;i++)edge_hashset.insert(Sorted(element_edges[i]));}
@@ -301,7 +301,7 @@ template<int d> void Get_Edges(const TriangleMesh<d>& mesh,Array<Vector2i>& edge
 
 template<int d> void Subdivide(TriangleMesh<d>* mesh)
 {
-	Array<Vector2i> edges;Get_Edges(*mesh,edges);
+	std::vector<Vector2i> edges;Get_Edges(*mesh,edges);
 	Hashtable<Vector2i,int> edge_vtx_hashtable;
 	for(const auto& e:edges){
 		Vector<real,d> pos=(real).5*(mesh->Vertices()[e[0]]+mesh->Vertices()[e[1]]);
