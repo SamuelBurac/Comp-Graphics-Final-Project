@@ -295,6 +295,32 @@ void main()
 }
 );
 
+const std::string shadertoy_vert = To_String(
+~include version;
+uniform vec2 iResolution;
+out vec2 fragCoord;
+void main()
+{
+	vec2 vertices[3] = vec2[3](vec2(-1, -1), vec2(3, -1), vec2(-1, 3));
+	gl_Position = vec4(vertices[gl_VertexID], 0, 1);
+	fragCoord = (0.5 * gl_Position.xy + vec2(0.5)) * iResolution;
+}
+);
+
+const std::string shadertoy_frag_template(std::string drawFunc){
+	return To_String(
+		~include version;
+		uniform vec2 iResolution;
+		uniform float iTime;
+		in vec2 fragCoord; 
+		out vec4 fragColor;
+	) + drawFunc + To_String(
+		void main() {
+			mainImage(fragColor, fragCoord);
+		}
+	);
+}
+
 using namespace OpenGLShaders;
 
 //////////////////////////////////////////////////////////////////////////
@@ -576,6 +602,10 @@ void OpenGLShaderLibrary::Add_Shader_From_File(const std::string& vtx_shader_fil
 
 	shader_file_hashtable.insert(std::make_pair(shader->name, shader_file));
 	shader_hashtable.insert(std::make_pair(shader->name, shader));}
+}
+
+void OpenGLShaderLibrary::Create_Screen_Shader(const std::string& drawFunc, const std::string& name) {
+	Add_Shader(shadertoy_vert, shadertoy_frag_template(drawFunc), name);
 }
 
 std::shared_ptr<OpenGLShaderProgram> OpenGLShaderLibrary::Get_Shader(const std::string& name)

@@ -286,4 +286,55 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		}
     }
 };
+
+class OpenGLScreenCover : public OpenGLMesh<TriangleMesh<3> >
+{
+public:typedef OpenGLMesh<TriangleMesh<3> > Base;
+	std::shared_ptr<OpenGLFbos::OpenGLFbo> fbo;
+	GLfloat iTime = 0;
+	Vector2f iResolution = Vector2f(1280, 960);
+
+	void setResolution(float w, float h) { iResolution = Vector2f(w, h); }
+
+	void setTime(GLfloat time) { iTime = time; }
+
+	OpenGLScreenCover() {
+		color = default_mesh_color; name = "screen_cover"; shading_mode = ShadingMode::Lighting;
+		mesh.Vertices().resize(3); mesh.Elements().resize(1); mesh.Elements()[0] = Vector3i(0, 1, 2);
+	}
+
+	virtual void Update_Data_To_Render()
+	{
+		if (!Update_Data_To_Render_Pre())return;
+
+		GLuint stride_size = 4;
+		int i = 0; for (auto& p : mesh.Vertices()) OpenGL_Vertex4(p, opengl_vertices);	////position, 4 floats
+		for (auto& e : mesh.elements)OpenGL_Vertex(e, opengl_elements);
+
+		Set_OpenGL_Vertices();
+		int idx = 0; {Set_OpenGL_Vertex_Attribute(0, 4, stride_size, 0); idx++; }	////position
+
+		Set_OpenGL_Elements();
+		Update_Data_To_Render_Post();
+	}
+
+	virtual void Display() const
+	{
+		Update_Polygon_Mode();
+
+		if (shader_programs.size() > 2) {
+			std::shared_ptr<OpenGLShaderProgram> shader = shader_programs[2];
+			shader->Begin();
+			shader->Set_Uniform("iResolution", iResolution);
+			shader->Set_Uniform("iTime", iTime);
+			glEnable(GL_POLYGON_OFFSET_FILL);
+			glPolygonOffset(1.f, 1.f);
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES, ele_size, GL_UNSIGNED_INT, 0);
+			glDisable(GL_POLYGON_OFFSET_FILL);
+			shader->End();
+		}
+	}
+};
+
 #endif
