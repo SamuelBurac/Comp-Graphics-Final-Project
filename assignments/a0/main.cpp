@@ -16,20 +16,29 @@
 #include "OpenGLMarkerObjects.h"
 #include "OpenGLParticles.h"
 
-const std::string draw_pixels = To_String(
-/////////////////////////////////////////////////////////////////////////
-// Belowing code is used in fragment shaders and is written in GLSL    //
-// It looks very like C code                                           //
-// https://www.khronos.org/files/opengl43-quick-reference-card.pdf     //
-// Page 6 - 7 would probably be helpful!                               //
-// You can also test it (copy the whole string) in Shadertoy:          //
-// https://www.shadertoy.com/new                                       //
-/////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+//// TODO: put your name in the string               
+/////////////////////////////////////////////////////////////////////
 
+const std::string author="name";
+
+/////////////////////////////////////////////////////////////////////
+//// These are helper functions we created to generate circles and triangles by testing whether a point is inside the shape or not.
+//// They can be used in the paintGrid function as "if the pixel is inside, draw some color; else skip."
+//// You may create your own functions to draw your own shapes
+
+//// The paintGrid function is implemented as a GLSL fragment shader. 
+//// The GLSL grammar is C-style, and if you are curious about its full picture (which we will start to learn the details in Week 3), 
+//// you may find more information on https://www.khronos.org/files/opengl43-quick-reference-card.pdf (Page 6 - 7 would probably be helpful!)
+//// You don't need advanced GLSL features for this assignment (reading the starter code should be enough).
+//// You can also test it (copy the whole string) in Shadertoy: https://www.shadertoy.com/new    
+/////////////////////////////////////////////////////////////////////
+
+const std::string draw_pixels = To_String(
 const float M_PI = 3.1415926535; 
 
 // The side length of the minimum unit (or the new "pixels")
-const float GRID_SIZE = 10.; 
+const float PIXEL_SIZE = 10.; 
 
 // To check if a point is inside a circle
 bool inCircle(vec2 p, vec2 center, float radius) {
@@ -56,18 +65,19 @@ vec2 polar2cart(float angle, float length) {
 }
 
 /////////////////////////////////////////////////////////////////////////
-// Feel free to add more functions if needed!                          //
+// Feel free to add more functions if needed!                          
 /////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////
+// TODO: replace the code below with your own code                 //
+// Useful variables:											   //
+// iTime: the passed seconds from the start of the program         //
+// iResolution: the size of the window (default: 1280*960)         //
+/////////////////////////////////////////////////////////////////////
 
 // Return the rgba color of the grid at position (x, y) 
 vec4 paintGrid(float x, float y) {
-	/////////////////////////////////////////////////////////////////////
-	// Todo: replace the code below with your own code                 //
-	// Recently only iResolution and iTime are supported as Uniforms   //
-	// iTime: the passed seconds from the start of the program         //
-	// iResolution: the size of the window (default: 1280*960)         //
-	/////////////////////////////////////////////////////////////////////
-	vec2 center = vec2(iResolution / GRID_SIZE / 2.); // screen center
+	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // screen center
 	vec2 p1 = polar2cart(iTime, 16.) + center;
 	vec2 p2 = polar2cart(iTime + 2. * M_PI / 3., 16.) + center;
 	vec2 p3 = polar2cart(iTime + 4. * M_PI / 3., 16.) + center;
@@ -85,21 +95,19 @@ vec4 paintGrid(float x, float y) {
 	else {
 		return vec4(vec3(184, 243, 255) / 255., 1.);
 	}
-	///////////////////////////////////////////////////////////////////
 }
 
 // The function called in the fragment shader
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
 	// To divide the screen into the grids for painting!
-	fragColor = paintGrid(floor(fragCoord.x / GRID_SIZE), floor(fragCoord.y / GRID_SIZE));
+	fragColor = paintGrid(floor(fragCoord.x / PIXEL_SIZE), floor(fragCoord.y / PIXEL_SIZE));
 }
 
 );
 
-template<int d> class A0_Driver : public Driver, public OpenGLViewer
+class A0_Driver : public Driver, public OpenGLViewer
 {
-	using VectorD = Vector<real, d>; using VectorDi = Vector<int, d>; using Base = Driver;
 	OpenGLScreenCover* screen_cover = nullptr;
 	clock_t startTime = clock();
 
@@ -146,20 +154,15 @@ public:
 	{
 		OpenGLViewer::Run();
 	}
-
 };
 
 int main(int argc,char* argv[])
 {
-	int driver=1;
+	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
+	else std::cout<<"Assignment 0 demo by "<<author<<" started"<<std::endl;
 
-	switch(driver){
-	case 1:{
-		A0_Driver<3> driver;
-		driver.Initialize();
-		driver.Run();	
-	}break;
-	}
-	
+	A0_Driver driver;
+	driver.Initialize();
+	driver.Run();	
 }
 
