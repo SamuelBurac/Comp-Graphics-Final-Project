@@ -77,7 +77,7 @@ vec2 polar2cart(float angle, float length) {
 
 // Return the rgba color of the grid at position (x, y) 
 vec4 paintGrid(float x, float y) {
-	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // screen center
+	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
 	vec2 p1 = polar2cart(iTime, 16.) + center;
 	vec2 p2 = polar2cart(iTime + 2. * M_PI / 3., 16.) + center;
 	vec2 p3 = polar2cart(iTime + 4. * M_PI / 3., 16.) + center;
