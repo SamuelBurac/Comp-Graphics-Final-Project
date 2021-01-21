@@ -40,14 +40,14 @@ public:
 		opengl_tri_mesh=Add_Interactive_Object<OpenGLTriangleMesh>();
 		tri_mesh=&opengl_tri_mesh->mesh;
 
-		//Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		//Obj::Read_From_Obj_File("bunny.obj",meshes);
-		//*tri_mesh=*meshes[0];
-		//std::cout<<"tri_mesh: "<<tri_mesh->Vertices().size()<<std::endl;
+		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+		Obj::Read_From_Obj_File("bunny.obj",meshes);
+		*tri_mesh=*meshes[0];
+		std::cout<<"tri_mesh: "<<tri_mesh->Vertices().size()<<std::endl;
 		//std::string file_name="bunny.txt";
 		//File::Read_Text_From_File(file_name,*tri_mesh);
 
-		Initialize_Icosahedron_Mesh(.5,tri_mesh);
+		//Initialize_Icosahedron_Mesh(.5,tri_mesh);
 
 		Set_Polygon_Mode(opengl_tri_mesh,PolygonMode::Fill);
 		Set_Shading_Mode(opengl_tri_mesh,ShadingMode::None);
