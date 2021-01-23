@@ -43,9 +43,9 @@ public:
 		Initialize_Icosahedron_Mesh(.5,tri_mesh);
 
 		////Comment out the line above, and
-		////uncomment this block to load the obj file of bunny
-		////There are two other obj files, cap.obj and jetFighter.obj provided.
-		////They are exported from resource library of Autodesk Maya 2020
+		////uncomment this block to load the obj file of bunny.
+		////There are two other obj files provided, cap.obj and jetFighter.obj.
+		////They are both exported from resource library of Autodesk Maya 2020
 		/*
 		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
 		Obj::Read_From_Obj_File("bunny.obj",meshes);
