@@ -28,10 +28,28 @@ class MeshDriver : public Driver, public OpenGLViewer
 	OpenGLSegmentMesh* opengl_normals=nullptr;							////normals
 	OpenGLSegmentMesh* opengl_edges=nullptr;							////edges
 
+	bool use_obj_mesh=false;											////flag for use obj, set it to be true if you want to load an obj mesh
+	std::string obj_mesh_name="cap.obj";								////obj file name
+	////There are two other obj files provided, cap.obj and jetFighter.obj.
+	////They are both exported from resource library of Autodesk Maya 2020
+
 public:
 	virtual void Initialize()
 	{
 		OpenGLViewer::Initialize();
+	}
+
+	void Load_Mesh()
+	{
+		if(use_obj_mesh){
+			Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+			Obj::Read_From_Obj_File(obj_mesh_name,meshes);
+			*tri_mesh=*meshes[0];
+			std::cout<<"load tri_mesh, #vtx: "<<tri_mesh->Vertices().size()<<", #ele: "<<tri_mesh->Elements().size()<<std::endl;		
+		}
+		else{
+			Initialize_Icosahedron_Mesh(.5,tri_mesh);
+		}	
 	}
 
 	virtual void Initialize_Data()
@@ -40,27 +58,18 @@ public:
 		opengl_tri_mesh=Add_Interactive_Object<OpenGLTriangleMesh>();
 		tri_mesh=&opengl_tri_mesh->mesh;
 
-		Initialize_Icosahedron_Mesh(.5,tri_mesh);
+		Load_Mesh();
 
-		////Comment out the line above, and
-		////uncomment this block to load the obj file of bunny.
-		////There are two other obj files provided, cap.obj and jetFighter.obj.
-		////They are both exported from resource library of Autodesk Maya 2020
-		/*
-		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		Obj::Read_From_Obj_File("bunny.obj",meshes);
-		*tri_mesh=*meshes[0];
-		std::cout<<"tri_mesh: "<<tri_mesh->Vertices().size()<<std::endl;
-		*/
+		opengl_edges=Add_Interactive_Object<OpenGLSegmentMesh>();
+		Set_Polygon_Mode(opengl_edges,PolygonMode::Fill);
+		Set_Shading_Mode(opengl_edges,ShadingMode::None);
+		Update_OpenGL_Seg_Mesh();
 
 		Set_Polygon_Mode(opengl_tri_mesh,PolygonMode::Fill);
 		Set_Shading_Mode(opengl_tri_mesh,ShadingMode::None);
 		Set_Color(opengl_tri_mesh,OpenGLColor(.3f,.3f,.3f,1.f));
 		opengl_tri_mesh->Set_Data_Refreshed();
 		opengl_tri_mesh->Initialize();
-
-		opengl_edges=Add_Interactive_Object<OpenGLSegmentMesh>();
-		Update_OpenGL_Seg_Mesh();
 	}
 
 	////synchronize data to visualization
@@ -103,7 +112,7 @@ public:
 	virtual void Keyboard_Event_Restore()
 	{
 		frame=0;
-		Initialize_Icosahedron_Mesh(.5,tri_mesh);
+		Load_Mesh();
 		Sync_Simulation_And_Visualization_Data();
 		OpenGLViewer::Toggle_Next_Frame();		
 	}
@@ -123,6 +132,7 @@ protected:
 	void Update_OpenGL_Seg_Mesh()
 	{
 		auto seg_mesh=&opengl_edges->mesh;
+		seg_mesh->elements.clear();
 		std::unordered_set<Vector2i> edge_hashset;
 		Get_Triangle_Mesh_Edges(*tri_mesh,edge_hashset);
 		(*seg_mesh->vertices)=(*tri_mesh->vertices);

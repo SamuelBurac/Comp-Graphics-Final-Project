@@ -31,33 +31,32 @@ template<class T_MESH> void Read_From_Obj_File(const std::string& file_name,Arra
     for(auto i=0;i<shapes.size();i++){
 		meshes[i]=std::make_shared<T_MESH>();
 		tinyobj::mesh_t& mesh=shapes[i].mesh;
-		 
-		for (int f = 0; f < mesh.indices.size(); f++) {
-
-			auto v0 = mesh.indices[f];
-
+		
+		int vtx_num=(int)attrib.vertices.size()/3;
+		for(int j=0;j<vtx_num;j++){
 			meshes[i]->vertices->push_back(
-				Vector3((real)attrib.vertices[v0.vertex_index * 3 + 0],
-						(real)attrib.vertices[v0.vertex_index * 3 + 1],
-						(real)attrib.vertices[v0.vertex_index * 3 + 2]));
+				Vector3((real)attrib.vertices[j * 3 + 0],
+						(real)attrib.vertices[j * 3 + 1],
+						(real)attrib.vertices[j * 3 + 2]));
+		}
 
-			if (attrib.normals.size() > 0) {
+		int ele_num=(int)mesh.indices.size()/3;
+		for(auto j=0;j<ele_num;j++){
+			meshes[i]->elements.push_back(
+				Vector3i(mesh.indices[j*3].vertex_index,
+					mesh.indices[j*3+1].vertex_index,
+					mesh.indices[j*3+2].vertex_index));
+		}
+
+		int normal_num=(int)attrib.normals.size();
+		if(normal_num>0){
+			if (!meshes[i]->normals) meshes[i]->normals = std::make_shared< Array<Vector3> >();
+			for(int j=0;j<normal_num;j++){
 				meshes[i]->normals->push_back(
-					Vector3((real)attrib.normals[v0.normal_index * 3 + 0],
-							(real)attrib.normals[v0.normal_index * 3 + 1],
-							(real)attrib.normals[v0.normal_index * 3 + 2]));
-			}
-
-			if (attrib.texcoords.size() > 0) {
-				meshes[i]->uvs->push_back(
-					Vector2((real)attrib.texcoords[v0.texcoord_index * 2 + 0],
-							1.0 - (real)attrib.texcoords[v0.texcoord_index * 2 + 1]));
-
-			}
-
-			if (f % 3 == 0) {
-				meshes[i]->elements.push_back(Vector3i(f + 0, f + 1, f + 2));
-			}
+					Vector3((real)attrib.vertices[j * 3 + 0],
+							(real)attrib.vertices[j * 3 + 1],
+							(real)attrib.vertices[j * 3 + 2]));
+			}			
 		}
 	}
 }
