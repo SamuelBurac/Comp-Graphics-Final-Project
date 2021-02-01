@@ -4,28 +4,61 @@
 // Contact: Bo Zhu (bo.zhu@dartmouth.edu)
 //#####################################################################
 #include <iostream>
-
 #include <random>
+#include <unordered_set>
 #include "Common.h"
 #include "Driver.h"
-#include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
-#include "OpenGLMarkerObjects.h"
-#include "OpenGLParticles.h"
 #include "TinyObjLoader.h"
 
-template<int d> class ToolkitDriver : public Driver, public OpenGLViewer
+#ifndef __Main_cpp__
+#define __Main_cpp__
+
+const std::string my_vertex_shader=To_String(
+/*default camera matrices. do not modify.*/
+~include version;
+layout (std140) uniform camera
 {
-	using VectorD = Vector<real, d>; using VectorDi = Vector<int, d>; using Base = Driver;
-	real dt = .02;
+	mat4 projection;
+	mat4 view;
+	mat4 pvm;
+	mat4 ortho;
+	vec4 position;
+};
 
-	OpenGLTriangleMesh* opengl_tri_mesh_left	= nullptr;						//// blobs
-	OpenGLTriangleMesh* opengl_tri_mesh_middle	= nullptr;						//// helmet 1
-	OpenGLTriangleMesh* opengl_tri_mesh_right	= nullptr;						//// helmet 2
+layout (location=0) in vec4 pos;
+layout (location=1) in vec4 v_color;
 
+out vec4 vtx_color;
+
+void main()												
+{
+	gl_Position=pvm*vec4(pos.xyz,1.f);
+	vtx_color=vec4(pos.xyz,1.f);
+}														
+);
+
+const std::string my_fragment_shader=To_String(
+~include version;
+in vec4 vtx_color;
+out vec4 frag_color;
+void main()								
+{										
+    frag_color=vtx_color;
+}										
+);
+
+class ShaderDriver : public Driver, public OpenGLViewer
+{using Base=Driver;
+	OpenGLTriangleMesh* opengl_tri_mesh=nullptr;						////mesh
+	TriangleMesh<3>* tri_mesh=nullptr;
+	OpenGLSegmentMesh* opengl_normals=nullptr;							////normals
+
+	bool use_obj_mesh=false;											////flag for use obj, set it to be true if you want to load an obj mesh
+	std::string obj_mesh_name="cap.obj";								////obj file name
 
 public:
 	virtual void Initialize()
@@ -33,94 +66,43 @@ public:
 		OpenGLViewer::Initialize();
 	}
 
-	////synchronize simulation data to visualization data, called in OpenGLViewer::Initialize()
+	void Load_Mesh()
+	{
+		if(use_obj_mesh){
+			Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+			Obj::Read_From_Obj_File(obj_mesh_name,meshes);
+			*tri_mesh=*meshes[0];
+			std::cout<<"load tri_mesh, #vtx: "<<tri_mesh->Vertices().size()<<", #ele: "<<tri_mesh->Elements().size()<<std::endl;		
+		}
+		else{
+			Initialize_Sphere_Mesh((real).5,tri_mesh,3);
+		}	
+	}
+
 	virtual void Initialize_Data()
 	{
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/shared.vert", "shaders/01_phong.frag", "phong");
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/shared.vert", "shaders/02_phong_textured.frag", "phong_textured");
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/shared.vert", "shaders/03_phong_normal_mapped.frag", "phong_normal_mapped");
+		////initialize shader
+		OpenGLShaderLibrary::Instance()->Add_Shader(my_vertex_shader,my_fragment_shader,"a2_shader");
 
-		Init_Blob();
-		Init_Helmet();
+		////initialize tri mesh
+		opengl_tri_mesh=Add_Interactive_Object<OpenGLTriangleMesh>();
+		opengl_tri_mesh->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a2_shader"));
+		tri_mesh=&opengl_tri_mesh->mesh;
 
-		////set lights
-		auto dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(-1.f, -1.f, -1.f));
-		dir_light->dif = glm::vec4(4.0, 4.0, 5.0, 1.0) * 0.2f;
+		Load_Mesh();
 
-		dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(1.f, -1.f, -1.f));
-		dir_light->dif = glm::vec4(4.0, 2.0, 1.0, 1.0) * 0.2f;
-
-		OpenGLUbos::Set_Ambient(glm::vec4(.01f, .01f, .02f, 1.f));
-		OpenGLUbos::Update_Lights_Ubo();
+		Set_Polygon_Mode(opengl_tri_mesh,PolygonMode::Fill);
+		Set_Shading_Mode(opengl_tri_mesh,ShadingMode::A2);
+		Set_Color(opengl_tri_mesh,OpenGLColor(.3f,.3f,.3f,1.f));
+		opengl_tri_mesh->Set_Data_Refreshed();
+		opengl_tri_mesh->Initialize();
 	}
 
-	void Init_Helmet() {
-		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("models/Default_albedo.jpg", "helmet_albedo");
-		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("models/Default_AO.jpg", "helmet_ao");
-		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("models/Default_emissive.jpg", "helmet_emissive");
-		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("models/Default_metalRoughness.jpg", "helmet_metalRoughness");
-		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("models/Default_normal.jpg", "helmet_normal");
-
-
-		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		Obj::Read_From_Obj_File("models/helmet.obj", meshes);
-
-		{
-			opengl_tri_mesh_middle = Add_Interactive_Object<OpenGLTriangleMesh>();
-			opengl_tri_mesh_middle->mesh = *meshes[0];
-			opengl_tri_mesh_middle->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-
-			Set_Polygon_Mode(opengl_tri_mesh_middle, PolygonMode::Fill);
-			Set_Shading_Mode(opengl_tri_mesh_middle, ShadingMode::Custom);
-			opengl_tri_mesh_middle->Set_Data_Refreshed();
-			opengl_tri_mesh_middle->Initialize();
-			opengl_tri_mesh_middle->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("phong_textured"));
-
-			opengl_tri_mesh_middle->Add_Texture("albedo", OpenGLTextureLibrary::Get_Texture("helmet_albedo"));
-			opengl_tri_mesh_middle->Add_Texture("ao", OpenGLTextureLibrary::Get_Texture("helmet_ao"));
-			opengl_tri_mesh_middle->Add_Texture("emissive", OpenGLTextureLibrary::Get_Texture("helmet_emissive"));
-			opengl_tri_mesh_middle->Add_Texture("metal_roughness", OpenGLTextureLibrary::Get_Texture("helmet_metalRoughness"));
-			opengl_tri_mesh_middle->Add_Texture("normal", OpenGLTextureLibrary::Get_Texture("helmet_normal"));
-		}
-
-		{
-			opengl_tri_mesh_right = Add_Interactive_Object<OpenGLTriangleMesh>();
-			opengl_tri_mesh_right->mesh = *meshes[0];
-			opengl_tri_mesh_right->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(2.f, 0, 0));
-
-			Set_Polygon_Mode(opengl_tri_mesh_right, PolygonMode::Fill);
-			Set_Shading_Mode(opengl_tri_mesh_right, ShadingMode::Custom);
-			opengl_tri_mesh_right->Set_Data_Refreshed();
-			opengl_tri_mesh_right->Initialize();
-			opengl_tri_mesh_right->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("phong_normal_mapped"));
-
-			opengl_tri_mesh_right->Add_Texture("albedo", OpenGLTextureLibrary::Get_Texture("helmet_albedo"));
-			opengl_tri_mesh_right->Add_Texture("ao", OpenGLTextureLibrary::Get_Texture("helmet_ao"));
-			opengl_tri_mesh_right->Add_Texture("emissive", OpenGLTextureLibrary::Get_Texture("helmet_emissive"));
-			opengl_tri_mesh_right->Add_Texture("metal_roughness", OpenGLTextureLibrary::Get_Texture("helmet_metalRoughness"));
-			opengl_tri_mesh_right->Add_Texture("normal", OpenGLTextureLibrary::Get_Texture("helmet_normal"));
-		}
-	}
-
-	void Init_Blob() {
-		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		Obj::Read_From_Obj_File("models/blobs.obj", meshes);
-
-		{
-			opengl_tri_mesh_middle = Add_Interactive_Object<OpenGLTriangleMesh>();
-			opengl_tri_mesh_middle->mesh = *meshes[0];
-			opengl_tri_mesh_middle->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(-3, 0, 0));
-
-			Set_Polygon_Mode(opengl_tri_mesh_middle, PolygonMode::Fill);
-			Set_Shading_Mode(opengl_tri_mesh_middle, ShadingMode::Custom);
-			opengl_tri_mesh_middle->Set_Data_Refreshed();
-			opengl_tri_mesh_middle->Initialize();
-			opengl_tri_mesh_middle->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("phong"));
-		}
-	}
-
+	////synchronize data to visualization
 	void Sync_Simulation_And_Visualization_Data()
 	{
+		opengl_tri_mesh->Set_Data_Refreshed();
+		opengl_tri_mesh->Initialize();
 	}
 
 	////update simulation and visualization for each time step
@@ -140,25 +122,13 @@ public:
 	{
 		OpenGLViewer::Initialize_Common_Callback_Keys();
 	}
-
-protected:
-	////Helper function to convert a vector to 3d, for c++ template
-	Vector3 V3(const Vector2& v2) { return Vector3(v2[0], v2[1], .0); }
-	Vector3 V3(const Vector3& v3) { return v3; }
 };
-
 
 int main(int argc,char* argv[])
 {
-	int driver=1;
-
-	switch(driver){
-	case 1:{
-		ToolkitDriver<3> driver;
-		driver.Initialize();
-		driver.Run();	
-	}break;
-	}
-	
+	ShaderDriver driver;
+	driver.Initialize();
+	driver.Run();	
 }
 
+#endif

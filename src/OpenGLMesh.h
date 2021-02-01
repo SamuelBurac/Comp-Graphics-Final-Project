@@ -47,19 +47,14 @@ template<class T_MESH> class OpenGLMesh: public OpenGLObject
 	}
 
 	virtual void Refresh(const int frame)
-	{bool is_binary_file=(File::File_Extension_Name(name)!="txt");std::string file_name=output_dir+"/"+std::to_string(frame)+"/"+name;
-	if(is_binary_file){
-		if(File::File_Exists(file_name)){
-			mesh.elements.clear();
-			File::Read_Binary_From_File(file_name,mesh);
-			Set_Data_Refreshed();
-			if(verbose)std::cout<<"Read file "<<file_name<<std::endl;}}
-	//else{				////TOIMPL: support txt IO
-	//	if(File::File_Exists(file_name)){
-	//		mesh.elements.clear();
-	//		File::Read_Text_From_File(file_name,mesh);
-	//		Set_Data_Refreshed();
-	//		if(verbose)std::cout<<"Read file "<<file_name<<std::endl;}}
+	{
+		bool is_binary_file=(File::File_Extension_Name(name)!="txt");std::string file_name=output_dir+"/"+std::to_string(frame)+"/"+name;
+		if(is_binary_file){
+			if(File::File_Exists(file_name)){
+				mesh.elements.clear();
+				File::Read_Binary_From_File(file_name,mesh);
+				Set_Data_Refreshed();
+				if(verbose)std::cout<<"Read file "<<file_name<<std::endl;}}
 	}
 };
 
@@ -283,6 +278,14 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 				shader->End();
 			}
 		}break;	
+		case ShadingMode::A2:{
+			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
+			shader->Begin();
+			Bind_Uniform_Block_To_Ubo(shader,"camera");
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
+			shader->End();		
+		}break;
 		}
     }
 };

@@ -90,7 +90,7 @@ protected:
 	void Initialize_Headers();
 	std::string Parse(const std::string& shader) const;
 
-protected:
+public:
 	bool Load_Shader_From_File(const ShaderFile& file, std::shared_ptr<OpenGLShaderProgram> shader);
 	void Add_Shader(const std::string& vtx_shader, const std::string& frg_shader, const std::string& name);
 };

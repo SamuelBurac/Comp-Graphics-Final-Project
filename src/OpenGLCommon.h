@@ -20,7 +20,7 @@ enum class FieldDrawType:int{Color=0,Line=1};
 enum class TensorFieldDrawType:int{Eigenvector=0,Frame=1};
 enum class TextureType:int{Tx1d,Tx2d,Tx3d,Tx3d2,Tx3d3,Tx3d4,TxCube};
 enum class PolygonMode:int{Fill=0,Wireframe,SurfOnly};
-enum class ShadingMode:int{None=0,Lighting,TexOnly,TexLighting,Sprite,ColorSprite,SizeSprite,TexSprite,Shadow,EnvMapping,Custom};
+enum class ShadingMode:int{None=0,Lighting,TexOnly,TexLighting,Sprite,ColorSprite,SizeSprite,TexSprite,Shadow,EnvMapping,Custom,A2};
 
 class OpenGLColor
 {
