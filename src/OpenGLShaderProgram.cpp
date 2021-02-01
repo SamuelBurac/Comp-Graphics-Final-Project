@@ -230,14 +230,17 @@ void main()
 
 const std::string gcolor_frg_shader=To_String(
 ~include version;
-uniform vec4 color=vec4(1.f,1.f,0.f,1.f);
+uniform vec4 color=vec4(0.f,0.f,0.f,1.f);
 in vec3 vtx_frg_pos;
 out vec4 frag_color;
 void main()								
 { 
-	vec3 c2=vec3(1.f,1.f,1.f);
+	// customize c1 and c2 to specify a background!
+	vec3 c1=vec3(0.f,0.f,0.f);
+	vec3 c2=vec3(0.01f,0.01f,0.2f);
+
 	float m=abs(vtx_frg_pos.x);
-	vec3 c=mix(c2,color.xyz,m*m);
+	vec3 c=mix(c2,c1,m*m);
 	frag_color=vec4(c,1.f);
 }										
 );
@@ -582,6 +585,8 @@ bool OpenGLShaderLibrary::Load_Shader_From_File(const ShaderFile& file, std::sha
 		std::cerr << "Error: [OpenGLShaderLibrary] could not read file: " << file.frg_file << std::endl;
 		return false;
 	}
+
+	std::cout<<"load vertex shader: "<<vtx_shader<<"\nload fragment shader: "<<frg_shader<<std::endl;
 
 	return shader->Reload(Parse(vtx_shader), Parse(frg_shader));
 }

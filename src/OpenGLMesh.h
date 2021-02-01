@@ -158,6 +158,9 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 	bool use_mat=false;
 	Material mat;
 
+	Array<Vector4f> vtx_color;
+	Array<Vector3> vtx_normal;
+
     OpenGLTriangleMesh(){color=default_mesh_color;name="triangle_mesh";shading_mode=ShadingMode::Lighting;}
 
 	virtual void Set_Shading_Mode(const ShadingMode& _mode)
@@ -176,8 +179,8 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		{use_vtx_color=true;use_vtx_normal=false;use_vtx_tangent=false; use_vtx_tex =false;}break;
 		case ShadingMode::Lighting:
 		{use_vtx_color=false;use_vtx_normal=true; use_vtx_tangent = false; use_vtx_tex = false; }break;
-		case ShadingMode::Custom:
-		{use_vtx_color = true; use_vtx_normal = true; use_vtx_tangent = true; use_vtx_tex = true; }break;
+		case ShadingMode::A2:
+		{use_vtx_color=true;use_vtx_normal=true; use_vtx_tangent = false; use_vtx_tex = false;}break;
 		}
 
 		if(use_vtx_normal&&(mesh.Normals().size()<mesh.Vertices().size()||recomp_vtx_normal)){
@@ -195,9 +198,13 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		int i=0;for(auto& p:mesh.Vertices()){
 			OpenGL_Vertex4(p,opengl_vertices);	////position, 4 floats
 			if(use_vtx_color){
-				OpenGL_Color4(color.rgba,opengl_vertices);}		////color, 4 floats
+				if(vtx_color.size()>0)OpenGL_Color4(&vtx_color[i][0],opengl_vertices);
+				else OpenGL_Color4(color.rgba,opengl_vertices);
+			}	////color, 4 floats
 			if(use_vtx_normal){
-				OpenGL_Vertex4(mesh.Normals()[i],opengl_vertices);}	////normal, 4 floats
+				if(vtx_normal.size()>0)OpenGL_Vertex4(vtx_normal[i],opengl_vertices);
+				else OpenGL_Vertex4(mesh.Normals()[i],opengl_vertices);
+			}	////normal, 4 floats
 			if (use_vtx_tex) {
 				OpenGL_Vertex4(mesh.Uvs()[i], opengl_vertices);}	////uvs, 4 floats
 			if (use_vtx_tangent) {
@@ -251,33 +258,6 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
             glDisable(GL_POLYGON_OFFSET_FILL);
 			shader->End();
 		}break;
-		case ShadingMode::Custom: {
-			if (shader_programs.size() > 2) {
-				std::shared_ptr<OpenGLShaderProgram> shader = shader_programs[2];
-				shader->Begin();
-
-				for (int i = 0; i < textures.size(); i++) {
-					shader->Set_Uniform(textures[i].binding_name, i);
-					textures[i].texture->Bind(i);
-				}
-
-				if (use_mat)shader->Set_Uniform_Mat(&mat);
-				glEnable(GL_POLYGON_OFFSET_FILL);
-				glPolygonOffset(1.f, 1.f);
-				Bind_Uniform_Block_To_Ubo(shader, "camera");
-				Bind_Uniform_Block_To_Ubo(shader, "lights");
-				
-				if (mesh.Weights().size() > 0) {
-					Bind_Uniform_Block_To_Ubo(shader, "skinning");
-				}
-
-				shader->Set_Uniform_Matrix4f("model", glm::value_ptr(model_matrix));
-				glBindVertexArray(vao);
-				glDrawElements(GL_TRIANGLES, ele_size, GL_UNSIGNED_INT, 0);
-				glDisable(GL_POLYGON_OFFSET_FILL);
-				shader->End();
-			}
-		}break;	
 		case ShadingMode::A2:{
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
 			shader->Begin();

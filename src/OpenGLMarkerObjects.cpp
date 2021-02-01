@@ -14,7 +14,7 @@ using namespace OpenGLUbos;
 
 OpenGLBackground::OpenGLBackground()
 {
-	color=OpenGLColor(.9f,.9f,1.f,1.f);name="background";
+	color=OpenGLColor(0.f,0.f,0.f,1.f);name="background";
 	box=Box<2>(Vector2::Ones()*(real)-1,Vector2::Ones());polygon_mode=PolygonMode::Fill;
 	Set_Depth((real).9999);
 }

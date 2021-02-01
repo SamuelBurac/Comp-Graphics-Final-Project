@@ -26,7 +26,7 @@ public:
 	std::string config_file_name;
 	std::shared_ptr<OpenGLWindow> opengl_window=nullptr;
 	int first_frame=0,last_frame=-1,frame=0;
-	bool draw_bk=true;
+	bool draw_bk=false;
 	bool draw_axes=true;
 	bool use_ui=true;
 	bool play=false;
