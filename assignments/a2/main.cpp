@@ -53,6 +53,17 @@ public:
 		return (int)mesh_object_array.size()-1;
 	}
 
+	int Add_Triangle_Object(const std::vector<Vector3>& vertices)
+	{
+		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
+		auto& mesh=mesh_obj->mesh;
+		mesh.Vertices().resize(3);
+		for(int i=0;i<vertices.size();i++)mesh.Vertices()[i]=vertices[i];
+		mesh.Elements().resize(1);mesh.Elements()[0]=Vector3i(0,1,2);
+
+		mesh_object_array.push_back(mesh_obj);
+		return (int)mesh_object_array.size()-1;
+	}
 
 	void Translate_Vertex_Position_For_Mesh_Object(OpenGLTriangleMesh* obj,const Vector3& translate)
 	{
@@ -94,11 +105,20 @@ public:
 
 	virtual void Initialize_Data()
 	{
+		//////This is the first mesh in the scene.
+		//{
+		//	int obj_idx=Add_Sphere_Object();	////add a sphere
+		//	auto obj=mesh_object_array[obj_idx];
+		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+		//}
+
 		////This is the first mesh in the scene.
 		{
-			int obj_idx=Add_Sphere_Object();	////add a sphere
+			std::vector<Vector3> triangle_vertices={Vector3(0,0,0),Vector3(1,0,0),Vector3(1,1,0)};
+			int obj_idx=Add_Triangle_Object(triangle_vertices);	////add a sphere
 			auto obj=mesh_object_array[obj_idx];
-			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+			std::vector<Vector4f>& vtx_color=obj->vtx_color;
+			vtx_color={Vector4f(1.f,0.f,0.f,1.f),Vector4f(0.f,1.f,0.f,1.f),Vector4f(0.f,0.f,1.f,1.f)};
 		}
 
 		////If you want to put multiple objects in the scene, uncomment this block.
