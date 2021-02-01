@@ -48,14 +48,14 @@ template<class T_MESH> void Read_From_Obj_File(const std::string& file_name,Arra
 					mesh.indices[j*3+2].vertex_index));
 		}
 
-		int normal_num=(int)attrib.normals.size();
+		int normal_num=(int)attrib.normals.size()/3;
 		if(normal_num>0){
 			if (!meshes[i]->normals) meshes[i]->normals = std::make_shared< Array<Vector3> >();
 			for(int j=0;j<normal_num;j++){
 				meshes[i]->normals->push_back(
-					Vector3((real)attrib.vertices[j * 3 + 0],
-							(real)attrib.vertices[j * 3 + 1],
-							(real)attrib.vertices[j * 3 + 2]));
+					Vector3((real)attrib.normals[j * 3 + 0],
+							(real)attrib.normals[j * 3 + 1],
+							(real)attrib.normals[j * 3 + 2]));
 			}			
 		}
 	}
