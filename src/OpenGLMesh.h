@@ -161,6 +161,10 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 	Array<Vector4f> vtx_color;
 	Array<Vector3> vtx_normal;
 
+	GLfloat iTime = 0;
+
+	void setTime(GLfloat time) { iTime = time; }
+
     OpenGLTriangleMesh(){color=default_mesh_color;name="triangle_mesh";shading_mode=ShadingMode::Lighting;}
 
 	virtual void Set_Shading_Mode(const ShadingMode& _mode)
@@ -261,6 +265,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		case ShadingMode::A2:{
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
 			shader->Begin();
+			shader->Set_Uniform("iTime", iTime);
 			Bind_Uniform_Block_To_Ubo(shader,"camera");
 			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);

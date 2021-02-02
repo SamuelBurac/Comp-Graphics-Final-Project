@@ -19,9 +19,14 @@
 #ifndef __Main_cpp__
 #define __Main_cpp__
 
+#ifdef __APPLE__
+#define CLOCKS_PER_SEC 100000
+#endif
+
 class ShaderDriver : public Driver, public OpenGLViewer
 {using Base=Driver;
 	std::vector<OpenGLTriangleMesh*> mesh_object_array;						////mesh objects, every object you put in this array will be rendered.
+	clock_t startTime;
 
 public:
 	virtual void Initialize()
@@ -30,6 +35,7 @@ public:
 		////Goto OpenGLShaderProgrammcpp Line 239 and 240, change the two colors, and you will get a different background.
 		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
 		draw_axes=false;					////if you don't like the axes, turn them off!
+		startTime = clock();
 		OpenGLViewer::Initialize();
 	}
 
@@ -178,6 +184,15 @@ public:
 			mesh_obj->Set_Data_Refreshed();
 			mesh_obj->Initialize();	
 		}
+	}
+
+	//// Go to next frame 
+	virtual void Toggle_Next_Frame()
+	{
+		for (auto& mesh_obj : mesh_object_array) {
+			mesh_obj->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
+		}
+		OpenGLViewer::Toggle_Next_Frame();
 	}
 
 	virtual void Run()
