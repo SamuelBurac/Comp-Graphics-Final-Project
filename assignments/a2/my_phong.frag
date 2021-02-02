@@ -30,5 +30,5 @@ void main()
 {		
 	////TODO [Step 3]: add your Phong lighting calculation
 
-	gl_FragColor = vec4(0.f,1.f,0.f,1.f);
+	frag_color = vec4(0.f,1.f,0.f,1.f);
 }	
