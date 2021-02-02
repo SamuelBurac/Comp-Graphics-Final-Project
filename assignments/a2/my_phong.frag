@@ -12,6 +12,9 @@ layout (std140) uniform camera
 	vec4 position;		/*camera's position in world space*/
 };
 
+/* Passed time from the begining of the program */ 
+uniform float iTime;
+
 /*input variables*/
 in vec4 vtx_color;
 ////TODO [Step 2]: add your in variables from the vertex shader
