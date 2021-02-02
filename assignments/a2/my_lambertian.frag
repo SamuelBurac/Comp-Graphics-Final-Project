@@ -1,4 +1,4 @@
-/*Hello fragment shader!*/
+/*This is your first fragment shader!*/
 
 #version 330 core
 
@@ -14,13 +14,18 @@ layout (std140) uniform camera
 
 /*input variables*/
 in vec4 vtx_color;
-////TODO [Step 0]: define your own data channel(s) to receive the normal attribute from the vertex shader
+////TODO [Step 2]: add your in variables from the vertex shader
 
 /*output variables*/
-out vec4 frag_color;	/*or use gl_FragColor*/
+out vec4 frag_color;
+
+/*hard-coded lighting parameters*/
+const vec3 LightPosition = vec3(3, 1, 3);
+////TODO [Step 2]: add your Lambertian lighting parameters here
 
 void main()							
-{	
-	////TODO [Step 0]: This is the default implementation of the fragment color. Change it to the color depending on the input normal value.
-	frag_color = vec4(vtx_color.rgb,1.f);
+{		
+	////TODO [Step 2]: add your Lambertian lighting calculation
+
+	gl_FragColor = vec4(0.f,1.f,0.f,1.f);
 }	
