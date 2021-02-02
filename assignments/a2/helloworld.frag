@@ -14,13 +14,13 @@ layout (std140) uniform camera
 
 /*input variables*/
 in vec4 vtx_color;
-////TODO [Step 0]: define your own data channel(s) to receive the normal attribute from the vertex shader
+////TODO: define your own data channel(s) to receive the normal attribute from the vertex shader
 
 /*output variables*/
 out vec4 frag_color;	/*or use gl_FragColor*/
 
 void main()							
 {	
-	////TODO [Step 0]: This is the default implementation of the fragment color. Change it to the color depending on the input normal value.
+	////This is the default implementation of the fragment color. Change it to the color depending on the input normal value.
 	frag_color = vec4(vtx_color.rgb,1.f);
 }	

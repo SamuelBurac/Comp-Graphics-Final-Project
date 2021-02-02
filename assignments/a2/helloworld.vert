@@ -27,6 +27,4 @@ void main()
 	gl_Position=pvm*vec4(pos.xyz,1.f);
 
 	vtx_color=vec4(v_color.rgb,1.f);
-
-	////TODO [Step 0]: manipulate your customized normal data here
 }	

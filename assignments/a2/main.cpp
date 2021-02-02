@@ -166,8 +166,8 @@ public:
 		////initialize shader
 		////TODO [Step 2,3,4]: switch the shaders by changing the file names here. We use the helloworld shader by default. 
 		////You need to switch them to my_lambertian and my_phong for step 2,3, and 4. 
-		std::string vertex_shader_file_name="my_phong.vert";
-		std::string fragment_shader_file_name="my_phong.frag";
+		std::string vertex_shader_file_name="helloworld.vert";
+		std::string fragment_shader_file_name="helloworld.frag";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name,fragment_shader_file_name,"a2_shader");
 
 		////bind the shader with each mesh object in the object array
