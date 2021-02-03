@@ -124,7 +124,7 @@ public:
 	}
 
 	////TODO [Step 1]: implement your function to update vertex normals
-	void Update_Vertex_Normal(const std::vector<Vector3>& vertices,const std::vector<Vector3i>& elements,const std::vector<Vector3>& normals)
+	void Update_Vertex_Normal(const std::vector<Vector3>& vertices,const std::vector<Vector3i>& elements,std::vector<Vector3>& normals)
 	{
 		////TODO [Step 1]: your implementation to calculate the normal vector for each mesh vertex
 	}
