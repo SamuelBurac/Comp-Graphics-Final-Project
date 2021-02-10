@@ -47,6 +47,14 @@ template<class T_MESH> void Read_From_Obj_File(const std::string& file_name,Arra
 					mesh.indices[j*3+1].vertex_index,
 					mesh.indices[j*3+2].vertex_index));
 		}
+		int uv_num = (int)attrib.texcoords.size()/2;
+
+		for(auto j=0;j<uv_num;j++){
+			meshes[i]->uvs->push_back(
+				Vector2((real)attrib.texcoords[j * 2 + 0],
+						(real)attrib.texcoords[j * 2 + 1]));
+			
+		}
 
 		int normal_num=(int)attrib.normals.size()/3;
 		if(normal_num>0){

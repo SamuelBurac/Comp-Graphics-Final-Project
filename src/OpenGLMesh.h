@@ -185,7 +185,13 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		{use_vtx_color=false;use_vtx_normal=true; use_vtx_tangent = false; use_vtx_tex = false; }break;
 		case ShadingMode::A2:
 		{use_vtx_color=true;use_vtx_normal=true; use_vtx_tangent = false; use_vtx_tex = false;}break;
+		case ShadingMode::Texture:
+		{use_vtx_color = true; use_vtx_normal = true; use_vtx_tangent = true; use_vtx_tex = true; }break;
 		}
+		
+		
+		
+
 
 		if(use_vtx_normal&&(mesh.Normals().size()<mesh.Vertices().size()||recomp_vtx_normal)){
 			Update_Normals(mesh,mesh.Normals());}
@@ -210,7 +216,8 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 				else OpenGL_Vertex4(mesh.Normals()[i],opengl_vertices);
 			}	////normal, 4 floats
 			if (use_vtx_tex) {
-				OpenGL_Vertex4(mesh.Uvs()[i], opengl_vertices);}	////uvs, 4 floats
+				OpenGL_Vertex4(mesh.Uvs()[i], opengl_vertices);
+			}	////uvs, 4 floats
 			if (use_vtx_tangent) {
 				OpenGL_Vertex4(mesh.Tangents()[i], opengl_vertices);}	////tangents, 4 floats
 			if (doSkinning) {
@@ -266,6 +273,22 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
 			shader->Begin();
 			shader->Set_Uniform("iTime", iTime);
+			Bind_Uniform_Block_To_Ubo(shader,"camera");
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
+			shader->End();		
+		}break;
+		case ShadingMode::Texture:{
+			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
+			shader->Begin();
+			shader->Set_Uniform("iTime", iTime);
+
+			for (int i = 0; i < textures.size(); i++) {
+				shader->Set_Uniform(textures[i].binding_name, i);
+				textures[i].texture->Bind(i);
+			}
+
+
 			Bind_Uniform_Block_To_Ubo(shader,"camera");
 			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
