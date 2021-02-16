@@ -4,205 +4,184 @@
 // Contact: Bo Zhu (bo.zhu@dartmouth.edu)
 //#####################################################################
 #include <iostream>
-#include "LinearBlendSkinning.h"
-
 #include <random>
+#include <vector>
+#include <algorithm>
+#include <unordered_set>
 #include "Common.h"
 #include "Driver.h"
-#include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
-#include "OpenGLMarkerObjects.h"
-#include "OpenGLParticles.h"
 #include "TinyObjLoader.h"
-#include "TinyGltfLoader.h"
-#include "SceneGraph.h"
 
-template<int d> class ToolkitDriver : public Driver, public OpenGLViewer
-{
-	using VectorD=Vector<real, d>; using VectorDi=Vector<int, d>; using Base=Driver;
-	real dt = 1.0 / 60;
+#ifndef __Main_cpp__
+#define __Main_cpp__
 
-	OpenGLTriangleMesh* opengl_tri_mesh = nullptr;						////
-	OpenGLSegmentMesh* rig_vis = nullptr;
+#ifdef __APPLE__
+#define CLOCKS_PER_SEC 100000
+#endif
 
-	std::shared_ptr < SceneGraph<3>> scenegraph;
-	Array<std::shared_ptr<Skeleton<3> > > skeletons;
-
-	Array<glm::vec4> original_vertices;
-	Array<glm::vec4> current_vertices;
-
-	double x_pos = -2.0f;
-	double x_vel = 1.0f;
-	float time = 0;
+class ShaderDriver : public Driver, public OpenGLViewer
+{using Base=Driver;
+	std::vector<OpenGLTriangleMesh*> mesh_object_array;						////mesh objects, every object you put in this array will be rendered.
+	clock_t startTime;
 
 public:
 	virtual void Initialize()
 	{
+		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
+		draw_axes=false;					////if you don't like the axes, turn them off!
+		startTime = clock();
 		OpenGLViewer::Initialize();
 	}
 
-	// synchronize simulation data to visualization data, called in OpenGLViewer::Initialize()
-	virtual void Initialize_Data()
+	////This function adds a mesh object from an obj file
+	int Add_Obj_Mesh_Object(std::string obj_file_name)
 	{
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/skinned.vert", "shaders/diffuse.frag", "diffuse");
-
-		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("models/CesiumMan.jpg", "albedo");
+		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
 
 		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		Gltf::Read_From_Gltf_File("models/CesiumMan.glb", scenegraph, meshes, skeletons);
+		Obj::Read_From_Obj_File_Discrete_Triangles(obj_file_name,meshes);
+		mesh_obj->mesh=*meshes[0];
+		std::cout<<"load tri_mesh from obj file, #vtx: "<<mesh_obj->mesh.Vertices().size()<<", #ele: "<<mesh_obj->mesh.Elements().size()<<std::endl;		
 
-		std::transform(std::begin(meshes[0]->Vertices()), std::end(meshes[0]->Vertices()), std::back_inserter(original_vertices), [](Vector3 v) {
-			return glm::vec4(v.x(), v.y(), v.z(), 1.0f);
-		});
+		mesh_object_array.push_back(mesh_obj);
+		return (int)mesh_object_array.size()-1;
+	}
 
-		current_vertices = original_vertices;
+	////This function adds a sphere mesh
+	int Add_Sphere_Object(const double radius=1.)
+	{
+		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
 
-		// initialize meshes
+		Initialize_Sphere_Mesh(radius,&mesh_obj->mesh,3);		////add a sphere with radius=1. if the obj file name is not specified
+
+		mesh_object_array.push_back(mesh_obj);
+		return (int)mesh_object_array.size()-1;
+	}
+
+	////This function adds a square with two triangles (the X-hour demo)
+	int Add_Square_Object(const std::vector<Vector3>& vertices)
+	{
+		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
+		auto& mesh=mesh_obj->mesh;
+
+		////manually initialize the vertices and elements for a triangle mesh
+		mesh.Vertices().resize(4);
+		for(int i=0;i<vertices.size();i++)mesh.Vertices()[i]=vertices[i];
+
+		mesh_object_array.push_back(mesh_obj);
+		return (int)mesh_object_array.size()-1;
+	}
+
+	////This function demonstrates how to manipulate the color and normal arrays of a mesh on the CPU end.
+	////The updated colors and normals will be sent to GPU for rendering automatically.
+	void Update_Vertex_Color_And_Normal_For_Mesh_Object(OpenGLTriangleMesh* obj)
+	{
+		int vn=(int)obj->mesh.Vertices().size();					////number of vertices of a mesh
+		std::vector<Vector3>& vertices=obj->mesh.Vertices();		////you might find this array useful
+		std::vector<Vector3i>& elements=obj->mesh.Elements();		////you might find this array also useful
+
+		std::vector<Vector4f>& vtx_color=obj->vtx_color;
+		vtx_color.resize(vn);
+		std::fill(vtx_color.begin(),vtx_color.end(),Vector4f::Zero());
+
+		for(int i=0;i<vn;i++){
+			vtx_color[i]=Vector4f(0.,1.,0.,1.);	////specify color for each vertex
+		}
+
+		////The vertex normals are calculated on the back-end for this assignment. You don't need to worry about the normal calculation this time.
+	}
+
+	void Update_Vertex_UV_For_Mesh_Object(OpenGLTriangleMesh* obj)
+	{
+		int vn=(int)obj->mesh.Vertices().size();					////number of vertices of a mesh
+		std::vector<Vector3>& vertices=obj->mesh.Vertices();		////you might find this array useful
+		std::vector<Vector2>& uv=obj->mesh.Uvs();					////you need to set values in uv to specify the texture coordinates
+		uv.resize(vn);
+		for(int i=0;i<vn;i++){uv[i]=Vector2(0.,0.);}				////set uv to be zero by default
+
+		Update_Uv_Using_Spherical_Coordinates(vertices,uv);
+	}
+
+	////TODO [Step 0]: update the uv coordinates for each vertex using the spherical coordinates.
+	////NOTICE: This code updates the vertex color array on the CPU end. The array will then be sent to GPU and read it the vertex shader as v_color.
+	////You don't need to implement the CPU-GPU data transfer code.
+	void Update_Uv_Using_Spherical_Coordinates(const std::vector<Vector3>& vertices,std::vector<Vector2>& uv)
+	{
+		/*Your implementation starts*/	
+
+		/*Your implementation ends*/
+	}
+
+	virtual void Initialize_Data()
+	{
+		//////Add a manually built square mesh (with two triangles). This is the demo code in X-hour.
+		//// You don't need this part for your homework. Just put them here for your reference.
+		//{
+		//	std::vector<Vector3> triangle_vertices={Vector3(0,0,0),Vector3(1,0,0),Vector3(0,1,0),Vector3(1,1,0)};
+		//	int obj_idx=Add_Square_Object(triangle_vertices);	////add a sphere
+		//	auto obj=mesh_object_array[obj_idx];
+		//	
+		//	//specify the vertex colors on the CPU end
+		//	std::vector<Vector4f>& vtx_color=obj->vtx_color;
+		//	vtx_color={Vector4f(1.f,0.f,0.f,1.f),Vector4f(0.f,1.f,0.f,1.f),Vector4f(0.f,0.f,1.f,1.f),Vector4f(1.f,1.f,0.f,1.f)};
+
+		//	std::vector<Vector3>& vtx_normal=obj->vtx_normal;
+		//	vtx_normal={Vector3(0.,0.,1.),Vector3(0.,0.,1.),Vector3(0.,0.,1.),Vector3(0.,0.,1.)};
+
+		//	std::vector<Vector2>& uv=obj->mesh.Uvs();
+		//	uv={Vector2(0.,0.),Vector2(1.,0.),Vector2(0.,1.),Vector2(1.,1.)};
+
+		//	std::vector<Vector3i>& elements=obj->mesh.Elements();
+		//	elements={Vector3i(0,1,3),Vector3i(0,3,2)};
+		//}
+
+		//////Add a sphere mesh
 		{
-			opengl_tri_mesh = Add_Interactive_Object<OpenGLTriangleMesh>();
-			opengl_tri_mesh->mesh = *meshes[0];
-			opengl_tri_mesh->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(x_pos, 0, 0));
-
-			Set_Polygon_Mode(opengl_tri_mesh, PolygonMode::Fill);
-			Set_Shading_Mode(opengl_tri_mesh, ShadingMode::Custom);
-			opengl_tri_mesh->Set_Data_Refreshed();
-			opengl_tri_mesh->Initialize();
-			opengl_tri_mesh->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("diffuse"));
-
-			opengl_tri_mesh->Add_Texture("albedo", OpenGLTextureLibrary::Get_Texture("albedo"));
+			int obj_idx=Add_Sphere_Object();
+			auto obj=mesh_object_array[obj_idx];
+			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+			Update_Vertex_UV_For_Mesh_Object(obj);			////This is the function you need to implement from Step 0 (for sphere only!)
 		}
 
-		// Create segment mesh for skeleton
-		if (skeletons.size() > 0) {
+		//////Add an obj mesh
+		//////TODO (Step 4): uncomment this part and use your own mesh for Step 4.
+		//{
+		//	 int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
+		//	 auto obj=mesh_object_array[obj_idx];
+		//	 Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+		//}
 
-			rig_vis = Add_Interactive_Object<OpenGLSegmentMesh>();
-			rig_vis->mesh.Vertices().resize(scenegraph->nodes.size());
+		////initialize shader
+		std::string vertex_shader_file_name="checkerboard.vert";		////TODO (Step 1 and 2): switch the file name to normal_mapping.vert
+		std::string fragment_shader_file_name="checkerboard.frag";		////TODO (Step 1 and 2): switch the file name to normal_mapping.frag
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name,fragment_shader_file_name,"a3_shader");
 
-			for (int i = 0; i < scenegraph->nodes.size(); i++) {
-				for (int c : scenegraph->nodes[i].children_indices) {
-					rig_vis->mesh.Elements().push_back({ i, c });
-				}
-			}
+		////specifying the textures
+		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("earth_albedo.png", "albedo");		////TODO (Step 4): use a different texture color image here for your own mesh!
+		OpenGLTextureLibrary::Instance()->Add_Texture_From_File("earth_normal.png", "normal");		////TODO (Step 4): use a different texture normal image here for your own mesh!
 
-			rig_vis->Set_Data_Refreshed();
-			rig_vis->Initialize();
-		}
-
-
-		// set lights
-		auto dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(-1.f, -1.f, -1.f));
-		dir_light->dif = glm::vec4(4.0, 4.0, 5.0, 1.0);
-
-		dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(1.f, -1.f, -1.f));
-		dir_light->dif = glm::vec4(4.0, 2.0, 1.0, 1.0);
-
-		OpenGLUbos::Set_Ambient(glm::vec4(.1f, .1f, .1f, 1.f));
-		OpenGLUbos::Update_Lights_Ubo();
-
-		Sync_Simulation_And_Visualization_Data();
-	}
-
-	void Evaluate_Animation(
-		std::shared_ptr<SceneGraph<3>> & scenegraph,
-		const SceneGraph<3>::Animation & animation,
-		float current_time) {
-
-		for (auto& channel : animation.channels) {
-
-			current_time = fmod(current_time, channel.times[channel.times.size() - 1]);
-
-			auto one_past_it = std::lower_bound(std::begin(channel.times), std::end(channel.times), current_time);
-
-
-			int next_frame_index = (int)(one_past_it - std::begin(channel.times));
-			int prev_frame_index = next_frame_index - 1;
-
-			next_frame_index = glm::clamp(next_frame_index, 0, (int)channel.times.size() - 1);
-			prev_frame_index = glm::clamp(prev_frame_index, 0, (int)channel.times.size() - 1);
-
-			glm::vec4 frame_val;
-			if (prev_frame_index != next_frame_index) {
-				float between = (current_time - channel.times[prev_frame_index]) / (channel.times[next_frame_index] - channel.times[prev_frame_index]);
-				glm::vec4 prev_val = channel.frames[prev_frame_index];
-				glm::vec4 next_val = channel.frames[next_frame_index];
-
-				frame_val = glm::mix(prev_val, next_val, between);
-			}
-			else {
-				frame_val = channel.frames[next_frame_index];
-			}
-
-			switch (channel.target) {
-			case SceneGraph<3>::AnimTarget::pos:
-			{
-				scenegraph->nodes[channel.node_index].pos = glm::vec3(frame_val);
-				break;
-			}
-			case SceneGraph<3>::AnimTarget::scl:
-			{
-				scenegraph->nodes[channel.node_index].scl = glm::vec3(frame_val);
-				break;
-			}
-			case SceneGraph<3>::AnimTarget::rot:
-			{
-				scenegraph->nodes[channel.node_index].rot = glm::normalize(glm::quat(frame_val.x, frame_val.y, frame_val.z, frame_val.w));
-				break;
-			}
-			}
+		////bind the shader with each mesh object in the object array
+		for(auto& mesh_obj: mesh_object_array){
+			mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a3_shader"));
+			mesh_obj->Add_Texture("tex_albedo", OpenGLTextureLibrary::Get_Texture("albedo"));
+			mesh_obj->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("normal"));
+			Set_Polygon_Mode(mesh_obj,PolygonMode::Fill);
+			Set_Shading_Mode(mesh_obj,ShadingMode::Texture);
+			mesh_obj->Set_Data_Refreshed();
+			mesh_obj->Initialize();	
 		}
 	}
 
-	void Sync_Simulation_And_Visualization_Data() {
-
-		// Move the character forwards
-		time += (float)dt;
-		x_pos = fmod(time * x_vel, 4.0f) - 2.0f;
-		opengl_tri_mesh->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(x_pos, 0, 0));
-
-		// Play back animation
-		if (scenegraph->animations.size() > 0) {
-			Evaluate_Animation(scenegraph, scenegraph->animations[0], time);
-		}
-
-		// Update world transform of nodes
-		Update_Nodes_Recursive(scenegraph.get(), 0, glm::mat4(1));
-
-		// Update skinning matrices
-		for (auto& skeleton : skeletons) {
-			Update_Skeleton(scenegraph.get(), skeleton.get());
-		}
-		
-		// Compute skinned vertex positions
-		SkinVertices(
-			original_vertices, 
-			opengl_tri_mesh->mesh.Weights(), 
-			opengl_tri_mesh->mesh.Joints(), 
-			skeletons[0]->skinning_matrices,
-			current_vertices
-		);
-
-		// Update rig visualization
-		for (int i = 0; i < scenegraph->nodes.size(); i++) {
-			auto pos = opengl_tri_mesh->model_matrix * scenegraph->node_world_transforms[i] * glm::vec4(0, 0, 0, 1);
-			rig_vis->mesh.Vertices()[i] = { pos.x, pos.y, pos.z };
-		}
-		rig_vis->Set_Data_Refreshed();
-
-		// Update mesh vertices
-		for (int i = 0; i < opengl_tri_mesh->mesh.Vertices().size(); i++) {
-			opengl_tri_mesh->mesh.Vertices()[i] = { current_vertices[i].x, current_vertices[i].y, current_vertices[i].z };
-		}
-		opengl_tri_mesh->Set_Data_Refreshed();
-
-	}
-
-	// update simulation and visualization for each time step
+	//// Go to next frame 
 	virtual void Toggle_Next_Frame()
 	{
-		Sync_Simulation_And_Visualization_Data();
+		for (auto& mesh_obj : mesh_object_array) {
+			mesh_obj->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
+		}
 		OpenGLViewer::Toggle_Next_Frame();
 	}
 
@@ -210,25 +189,13 @@ public:
 	{
 		OpenGLViewer::Run();
 	}
-
-	// Keyboard interaction
-	virtual void Initialize_Common_Callback_Keys()
-	{
-		OpenGLViewer::Initialize_Common_Callback_Keys();
-	}
 };
-
 
 int main(int argc,char* argv[])
 {
-	int driver=1;
-
-	switch(driver){
-	case 1:{
-		ToolkitDriver<3> driver;
-		driver.Initialize();
-		driver.Run();	
-	}break;
-	}
-	
+	ShaderDriver driver;
+	driver.Initialize();
+	driver.Run();	
 }
+
+#endif
