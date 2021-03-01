@@ -402,8 +402,13 @@ void OpenGLWindow::Timer_Func()
 
 void OpenGLWindow::Reshape_Func(int w,int h)
 {
-    win_w=w;win_h=h;
-    glViewport(0,0,(GLsizei)win_w,(GLsizei)win_h);
+	if (resizable) {
+		win_w = w; win_h = h;
+		glViewport(0, 0, (GLsizei)win_w, (GLsizei)win_h);
+	}
+	else {
+		glutReshapeWindow(win_w, win_h);
+	}
 }
 
 void OpenGLWindow::Mouse_Func(int button,int state,int x,int y)
@@ -622,4 +627,10 @@ GLuint Win_Height()
 {
     if(OpenGLWindow::instance==nullptr)return -1;
     else return OpenGLWindow::instance->win_h;
+}
+
+void Disable_Resize_Window()
+{
+	if (OpenGLWindow::instance == nullptr)return;
+	else OpenGLWindow::instance->resizable = false;
 }

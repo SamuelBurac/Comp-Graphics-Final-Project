@@ -189,10 +189,6 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		{use_vtx_color = true; use_vtx_normal = true; use_vtx_tangent = true; use_vtx_tex = true; }break;
 		}
 		
-		
-		
-
-
 		if(use_vtx_normal&&(mesh.Normals().size()<mesh.Vertices().size()||recomp_vtx_normal)){
 			Update_Normals(mesh,mesh.Normals());}
 
@@ -304,11 +300,35 @@ class OpenGLScreenCover : public OpenGLMesh<TriangleMesh<3> >
 public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 	std::shared_ptr<OpenGLFbos::OpenGLFbo> fbo;
 	GLfloat iTime = 0;
+	GLint iFrame = 0;
 	Vector2f iResolution = Vector2f(1280, 960);
+	GLuint FramebufferName = 0;
+	GLuint renderedTexture;
 
 	void setResolution(float w, float h) { iResolution = Vector2f(w, h); }
 
 	void setTime(GLfloat time) { iTime = time; }
+
+	void setFrame(int frame) { iFrame = frame; }
+
+	void Add_Buffer() {
+		glGenFramebuffers(1, &FramebufferName);
+		glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+
+		glGenTextures(1, &renderedTexture);
+		glBindTexture(GL_TEXTURE_2D, renderedTexture);
+		// Give an empty image to OpenGL ( the last "0" )
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)iResolution[0], (GLsizei)iResolution[1], 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		// Poor filtering. Needed !
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
+		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		glDrawBuffers(1, DrawBuffers);
+	}
 
 	OpenGLScreenCover() {
 		color = default_mesh_color; name = "screen_cover"; shading_mode = ShadingMode::Lighting;
@@ -333,11 +353,36 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 	virtual void Display() const
 	{
 		Update_Polygon_Mode();
+		// "Bind" the newly created texture : all future texture functions will modify this texture
+		if (FramebufferName) {
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+				return;
+			glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+			glViewport(0, 0, (GLsizei)iResolution[0], (GLsizei)iResolution[1]);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, renderedTexture);
+			std::shared_ptr<OpenGLShaderProgram> shader = shader_programs[3];
+			shader->Begin();
+			shader->Set_Uniform("iResolution", iResolution);
+			shader->Set_Uniform("iTime", iTime);
+			shader->Set_Uniform("iFrame", iFrame);
+			glEnable(GL_POLYGON_OFFSET_FILL);
+			glPolygonOffset(1.f, 1.f);
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES, ele_size, GL_UNSIGNED_INT, 0);
+			glDisable(GL_POLYGON_OFFSET_FILL);
+			shader->End();
+		}
 
 		std::shared_ptr<OpenGLShaderProgram> shader = shader_programs[2];
 		shader->Begin();
 		shader->Set_Uniform("iResolution", iResolution);
 		shader->Set_Uniform("iTime", iTime);
+		shader->Set_Uniform("iFrame", iFrame);
+		if (FramebufferName)shader->Bind_Texture2D("bufferTexture", renderedTexture, 0);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glEnable(GL_POLYGON_OFFSET_FILL);
 		glPolygonOffset(1.f, 1.f);
 		glBindVertexArray(vao);

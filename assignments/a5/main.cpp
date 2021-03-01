@@ -1,11 +1,8 @@
 //#####################################################################
 // Main
-// Dartmouth COSC 77/277: Graphics, Assignment 5 starter code
-// Modified from Evan Muscatel COSC 77 Tech Project from 19S
+// Dartmouth COSC 77/177 Computer Graphics, starter code
 // Contact: Bo Zhu (bo.zhu@dartmouth.edu)
 //#####################################################################
-
-
 #include <iostream>
 
 #include <random>
@@ -18,92 +15,92 @@
 #include "OpenGLViewer.h"
 #include "OpenGLMarkerObjects.h"
 #include "OpenGLParticles.h"
-#include "TinyObjLoader.h"
 
-const int part = 2; //choose part
+/////////////////////////////////////////////////////////////////////
+//// TODO: put your name in the string               
+/////////////////////////////////////////////////////////////////////
 
-template<int d> class ToolkitDriver : public Driver, public OpenGLViewer
+const std::string author="name";
+
+class A5_Driver : public Driver, public OpenGLViewer
 {
-	using VectorD = Vector<real, d>; using VectorDi = Vector<int, d>; using Base = Driver;
-	real dt = .02;
-	OpenGLTriangleMesh* plane_mesh= nullptr;
+	OpenGLScreenCover* screen_cover = nullptr;
+	clock_t startTime;
+	int frame;
 
 public:
 	virtual void Initialize()
 	{
+		startTime = clock();
+		frame = 1;
 		OpenGLViewer::Initialize();
+		Disable_Resize_Window(); // Changing window size would cause trouble in progressive rendering
 	}
 
+	//// Initialize the screen covering mesh and shaders
 	virtual void Initialize_Data()
 	{
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/perlin.vert", "shaders/perlin.frag", "perlin");
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/model.vert", "shaders/model.frag", "model");
-		Init_Plane();
+		std::string vertex_shader_file_name = "common.vert";
+		std::string fragment_shader_file_name = "basic_frag.frag";
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "a5_shader");
+	
+		fragment_shader_file_name = "ray_tracing.frag";	
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "shader_buffer");
+		screen_cover = Add_Interactive_Object<OpenGLScreenCover>();
+		Set_Polygon_Mode(screen_cover, PolygonMode::Fill);
+		Uniform_Update();
 
-		auto dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(-3.f, -3.f, -5.f));
-		dir_light->dif = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
-		OpenGLUbos::Set_Ambient(glm::vec4(.01f, .01f, .02f, 1.f));
-		OpenGLUbos::Update_Lights_Ubo();
+		screen_cover->Set_Data_Refreshed();
+		screen_cover->Initialize();
+		screen_cover->Add_Buffer();
+		screen_cover->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a5_shader"));
+		screen_cover->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("shader_buffer"));
 	}
 
-	void Init_Plane() {
-		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		
-		Obj::Read_From_Obj_File("models/plane.obj", meshes);
-		plane_mesh = Add_Interactive_Object<OpenGLTriangleMesh>();
-		plane_mesh->mesh = *meshes[0];
-		plane_mesh->model_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-		Set_Polygon_Mode(plane_mesh, PolygonMode::Fill);
-		Set_Shading_Mode(plane_mesh, ShadingMode::Custom);
-		plane_mesh->Set_Data_Refreshed();
-		plane_mesh->Initialize();
-		if(part == 1)
-			plane_mesh->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("perlin"));
-		else
-			plane_mesh->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("model"));
-	}
-
-	void Sync_Simulation_And_Visualization_Data()
+	//// Update the uniformed variables used in shader
+	void Uniform_Update()
 	{
+		// screen_cover->setResolution((float)Win_Width(), (float)Win_Height());
+		screen_cover->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
+		screen_cover->setFrame(frame++);
 	}
 
-	////update simulation and visualization for each time step
+	//// Go to next frame 
 	virtual void Toggle_Next_Frame()
 	{
-		Sync_Simulation_And_Visualization_Data();
+		Uniform_Update();
 		OpenGLViewer::Toggle_Next_Frame();
-	}
-
-	virtual void Run()
-	{
-		//OpenGLViewer::CameraPos = glm::vec3(-2.5, 0, .15);
-		OpenGLViewer::Run();
 	}
 
 	////Keyboard interaction
 	virtual void Initialize_Common_Callback_Keys()
 	{
 		OpenGLViewer::Initialize_Common_Callback_Keys();
+		Bind_Callback_Key('r', &Keyboard_Event_R_Func, "Restart");
 	}
 
-protected:
-	////Helper function to convert a vector to 3d, for c++ template
-	Vector3 V3(const Vector2& v2) { return Vector3(v2[0], v2[1], .0); }
-	Vector3 V3(const Vector3& v3) { return v3; }
-};
+	virtual void Keyboard_Event_R()
+	{
+		std::cout << "Restart" << std::endl;
+		startTime = clock();
+		frame = 1;
+	}
+	Define_Function_Object(A5_Driver, Keyboard_Event_R);
 
+
+	virtual void Run()
+	{
+		OpenGLViewer::Run();
+	}
+};
 
 int main(int argc,char* argv[])
 {
-	int driver=1;
+	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
+	else std::cout<<"Assignment 0 demo by "<<author<<" started"<<std::endl;
 
-	switch(driver){
-	case 1:{
-		ToolkitDriver<3> driver;
-		driver.Initialize();
-		driver.Run();	
-	}break;
-	}
+	A5_Driver driver;
+	driver.Initialize();
+	driver.Run();	
 }
 
