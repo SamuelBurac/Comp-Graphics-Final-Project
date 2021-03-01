@@ -30,6 +30,7 @@ public:
 	//// Offscreen rendering
 	bool display_offscreen=false;
 	bool display_offscreen_interactive=false;
+	bool resizable = true;
 	int frame_offscreen=0;
 	int frame_offscreen_rendered=-1;
 	std::string offscreen_output_dir="offscreen_output";
@@ -141,5 +142,6 @@ public:
 ////Global helper functions
 GLuint Win_Width();
 GLuint Win_Height();
+void Disable_Resize_Window();
 
 #endif

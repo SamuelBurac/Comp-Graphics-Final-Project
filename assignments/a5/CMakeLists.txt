@@ -65,13 +65,6 @@ elseif(UNIX) #freeglut and glew are installed on linux by "sudo apt-get install 
 	set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 endif(WIN32)
 
-#include tiny_obj_loader
-file(GLOB_RECURSE tiny_obj_cpp ${root_path}/ext/tiny_obj_loader/*.cpp)
-file(GLOB_RECURSE tiny_obj_h ${root_path}/ext/tiny_obj_loader/*.h)
-list(APPEND src_files ${tiny_obj_cpp} ${tiny_obj_h})
-source_group("tiny_obj_loader" FILES ${tiny_obj_cpp} ${tiny_obj_h})
-include_directories(${root_path}/ext/tiny_obj_loader)
-
 #include stb
 file(GLOB_RECURSE stb_cpp ${root_path}/ext/stb/*.cpp)
 file(GLOB_RECURSE stb_h ${root_path}/ext/stb/*.h)
