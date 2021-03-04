@@ -16,12 +16,6 @@
 #include "OpenGLMarkerObjects.h"
 #include "OpenGLParticles.h"
 
-/////////////////////////////////////////////////////////////////////
-//// TODO: put your name in the string               
-/////////////////////////////////////////////////////////////////////
-
-const std::string author="name";
-
 class A5_Driver : public Driver, public OpenGLViewer
 {
 	OpenGLScreenCover* screen_cover = nullptr;
@@ -44,7 +38,7 @@ public:
 		std::string fragment_shader_file_name = "basic_frag.frag";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "a5_shader");
 	
-		fragment_shader_file_name = "ray_tracing.frag";	
+		fragment_shader_file_name = "ray_tracing_sol.frag";	
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "shader_buffer");
 		screen_cover = Add_Interactive_Object<OpenGLScreenCover>();
 		Set_Polygon_Mode(screen_cover, PolygonMode::Fill);
@@ -96,9 +90,6 @@ public:
 
 int main(int argc,char* argv[])
 {
-	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
-	else std::cout<<"Assignment 0 demo by "<<author<<" started"<<std::endl;
-
 	A5_Driver driver;
 	driver.Initialize();
 	driver.Run();	
