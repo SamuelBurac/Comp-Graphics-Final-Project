@@ -257,7 +257,7 @@ void Ubo_Library::Initialize_Ubos()
 	int binding_point=0;
 	////camera
 	{OpenGLUboInstance<Camera>* ubo=new OpenGLUboInstance<Camera>();
-	ubo->Initialize("camera",binding_point++);;ubo->Set_Block_Attributes();
+	ubo->Initialize("camera",binding_point++);ubo->Set_Block_Attributes();
 	ubo_hashtable.insert(std::make_pair(ubo->name,std::shared_ptr<OpenGLUbo>(ubo)));}
 	////lights
 	{OpenGLUboInstance<Lights>* ubo=new OpenGLUboInstance<Lights>();

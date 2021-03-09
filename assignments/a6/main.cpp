@@ -42,7 +42,14 @@ public:
 	{
 		////format: vertex shader name, fragment shader name, shader name
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("background.vert","background.frag","background");	
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_1.vert","object_1.frag","object_1");		
+
+		////SHADOW TODO: uncomment next three lines to import shadow shaders
+		//OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_1_shadow.vert","object_1_shadow.frag","object_1_shadow");	
+		//OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_2_shadow.vert","object_2_shadow.frag","object_2_shadow");	
+		//OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_3_shadow.vert","object_3_shadow.frag","object_3_shadow");	
+
+		////SHADOW TODO: comment out next three lines
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_1.vert","object_1.frag","object_1");	
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_2.vert","object_2.frag","object_2");	
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("object_3.vert","object_3.frag","object_3");	
 	}
@@ -93,13 +100,14 @@ public:
 					  0.f,1.f,0.f,1.f);		////column 3	////set the translation in the last column
 
 		////set up shader
+		//mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("object_1_shadow"));//Shadow TODO: uncomment this line and comment next line to use shadow shader
 		mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("object_1"));
 		
 		////set up texture
 		mesh_obj->Add_Texture("tex_albedo", OpenGLTextureLibrary::Get_Texture("object_1_albedo"));
 		mesh_obj->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("object_1_normal"));
 		Set_Polygon_Mode(mesh_obj,PolygonMode::Fill);
-		Set_Shading_Mode(mesh_obj,ShadingMode::Texture);
+		Set_Shading_Mode(mesh_obj,ShadingMode::Texture);//SHADOW TODO: set Shading Mode to Shadow
 		
 		////initialize
 		mesh_obj->Set_Data_Refreshed();
@@ -115,15 +123,17 @@ public:
 
 		real radius=1.;
 		Initialize_Sphere_Mesh(radius,&mesh_obj->mesh,3);		////add a sphere with radius=1. if the obj file name is not specified
-
+		
 		////set up shader
+		//mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("object_2_shadow"));//Shadow TODO: uncomment this line and comment next line to use shadow shader
 		mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("object_2"));
 		
 		////set up texture
 		mesh_obj->Add_Texture("tex_albedo", OpenGLTextureLibrary::Get_Texture("object_2_albedo"));
 		mesh_obj->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("object_2_normal"));
+		
 		Set_Polygon_Mode(mesh_obj,PolygonMode::Fill);
-		Set_Shading_Mode(mesh_obj,ShadingMode::Texture);
+		Set_Shading_Mode(mesh_obj,ShadingMode::Texture);//SHADOW TODO: Set Shading Mode to Shadow
 		
 		////initialize
 		mesh_obj->Set_Data_Refreshed();
@@ -160,19 +170,43 @@ public:
 		elements={Vector3i(0,1,3),Vector3i(0,3,2)};
 
 		////set up shader
+		//mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("object_3_shadow"));//Shadow TODO: uncomment this line and comment next line to use shadow shader
 		mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("object_3"));
 		
 		////set up texture
 		mesh_obj->Add_Texture("tex_albedo", OpenGLTextureLibrary::Get_Texture("object_3_albedo"));
 		mesh_obj->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("object_3_normal"));
 		Set_Polygon_Mode(mesh_obj,PolygonMode::Fill);
-		Set_Shading_Mode(mesh_obj,ShadingMode::Texture);
+		Set_Shading_Mode(mesh_obj,ShadingMode::Texture);//SHADOW TODO: Set Shading Mode to Shadow
 
 		////initialize
 		mesh_obj->Set_Data_Refreshed();
 		mesh_obj->Initialize();	
 		mesh_object_array.push_back(mesh_obj);
 		return (int)mesh_object_array.size()-1;
+	}
+
+	//// Use this function to set up lighting only if you are using Shadow mode
+	void Init_Lighting() {
+		auto dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(-1.f, -1.f, -1.f));//Light direction
+		dir_light->dif = glm::vec4(.9,.8,.7, 1.0);//diffuse reflection color
+		dir_light->Set_Shadow();////SHADOW TODO: turn on the shadow by uncommenting this line, currenly our base code only supports shadow for one light
+
+		//This is an example to add a second directional light
+		//auto dir_light_2 = OpenGLUbos::Add_Directional_Light(glm::vec3(1.,1.,1.));//the parameter is light direction
+		//dir_light_2->dif = glm::vec4(.9,.9,.9,1.0);
+		//dir_light_2->spec = glm::vec4(.2,.2,.2,1.0);
+
+		//This is an example to add a point light
+		//auto point_light = OpenGLUbos::Add_Point_Light(glm::vec3(1.,1.,1.));//the parameter is the position of point light
+		//point_light->dif = glm::vec4(.9,.8,.7, 1.0);
+
+		//This is an example to add a spot light
+		//auto spot_light = OpenGLUbos::Add_Spot_Light(glm::vec3(1.,1.,1.),glm::vec3(1.,1.,1.));//first param: position, second param: direction
+		//spot_light->dif = glm::vec4(.9,.8,.7, 1.0);
+
+		OpenGLUbos::Set_Ambient(glm::vec4(.01f, .01f, .02f, 1.f));
+		OpenGLUbos::Update_Lights_Ubo();	
 	}
 
 	virtual void Initialize_Data()
@@ -184,6 +218,8 @@ public:
 		Add_Object_1();
 		Add_Object_2();
 		Add_Object_3();
+
+		//Init_Lighting(); ////SHADOW TODO: uncomment this line
 	}
 
 	////Goto next frame 

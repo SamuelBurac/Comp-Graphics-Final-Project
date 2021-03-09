@@ -152,7 +152,7 @@ class Lights
 {public:
 	glm::vec4 amb;
 	glm::ivec4 lt_att;	////lt_att[0]: lt num
-	Light lt[2];
+	Light lt[4];
 
 	Lights():amb(.1f,.1f,.1f,1.f),lt_att(0){}
 	int& Light_Num() {return lt_att[0];}
@@ -178,7 +178,7 @@ layout (std140) uniform lights
 {
 	vec4 amb;
 	ivec4 lt_att;	////lt_att[0]: lt num
-	light lt[2];
+	light lt[4];
 };
 );
 

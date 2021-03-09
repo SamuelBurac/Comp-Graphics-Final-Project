@@ -324,6 +324,88 @@ const std::string shadertoy_frag_template(std::string drawFunc){
 	);
 }
 
+const std::string shadow_func=To_String(
+float shadow(vec4 shadow_pos,vec3 normal,vec3 light_dir)
+{
+	vec3 proj_coord=shadow_pos.xyz/shadow_pos.w;
+	proj_coord=proj_coord*.5f+.5f;
+	
+	float shadow=0.f;float dp=proj_coord.z;float step=1.f/512.f;
+	float bias=max(.05f*(1.f-dot(normal,light_dir)),.005f);
+	for(int i=-1;i<=1;i++)for(int j=-1;j<=1;j++){
+		vec2 coord=proj_coord.xy+vec2(i,j)*step;
+		float dp0=texture(shadow_map,coord).r;
+		shadow+=dp>dp0+bias?0.2f:1.f;}shadow/=9.f;
+	return shadow;
+}
+);
+
+const std::string vnormal_vfpos_vsdpos_vtx_shader=To_String(
+~include version;
+~include camera;
+uniform mat4 shadow_pv;
+uniform mat4 model=mat4(1.0f);
+layout (location=0) in vec4 pos;
+layout (location=2) in vec4 normal;
+out vec3 vtx_normal;
+out vec3 vtx_frg_pos;
+out vec4 vtx_shadow_pos;
+
+void main()
+{
+	gl_Position=pvm*model*vec4(pos.xyz,1.f);
+	vtx_normal=vec3(normal);
+	vtx_frg_pos=vec3(model*vec4(pos.xyz,1.f));
+    vtx_shadow_pos=shadow_pv*model*vec4(pos.xyz,1.f);
+}
+);
+
+const std::string vnormal_vfpos_lt_sd_frg_shader=To_String(
+~include version;
+~include material;
+~include camera;
+~include lights;
+~include phong_dl_func;
+~include phong_pl_func;
+~include phong_sl_func;
+uniform sampler2D shadow_map;
+~include shadow_func;
+in vec3 vtx_normal;
+in vec3 vtx_frg_pos;
+in vec4 vtx_shadow_pos;
+out vec4 frag_color;
+
+void main()
+{
+     vec3 normal=normalize(vtx_normal);
+	vec3 color=mat_amb.rgb*amb.rgb;
+	for(int i=0;i<lt_att[0];i++){
+		vec3 c0=vec3(0.f);
+		switch(lt[i].att[0]){
+		case 0:{c0=phong_dl(i,normal);}break;
+		case 1:{c0=phong_pl(i,vtx_frg_pos,normal);}break;
+		case 2:{c0=phong_sl(i,vtx_frg_pos,normal);}break;}
+		float s=1.f;
+		if(lt[i].att[1]!=0){
+			vec3 light_dir=lt[i].att[0]==0?-lt[i].dir.xyz:normalize(lt[i].pos.xyz-vtx_frg_pos);
+			s=shadow(vtx_shadow_pos,normal,light_dir);}
+		color+=c0*s;}
+	frag_color=vec4(color,1.f);
+}
+);
+
+const std::string shadow_vtx_shader=To_String(
+~include version;
+~include camera;
+uniform mat4 shadow_pv;
+uniform mat4 model=mat4(1.0f);
+layout (location=0) in vec4 pos;
+void main()
+{
+    gl_Position=shadow_pv*model*vec4(pos.xyz,1.0);
+}
+);
+
 using namespace OpenGLShaders;
 
 //////////////////////////////////////////////////////////////////////////
@@ -506,6 +588,8 @@ void OpenGLShaderLibrary::Initialize_Shaders()
 	Add_Shader(vnormal_vfpos_vtx_shader,vnormal_vfpos_lt_frg_shader,"vnormal_lt");
 	Add_Shader(vclip_vfpos_vtx_shader,gcolor_frg_shader,"gcolor_bk");
 	Add_Shader(vpos_model_vnormal_vfpos_vtx_shader,vnormal_vfpos_dl_fast_frg_shader,"vpos_model_vnormal_dl_fast");
+	Add_Shader(shadow_vtx_shader,none_frg_shader,"sd_depth");
+	Add_Shader(vnormal_vfpos_vsdpos_vtx_shader,vnormal_vfpos_lt_sd_frg_shader,"sd_lt");
 }
 
 void OpenGLShaderLibrary::Update_Shaders()
@@ -530,7 +614,7 @@ void OpenGLShaderLibrary::Initialize_Headers()
 	shader_header_hashtable.insert(std::make_pair("phong_pl_func",phong_pl_func));
 	shader_header_hashtable.insert(std::make_pair("phong_sl_func",phong_sl_func));
 	shader_header_hashtable.insert(std::make_pair("phong_dl_fast_func",phong_dl_fast_func));
-
+	shader_header_hashtable.insert(std::make_pair("shadow_func",shadow_func));
 	OpenGLUbos::Bind_Shader_Ubo_Headers(shader_header_hashtable);
 }
 
