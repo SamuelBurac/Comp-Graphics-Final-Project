@@ -209,6 +209,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		shader->Begin();
 		Bind_Uniform_Block_To_Ubo(shader,"camera");
 		shader->Set_Uniform_Matrix4f("shadow_pv",glm::value_ptr(shadow_pv));
+		shader->Set_Uniform_Matrix4f("model",glm::value_ptr(model_matrix));
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
 		shader->End();
