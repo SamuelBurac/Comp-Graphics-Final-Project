@@ -15,6 +15,7 @@ fi
 
 assignment=$1
 assignment_number=${assignment: -1}
+assignment_name="assignment${assignment_number}"
 
 echo "Building project $assignment"
 
