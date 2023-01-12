@@ -15,7 +15,8 @@
 
 void OpenGLViewer::Initialize()
 {
-	opengl_window=std::make_shared<OpenGLWindow>();
+	if(opengl_window==nullptr)
+		opengl_window=std::make_shared<OpenGLWindow>();
     opengl_window->Init();
 	opengl_window->opengl_viewer.reset(this);
 	Initialize_Common_Callback_Keys();
@@ -24,7 +25,7 @@ void OpenGLViewer::Initialize()
 	Initialize_Camera();
 	Initialize_UI();
 	opengl_window->Update_Data_To_Render();
-	Print_Keyboard_Callbacks();
+	//Print_Keyboard_Callbacks();
 }
 
 void OpenGLViewer::Run()

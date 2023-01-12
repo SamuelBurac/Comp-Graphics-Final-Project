@@ -4,6 +4,7 @@
 // Contact: Bo Zhu (bo.zhu@dartmouth.edu)
 //#####################################################################
 #include <iostream>
+
 #include <random>
 #include "Common.h"
 #include "Driver.h"
@@ -34,66 +35,95 @@ const std::string author="name";
 /////////////////////////////////////////////////////////////////////
 
 const std::string draw_pixels = To_String(
-const float M_PI = 3.1415926535; 
 
-// The side length of the minimum unit (or the new "pixels")
-const float PIXEL_SIZE = 10.; 
+const float PIXEL_SIZE=1.f;
 
-// To check if a point is inside a circle
-bool inCircle(vec2 p, vec2 center, float radius) {
-	vec2 to_center = p - center;
-	if (dot(to_center, to_center) < radius * radius) {
-		return true;
+//////////////////////////////////////////////////////////////////////////
+//// demo 0: draw a circle
+vec4 paint_circle(float x,float y) {
+	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
+	float radius = 100.f/PIXEL_SIZE;
+	if(pow(x-center.x,2)+pow(y-center.y,2)<radius*radius)
+		return vec4(1.f,1.f,0.f,1.f);
+	else return vec4(0.f,0.f,0.f,1.f);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//// demo 1: draw a triangle
+vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
+vec2 v0 = center - vec2(100.,0.);
+vec2 v1 = center + vec2(100.,0.);
+vec2 v2 = center + vec2(0.,173.);
+vec2 e0 = v1 - v0;
+vec2 e1 = v2 - v1;
+vec2 e2 = v0 - v2;
+
+
+//mat2 rot=mat2(0.,-1.,+1.,0.);
+////vec2 n0 = vec2(e0.y,-e0.x);
+////vec2 n1 = vec2(e1.y,-e1.x);
+// //vec2 n2 = vec2(e2.y,-e2.x);
+//vec2 n0=rot*e0;
+//vec2 n1=rot*e1;
+//vec2 n2=rot*e2;
+//
+//vec4 paint_triangle(float x,float y) {
+//	vec2 p = vec2(x,y);
+//	
+//	if(dot(p-v0,n0)<=0. && dot(p-v1,n1)<=0. && dot(p-v2,n2)<=0.){
+//		return vec4(1.,1.,0.,1.);
+//	}
+//	else return vec4(0.,0.,0.,1.);
+//}
+
+mat2 rot=mat2(0.,1.,-1.,0.);
+vec2 n0=rot*e0;
+vec2 n1=rot*e1;
+vec2 n2=rot*e2;
+
+vec4 paint_triangle(float x,float y)
+{
+	vec2 p=vec2(x,y);
+	if(dot(p-v0,n0)<=0. && dot(p-v1,n1)<=0. && dot(p-v2,n2)<=0.){
+		return vec4(1.,0.,0.,1.);
 	}
-	return false;
+	else return vec4(0.,0.,0.,1.);
 }
 
-// To check if a point is inside a triangle
-bool inTriangle(vec2 p, vec2 p1, vec2 p2, vec2 p3) {
-	if (dot(cross(vec3(p2 - p1, 0), vec3(p - p1, 0)), cross(vec3(p2 - p1, 0), vec3(p3 - p1, 0))) >= 0. &&
-		dot(cross(vec3(p3 - p2, 0), vec3(p - p2, 0)), cross(vec3(p3 - p2, 0), vec3(p1 - p2, 0))) >= 0. &&
-		dot(cross(vec3(p1 - p3, 0), vec3(p - p3, 0)), cross(vec3(p1 - p3, 0), vec3(p2 - p3, 0))) >= 0.) {
-		return true;
-	}
-	return false;
+//////////////////////////////////////////////////////////////////////////
+//// demo 2: draw a checkerboard
+float mod(float x,float y){
+	return x-y*floor(x/y);
 }
 
-// To convert from Polar Coordinates to Cartesian coordinates
-vec2 polar2cart(float angle, float length) {
-	return vec2(cos(angle) * length, sin(angle) * length);
+vec4 paint_checkerboard(float x, float y) {
+	if(mod(x,32.)<16.&&mod(y,32.)>=16.||
+		mod(x,32.)>=16.&&mod(y,32.)<16.)
+		return vec4(0,0,0,1.);
+	else 
+		return vec4(1,1,1,1.);
 }
 
-/////////////////////////////////////////////////////////////////////////
-// Feel free to add more functions if needed!                          
-/////////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////
-// TODO: replace the code below with your own code                 //
-// Useful variables:											   //
-// iTime: the passed seconds from the start of the program         //
-// iResolution: the size of the window (default: 1280*960)         //
-/////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//// demo 3: draw a sin wave
+vec4 paintSin(float x,float y) {
+	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
+	float x0=x-center.x;
+	float y0=y-center.y;
+	float f=100.*sin(x0/50.);
+	if(abs(f-y0)<2.)
+		return vec4(.5*(1.+cos(x0/20.)),1.,.5*(1.+sin(x0/20.)),1.);
+	else 
+		return vec4(0.,0.,0.,1.);
+}
 
 // Return the rgba color of the grid at position (x, y) 
 vec4 paintGrid(float x, float y) {
-	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
-	vec2 p1 = polar2cart(iTime, 16.) + center;
-	vec2 p2 = polar2cart(iTime + 2. * M_PI / 3., 16.) + center;
-	vec2 p3 = polar2cart(iTime + 4. * M_PI / 3., 16.) + center;
-	vec2 p4 = polar2cart(iTime + M_PI / 3., 16.) + center;
-	vec2 p5 = polar2cart(iTime + M_PI, 16.) + center;
-	vec2 p6 = polar2cart(iTime + 5. * M_PI / 3., 16.) + center;
-	bool inTrangle1 = inTriangle(vec2(x, y), p1, p2, p3);
-	bool inTrangle2 = inTriangle(vec2(x, y), p4, p5, p6);
-	if (inTrangle1 && inTrangle2) {
-		return vec4(1.0);
-	}
-	else if (inTrangle1 || inTrangle2) {
-		return vec4(vec3(217, 249, 255) / 255., 1.); 
-	}
-	else {
-		return vec4(vec3(184, 243, 255) / 255., 1.);
-	}
+	//// uncomment the following functions to see different demo implementations
+	return paint_circle(x,y);
+	//return paint_triangle(x,y);
+	//return paint_checkerboard(x,y);
+	//return paintSin(x,y);
 }
 
 // The function called in the fragment shader
@@ -113,6 +143,10 @@ class A0_Driver : public Driver, public OpenGLViewer
 public:
 	virtual void Initialize()
 	{
+		opengl_window=std::make_shared<OpenGLWindow>();
+		opengl_window->win_w=640;
+		opengl_window->win_h=640;		
+		
 		OpenGLViewer::Initialize();
 	}
 
