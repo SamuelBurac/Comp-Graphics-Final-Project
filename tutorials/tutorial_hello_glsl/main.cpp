@@ -20,19 +20,7 @@
 //// TODO: put your name in the string               
 /////////////////////////////////////////////////////////////////////
 
-const std::string author="name";
-
-/////////////////////////////////////////////////////////////////////
-//// These are helper functions we created to generate circles and triangles by testing whether a point is inside the shape or not.
-//// They can be used in the paintGrid function as "if the pixel is inside, draw some color; else skip."
-//// You may create your own functions to draw your own shapes
-
-//// The paintGrid function is implemented as a GLSL fragment shader. 
-//// The GLSL grammar is C-style, and if you are curious about its full picture (which we will start to learn the details in Week 3), 
-//// you may find more information on https://www.khronos.org/files/opengl43-quick-reference-card.pdf (Page 6 - 7 would probably be helpful!)
-//// You don't need advanced GLSL features for this assignment (reading the starter code should be enough).
-//// You can also test it (copy the whole string) in Shadertoy: https://www.shadertoy.com/new    
-/////////////////////////////////////////////////////////////////////
+const std::string author="glsl tutorial";
 
 const std::string draw_pixels = To_String(
 
@@ -58,34 +46,16 @@ vec2 e0 = v1 - v0;
 vec2 e1 = v2 - v1;
 vec2 e2 = v0 - v2;
 
+mat2 rot = mat2(0.,-1.,+1.,0.);		//// glsl matrix is column major
+vec2 n0 = rot*e0;
+vec2 n1 = rot*e1;
+vec2 n2 = rot*e2;
 
-//mat2 rot=mat2(0.,-1.,+1.,0.);
-////vec2 n0 = vec2(e0.y,-e0.x);
-////vec2 n1 = vec2(e1.y,-e1.x);
-// //vec2 n2 = vec2(e2.y,-e2.x);
-//vec2 n0=rot*e0;
-//vec2 n1=rot*e1;
-//vec2 n2=rot*e2;
-//
-//vec4 paint_triangle(float x,float y) {
-//	vec2 p = vec2(x,y);
-//	
-//	if(dot(p-v0,n0)<=0. && dot(p-v1,n1)<=0. && dot(p-v2,n2)<=0.){
-//		return vec4(1.,1.,0.,1.);
-//	}
-//	else return vec4(0.,0.,0.,1.);
-//}
-
-mat2 rot=mat2(0.,1.,-1.,0.);
-vec2 n0=rot*e0;
-vec2 n1=rot*e1;
-vec2 n2=rot*e2;
-
-vec4 paint_triangle(float x,float y)
-{
-	vec2 p=vec2(x,y);
+vec4 paint_triangle(float x,float y) {
+	vec2 p = vec2(x,y);
+	
 	if(dot(p-v0,n0)<=0. && dot(p-v1,n1)<=0. && dot(p-v2,n2)<=0.){
-		return vec4(1.,0.,0.,1.);
+		return vec4(1.,1.,0.,1.);
 	}
 	else return vec4(0.,0.,0.,1.);
 }
