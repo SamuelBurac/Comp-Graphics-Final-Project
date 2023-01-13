@@ -315,6 +315,7 @@ const std::string shadertoy_frag_template(std::string drawFunc){
 		~include version;
 		uniform vec2 iResolution;
 		uniform float iTime;
+		uniform int iFrame;
 		in vec2 fragCoord; 
 		out vec4 fragColor;
 	) + drawFunc + To_String(
