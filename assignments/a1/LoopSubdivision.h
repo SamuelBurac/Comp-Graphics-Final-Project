@@ -9,7 +9,7 @@ inline void LoopSubdivision(TriangleMesh<3>& mesh)
 	std::vector<Vector3>& old_vtx=mesh.Vertices();
 	std::vector<Vector3i>& old_tri=mesh.Elements();
 	std::vector<Vector3> new_vtx;		////vertex array for the new mesh
-	std::vector<Vector3i> new_tri;	////element array for the new mesh
+	std::vector<Vector3i> new_tri;		////element array for the new mesh
 	
 	new_vtx=old_vtx;	////copy all the old vertices to the new_vtx array
 
