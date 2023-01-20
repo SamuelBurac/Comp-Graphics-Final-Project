@@ -28,7 +28,7 @@ void Test_Array()
 	for(auto& a:array){
 		cout << a << " ";
 	}
-    cout << endl;
+	cout << endl;
     
 	array.clear();
 }
