@@ -1,4 +1,4 @@
-# COSC 77/277 Computer Graphics Starter Code Manual
+# CS3451 Computer Graphics Starter Code
 
 ## 0. Quick Guide
 
