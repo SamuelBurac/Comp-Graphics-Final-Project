@@ -25,8 +25,8 @@ The executables are generated in the Release or Debug folder under the subdirect
 
 ### Step 1: Clone the source code from GitLab and enter the codebase folder
 
-    git clone https://gitlab.com/boolzhu/dartmouth-cg-starter-code
-    cd dartmouth-cg-starter-code
+    git clone https://gitlab.com/boolzhu/cs3451-computer-graphics-starter-code/
+    cd cs3451-computer-graphics-starter-code
 
 ### Step 2: Build the project using CMake:
 
