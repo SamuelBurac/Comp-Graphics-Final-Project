@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl object
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Object
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLObject_h__
 #define __OpenGLObject_h__

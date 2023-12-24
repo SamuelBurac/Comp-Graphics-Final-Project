@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl buffer objects -- FBO and UBO
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Buffer Objects -- FBO and UBO
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLBufferObjects_h__
 #define __OpenGLBufferObjects_h__

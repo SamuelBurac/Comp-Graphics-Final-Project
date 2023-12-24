@@ -1,21 +1,18 @@
 set -e
 
-tes=$2
-
-if [ -z "$tes" ]
+if [ -z "$1" ]
 then
-	tes=1;
+	echo >&2 "No assignment given.";
+	exit 1;
 fi
 
 assignment=$1
 
 echo "Building project $assignment"
 
-
 cmake --build ./build --config Release --target $assignment
 
 cd ./tutorials/$assignment
-./../../build/tutorials/$assignment/$assignment $tes
-
+./../../build/tutorials/$assignment/$assignment
 
 cd ../..

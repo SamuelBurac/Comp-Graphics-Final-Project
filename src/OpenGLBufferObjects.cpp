@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl uniform buffer object
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Uniform Buffer Object
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #include <iostream>
 #include "OpenGLWindow.h"

@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl viewer
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Viewer
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLViewer_h__
 #define __OpenGLViewer_h__

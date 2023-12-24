@@ -1,7 +1,6 @@
 //#####################################################################
-// OpenGL marker object
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Marker Object
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #include <glad.h>
 #include "OpenGLBufferObjects.h"

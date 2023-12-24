@@ -1,7 +1,7 @@
 //#####################################################################
 // Main
-// Dartmouth COSC 77/177 Computer Graphics, starter code
-// Contact: Bo Zhu (bo.zhu@dartmouth.edu)
+// CS3451 Computer Graphics Starter Code
+// Contact: Bo Zhu (bo.zhu@gatech.edu)
 //#####################################################################
 #include <iostream>
 

@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl vectors
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// Opengl Vectors
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLVectors_h__
 #define __OpenGLVectors_h__

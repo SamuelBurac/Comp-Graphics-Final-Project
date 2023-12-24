@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl mesh
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Mesh
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLObjectMesh_h__
 #define __OpenGLObjectMesh_h__

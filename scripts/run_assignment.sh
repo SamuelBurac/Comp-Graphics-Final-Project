@@ -6,16 +6,8 @@ then
 	exit 1;
 fi
 
-tes=$2
-
-if [ -z "$tes" ]
-then
-	tes=1;
-fi
-
 assignment=$1
-assignment_number=${assignment: -1}
-assignment_name="assignment${assignment_number}"
+assignment_name="${assignment}"
 
 echo "Building project $assignment"
 
@@ -24,12 +16,12 @@ then
 	cmake --build ./build --config Release --target $assignment_name
 
 	cd ./assignments/$assignment
-	./../../build/assignments/$assignment/assignment$assignment_number $tes
+	./../../build/assignments/$assignment/$assignment_name
 else
-	cmake --build ./build --config Release --target $assignment
+	cmake --build ./build --config Release --target $assignment_name
 
 	cd ./assignments/$assignment
-	./../../build/assignments/$assignment/$assignment $tes
+	./../../build/assignments/$assignment/$assignment_name
 fi
 
 cd ../..

@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl shader program
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Shader Program
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLShaderProgram_H__
 #define __OpenGLShaderProgram_H__

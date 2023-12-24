@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl particles
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Particles
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLParticles_h__
 #define __OpenGLParticles_h__

@@ -1,7 +1,6 @@
 //#####################################################################
-// OpenGL world
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL World
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLWorld_h__
 #define __OpenGLWorld_h__

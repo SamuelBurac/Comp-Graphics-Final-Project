@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl world
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Window
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #include "OpenGLWindow.h"
 #include <iostream>

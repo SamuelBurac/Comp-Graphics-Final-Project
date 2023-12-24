@@ -55,6 +55,8 @@ The executables are generated in the Release or Debug folder under the subdirect
     ./scripts/setup.sh [Linux/OSX]
 
 Note: you need to run the command in your root folder (cs3451-computer-graphics-starter-code). Otherwise your computer will not be able find the cmake file.  
+
+Note: it's possible under OSX environment, run `.sh` gives you `permission denied` exception. Use `chmod u+r+x script_name.sh` to get rid of this.
  
 
 ### Step 3: Compile and run the code

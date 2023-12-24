@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl common
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Common
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLCommon_h__
 #define __OpenGLCommon_h__

@@ -1,7 +1,6 @@
 //#####################################################################
-// Opengl interactive object
-// Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
-// This file is part of SLAX, whose distribution is governed by the LICENSE file.
+// OpenGL Interactive Object
+// Copyright (c) (2018-), Bo Zhu
 //#####################################################################
 #ifndef __OpenGLMarkerObjects_h__
 #define __OpenGLMarkerObjects_h__
