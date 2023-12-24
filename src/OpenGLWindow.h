@@ -1,5 +1,5 @@
 //#####################################################################
-// Opengl world
+// OpenGL world
 // Copyright (c) (2018-), Bo Zhu, boolzhu@gmail.com
 // This file is part of SLAX, whose distribution is governed by the LICENSE file.
 //#####################################################################
@@ -23,7 +23,7 @@ public:
 	static OpenGLWindow* instance;
 	//// Glut window
 	int window_id=0;
-	std::string window_title="Dartmouth COSC77/177 Computer Graphics";
+	std::string window_title="CS3451 Computer Graphics";
 	int win_w=1280,win_h=960;
 	float fovy=30.f;
 

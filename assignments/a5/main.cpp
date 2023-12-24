@@ -4,83 +4,79 @@
 // Contact: Bo Zhu (bo.zhu@dartmouth.edu)
 //#####################################################################
 #include <iostream>
-
 #include <random>
+#include <vector>
+#include <algorithm>
+#include <unordered_set>
 #include "Common.h"
 #include "Driver.h"
-#include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
-#include "OpenGLMarkerObjects.h"
-#include "OpenGLParticles.h"
+#include "TinyObjLoader.h"
 
-class A5_Driver : public Driver, public OpenGLViewer
-{
-	OpenGLScreenCover* screen_cover = nullptr;
+#ifndef __Main_cpp__
+#define __Main_cpp__
+
+#ifdef __APPLE__
+#define CLOCKS_PER_SEC 100000
+#endif
+
+class NoiseDriver : public Driver, public OpenGLViewer
+{using Base=Driver;
+	std::vector<OpenGLTriangleMesh*> mesh_object_array;		////mesh objects, every object you put in this array will be rendered.
 	clock_t startTime;
-	int frame;
+	const int part = 1;										////TODO: set the value of part to be 2 when working on part 2
 
 public:
 	virtual void Initialize()
 	{
+		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
+		draw_axes=false;					////if you don't like the axes, turn them off!
 		startTime = clock();
-		frame = 1;
 		OpenGLViewer::Initialize();
-		Disable_Resize_Window(); // Changing window size would cause trouble in progressive rendering
 	}
 
-	//// Initialize the screen covering mesh and shaders
+	////This function adds a mesh object from an obj file
+	int Add_Obj_Mesh_Object(std::string obj_file_name)
+	{
+		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
+
+		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+		Obj::Read_From_Obj_File_Discrete_Triangles(obj_file_name,meshes);
+		mesh_obj->mesh=*meshes[0];
+		std::cout<<"load tri_mesh from obj file, #vtx: "<<mesh_obj->mesh.Vertices().size()<<", #ele: "<<mesh_obj->mesh.Elements().size()<<std::endl;		
+
+		mesh_object_array.push_back(mesh_obj);
+		return (int)mesh_object_array.size()-1;
+	}
+
 	virtual void Initialize_Data()
 	{
-		std::string vertex_shader_file_name = "common.vert";
-		std::string fragment_shader_file_name = "basic_frag.frag";
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "a5_shader");
-	
-		fragment_shader_file_name = "ray_tracing.frag";	
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "shader_buffer");
-		screen_cover = Add_Interactive_Object<OpenGLScreenCover>();
-		Set_Polygon_Mode(screen_cover, PolygonMode::Fill);
-		Uniform_Update();
+		std::string name = "model";
+		if(part ==1)
+			name = "perlin";
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(name + ".vert", name +".frag", "a4_shader");		
+		////add the plane mesh object
+		int obj_idx=Add_Obj_Mesh_Object("plane.obj");
+		auto plane_obj=mesh_object_array[obj_idx];
+		plane_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a4_shader"));
 
-		screen_cover->Set_Data_Refreshed();
-		screen_cover->Initialize();
-		screen_cover->Add_Buffer();
-		screen_cover->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a5_shader"));
-		screen_cover->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("shader_buffer"));
-	}
-
-	//// Update the uniformed variables used in shader
-	void Uniform_Update()
-	{
-		// screen_cover->setResolution((float)Win_Width(), (float)Win_Height());
-		screen_cover->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
-		screen_cover->setFrame(frame++);
+		Set_Polygon_Mode(plane_obj, PolygonMode::Fill);
+		Set_Shading_Mode(plane_obj, ShadingMode::Texture);
+		plane_obj->Set_Data_Refreshed();
+		plane_obj->Initialize();
 	}
 
 	//// Go to next frame 
 	virtual void Toggle_Next_Frame()
 	{
-		Uniform_Update();
+		for (auto& mesh_obj : mesh_object_array) {
+			mesh_obj->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
+		}
 		OpenGLViewer::Toggle_Next_Frame();
 	}
-
-	////Keyboard interaction
-	virtual void Initialize_Common_Callback_Keys()
-	{
-		OpenGLViewer::Initialize_Common_Callback_Keys();
-		Bind_Callback_Key('r', &Keyboard_Event_R_Func, "Restart");
-	}
-
-	virtual void Keyboard_Event_R()
-	{
-		std::cout << "Restart" << std::endl;
-		startTime = clock();
-		frame = 1;
-	}
-	Define_Function_Object(A5_Driver, Keyboard_Event_R);
-
 
 	virtual void Run()
 	{
@@ -90,8 +86,9 @@ public:
 
 int main(int argc,char* argv[])
 {
-	A5_Driver driver;
+	NoiseDriver driver;
 	driver.Initialize();
 	driver.Run();	
 }
 
+#endif

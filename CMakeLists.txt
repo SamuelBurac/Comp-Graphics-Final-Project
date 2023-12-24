@@ -1,4 +1,4 @@
-project(dartmouth-graphics)
+project(cs3451-computer-graphics)
 cmake_minimum_required(VERSION 3.5.1)
 set (CMAKE_CXX_STANDARD 11)
 

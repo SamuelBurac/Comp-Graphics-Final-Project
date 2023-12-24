@@ -105,7 +105,7 @@ public:
 		////NOTICE: This code updates the vertex color array on the CPU end. The array will then be sent to GPU and read it the vertex shader as v_color.
 		////You don't need to implement the CPU-GPU data transfer code.
 		for(int i=0;i<vn;i++){
-			vtx_color[i]=Vector4f(0.,1.,0.,1.);	////specify color for each vertex
+			vtx_color[i]=Vector4f(1.,1.,0.,1.);	////specify color for each vertex
 		}
 
 		std::vector<Vector3>& vtx_normal=obj->vtx_normal;

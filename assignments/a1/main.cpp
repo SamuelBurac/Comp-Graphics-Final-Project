@@ -1,11 +1,10 @@
 //#####################################################################
 // Main
-// Dartmouth COSC 77/177 Computer Graphics, starter code
-// Contact: Bo Zhu (bo.zhu@dartmouth.edu)
+// CS3451 Computer Graphics Starter Code
+// Contact: Bo Zhu (bo.zhu@gatech.edu)
 //#####################################################################
 #include <iostream>
 #include <random>
-#include <unordered_set>
 #include "Common.h"
 #include "Driver.h"
 #include "Particles.h"
@@ -15,23 +14,101 @@
 #include "OpenGLViewer.h"
 #include "OpenGLMarkerObjects.h"
 #include "OpenGLParticles.h"
-#include "TinyObjLoader.h"
-#include "LoopSubdivision.h"
 
-#ifndef __Main_cpp__
-#define __Main_cpp__
+/////////////////////////////////////////////////////////////////////
+//// TODO: put your name in the string               
+/////////////////////////////////////////////////////////////////////
 
-class MeshDriver : public Driver, public OpenGLViewer
-{using Base=Driver;
-	OpenGLTriangleMesh* opengl_tri_mesh=nullptr;						////mesh
-	TriangleMesh<3>* tri_mesh=nullptr;
-	OpenGLSegmentMesh* opengl_normals=nullptr;							////normals
-	OpenGLSegmentMesh* opengl_edges=nullptr;							////edges
+const std::string author="name";
 
-	bool use_obj_mesh=false;											////flag for use obj, set it to be true if you want to load an obj mesh
-	std::string obj_mesh_name="cap.obj";								////obj file name
-	////There are two other obj files provided, cap.obj and jetFighter.obj.
-	////They are both exported from resource library of Autodesk Maya 2020
+/////////////////////////////////////////////////////////////////////
+//// These are helper functions we created to generate circles and triangles by testing whether a point is inside the shape or not.
+//// They can be used in the paintGrid function as "if the pixel is inside, draw some color; else skip."
+//// You may create your own functions to draw your own shapes
+
+//// The paintGrid function is implemented as a GLSL fragment shader. 
+//// The GLSL grammar is C-style, and if you are curious about its full picture (which we will start to learn the details in Week 3), 
+//// you may find more information on https://www.khronos.org/files/opengl43-quick-reference-card.pdf (Page 6 - 7 would probably be helpful!)
+//// You don't need advanced GLSL features for this assignment (reading the starter code should be enough).
+//// You can also test it (copy the whole string) in Shadertoy: https://www.shadertoy.com/new    
+/////////////////////////////////////////////////////////////////////
+
+const std::string draw_pixels = To_String(
+const float M_PI = 3.1415926535; 
+
+// The side length of the minimum unit (or the new "pixels")
+const float PIXEL_SIZE = 10.; 
+
+// To check if a point is inside a circle
+bool inCircle(vec2 p, vec2 center, float radius) {
+	vec2 to_center = p - center;
+	if (dot(to_center, to_center) < radius * radius) {
+		return true;
+	}
+	return false;
+}
+
+// To check if a point is inside a triangle
+bool inTriangle(vec2 p, vec2 p1, vec2 p2, vec2 p3) {
+	if (dot(cross(vec3(p2 - p1, 0), vec3(p - p1, 0)), cross(vec3(p2 - p1, 0), vec3(p3 - p1, 0))) >= 0. &&
+		dot(cross(vec3(p3 - p2, 0), vec3(p - p2, 0)), cross(vec3(p3 - p2, 0), vec3(p1 - p2, 0))) >= 0. &&
+		dot(cross(vec3(p1 - p3, 0), vec3(p - p3, 0)), cross(vec3(p1 - p3, 0), vec3(p2 - p3, 0))) >= 0.) {
+		return true;
+	}
+	return false;
+}
+
+// To convert from Polar Coordinates to Cartesian coordinates
+vec2 polar2cart(float angle, float length) {
+	return vec2(cos(angle) * length, sin(angle) * length);
+}
+
+/////////////////////////////////////////////////////////////////////////
+// Feel free to add more functions if needed!                          
+/////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////
+// TODO: replace the code below with your own code                 //
+// Useful variables:											   //
+// iTime: the passed seconds from the start of the program         //
+// iResolution: the size of the window (default: 1280*960)         //
+/////////////////////////////////////////////////////////////////////
+
+// Return the rgba color of the grid at position (x, y) 
+vec4 paintGrid(float x, float y) {
+	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
+	vec2 p1 = polar2cart(iTime, 16.) + center;
+	vec2 p2 = polar2cart(iTime + 2. * M_PI / 3., 16.) + center;
+	vec2 p3 = polar2cart(iTime + 4. * M_PI / 3., 16.) + center;
+	vec2 p4 = polar2cart(iTime + M_PI / 3., 16.) + center;
+	vec2 p5 = polar2cart(iTime + M_PI, 16.) + center;
+	vec2 p6 = polar2cart(iTime + 5. * M_PI / 3., 16.) + center;
+	bool inTrangle1 = inTriangle(vec2(x, y), p1, p2, p3);
+	bool inTrangle2 = inTriangle(vec2(x, y), p4, p5, p6);
+	if (inTrangle1 && inTrangle2) {
+		return vec4(1.0);
+	}
+	else if (inTrangle1 || inTrangle2) {
+		return vec4(vec3(217, 249, 255) / 255., 1.); 
+	}
+	else {
+		return vec4(vec3(184, 243, 255) / 255., 1.);
+	}
+}
+
+// The function called in the fragment shader
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+	// To divide the screen into the grids for painting!
+	fragColor = paintGrid(floor(fragCoord.x / PIXEL_SIZE), floor(fragCoord.y / PIXEL_SIZE));
+}
+
+);
+
+class A0_Driver : public Driver, public OpenGLViewer
+{
+	OpenGLScreenCover* screen_cover = nullptr;
+	clock_t startTime = clock();
 
 public:
 	virtual void Initialize()
@@ -39,118 +116,52 @@ public:
 		OpenGLViewer::Initialize();
 	}
 
-	void Load_Mesh()
-	{
-		if(use_obj_mesh){
-			Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-			Obj::Read_From_Obj_File(obj_mesh_name,meshes);
-			*tri_mesh=*meshes[0];
-			std::cout<<"load tri_mesh, #vtx: "<<tri_mesh->Vertices().size()<<", #ele: "<<tri_mesh->Elements().size()<<std::endl;		
-		}
-		else{
-			Initialize_Icosahedron_Mesh(.5,tri_mesh);
-		}	
-	}
-
+	//// Initialize the screen covering mesh and shaders
 	virtual void Initialize_Data()
 	{
-		////initialize tri mesh
-		opengl_tri_mesh=Add_Interactive_Object<OpenGLTriangleMesh>();
-		tri_mesh=&opengl_tri_mesh->mesh;
+		OpenGLShaderLibrary::Instance()->Create_Screen_Shader(draw_pixels, "shaderToy");
+		screen_cover = Add_Interactive_Object<OpenGLScreenCover>();
+		Set_Polygon_Mode(screen_cover, PolygonMode::Fill);
+		Uniform_Update();
 
-		Load_Mesh();
-
-		opengl_edges=Add_Interactive_Object<OpenGLSegmentMesh>();
-		Set_Polygon_Mode(opengl_edges,PolygonMode::Fill);
-		Set_Shading_Mode(opengl_edges,ShadingMode::None);
-		Update_OpenGL_Seg_Mesh();
-
-		Set_Polygon_Mode(opengl_tri_mesh,PolygonMode::Fill);
-		Set_Shading_Mode(opengl_tri_mesh,ShadingMode::None);
-		Set_Color(opengl_tri_mesh,OpenGLColor(.3f,.3f,.3f,1.f));
-		opengl_tri_mesh->Set_Data_Refreshed();
-		opengl_tri_mesh->Initialize();
+		screen_cover->Set_Data_Refreshed();
+		screen_cover->Initialize();
+		screen_cover->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("shaderToy"));
 	}
 
-	////synchronize data to visualization
-	void Sync_Simulation_And_Visualization_Data()
+	//// Update the uniformed variables used in shader
+	void Uniform_Update()
 	{
-		opengl_tri_mesh->Set_Data_Refreshed();
-		opengl_tri_mesh->Initialize();
-		Update_OpenGL_Seg_Mesh();
+		screen_cover->setResolution((float)Win_Width(), (float)Win_Height());
+		screen_cover->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
 	}
 
-	////update simulation and visualization for each time step
+	//// Go to next frame 
 	virtual void Toggle_Next_Frame()
 	{
-		Sync_Simulation_And_Visualization_Data();
+		Uniform_Update();
 		OpenGLViewer::Toggle_Next_Frame();
-	}
-
-	virtual void Run()
-	{
-		OpenGLViewer::Run();
 	}
 
 	////Keyboard interaction
 	virtual void Initialize_Common_Callback_Keys()
 	{
 		OpenGLViewer::Initialize_Common_Callback_Keys();
-		Bind_Callback_Key('s',&Keyboard_Event_Subdivision_Func,"Loop subdivision");
-		Bind_Callback_Key('r',&Keyboard_Event_Restore_Func,"Restore");
 	}
 
-	virtual void Keyboard_Event_Subdivision()
+	virtual void Run()
 	{
-		std::cout<<"Loop subdivision"<<std::endl;
-		LoopSubdivision(*tri_mesh);
-		Sync_Simulation_And_Visualization_Data();
-		OpenGLViewer::Toggle_Next_Frame();
-	}
-	Define_Function_Object(MeshDriver,Keyboard_Event_Subdivision);
-
-	virtual void Keyboard_Event_Restore()
-	{
-		frame=0;
-		Load_Mesh();
-		Sync_Simulation_And_Visualization_Data();
-		OpenGLViewer::Toggle_Next_Frame();		
-	}
-	Define_Function_Object(MeshDriver,Keyboard_Event_Restore);
-
-protected:
-	void Get_Triangle_Mesh_Edges(const TriangleMesh<3>& triangle_mesh,std::unordered_set<Vector2i>& hashset)
-	{
-		for(int i=0;i<triangle_mesh.elements.size();i++){
-			const Vector3i& tri=triangle_mesh.elements[i];
-			for(int j=0;j<3;j++){
-				Vector2i edge(tri[j],tri[(j+1)%3]);
-				if(edge[0]>edge[1]){int tmp=edge[0];edge[0]=edge[1];edge[1]=tmp;}
-				hashset.insert(edge);}}
-	}
-
-	void Update_OpenGL_Seg_Mesh()
-	{
-		auto seg_mesh=&opengl_edges->mesh;
-		seg_mesh->elements.clear();
-		std::unordered_set<Vector2i> edge_hashset;
-		Get_Triangle_Mesh_Edges(*tri_mesh,edge_hashset);
-		(*seg_mesh->vertices)=(*tri_mesh->vertices);
-		for(auto& e:edge_hashset)
-			seg_mesh->elements.push_back(e);
-		opengl_edges->Set_Data_Refreshed();
-		opengl_edges->Initialize();
-		Set_Line_Width(opengl_edges,3.f);
-		Set_Shading_Mode(opengl_edges,ShadingMode::None);
-		Set_Color(opengl_edges,OpenGLColor(.1f,1.f,.1f,1.f));
+		OpenGLViewer::Run();
 	}
 };
 
 int main(int argc,char* argv[])
 {
-	MeshDriver driver;
+	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
+	else std::cout<<"Assignment 0 demo by "<<author<<" started"<<std::endl;
+
+	A0_Driver driver;
 	driver.Initialize();
 	driver.Run();	
 }
 
-#endif

@@ -5,193 +5,85 @@
 //#####################################################################
 #include <iostream>
 #include <random>
-#include <vector>
-#include <algorithm>
 #include <unordered_set>
 #include "Common.h"
 #include "Driver.h"
+#include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
+#include "OpenGLMarkerObjects.h"
+#include "OpenGLParticles.h"
 #include "TinyObjLoader.h"
+#include "LoopSubdivision.h"
 
 #ifndef __Main_cpp__
 #define __Main_cpp__
 
-#ifdef __APPLE__
-#define CLOCKS_PER_SEC 100000
-#endif
-
-class ShaderDriver : public Driver, public OpenGLViewer
+class MeshDriver : public Driver, public OpenGLViewer
 {using Base=Driver;
-	std::vector<OpenGLTriangleMesh*> mesh_object_array;						////mesh objects, every object you put in this array will be rendered.
-	clock_t startTime;
+	OpenGLTriangleMesh* opengl_tri_mesh=nullptr;						////mesh
+	TriangleMesh<3>* tri_mesh=nullptr;
+	OpenGLSegmentMesh* opengl_normals=nullptr;							////normals
+	OpenGLSegmentMesh* opengl_edges=nullptr;							////edges
+
+	bool use_obj_mesh=false;											////flag for use obj, set it to be true if you want to load an obj mesh
+	std::string obj_mesh_name="cap.obj";								////obj file name
+	////There are two other obj files provided, cap.obj and jetFighter.obj.
+	////They are both exported from resource library of Autodesk Maya 2020
 
 public:
 	virtual void Initialize()
 	{
-		////For those who are unhappy about the current background color: Here is a secret passage. 
-		////Goto OpenGLShaderProgrammcpp Line 239 and 240, change the two colors, and you will get a different background.
-		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
-		draw_axes=false;					////if you don't like the axes, turn them off!
-		startTime = clock();
 		OpenGLViewer::Initialize();
 	}
 
-	////This function adds a mesh object from an obj file
-	int Add_Obj_Mesh_Object(std::string obj_file_name)
+	void Load_Mesh()
 	{
-		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
-
-		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		Obj::Read_From_Obj_File(obj_file_name,meshes);
-		mesh_obj->mesh=*meshes[0];
-		std::cout<<"load tri_mesh from obj file, #vtx: "<<mesh_obj->mesh.Vertices().size()<<", #ele: "<<mesh_obj->mesh.Elements().size()<<std::endl;		
-
-		mesh_object_array.push_back(mesh_obj);
-		return (int)mesh_object_array.size()-1;
-	}
-
-	////This function adds a sphere mesh
-	int Add_Sphere_Object(const double radius=1.)
-	{
-		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
-
-		Initialize_Sphere_Mesh(radius,&mesh_obj->mesh,3);		////add a sphere with radius=1. if the obj file name is not specified
-
-		mesh_object_array.push_back(mesh_obj);
-		return (int)mesh_object_array.size()-1;
-	}
-
-	////This function adds a triangle (the in-class demo)
-	int Add_Triangle_Object(const std::vector<Vector3>& vertices)
-	{
-		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
-		auto& mesh=mesh_obj->mesh;
-
-		////manually initialize the vertices and elements for a triangle mesh
-		mesh.Vertices().resize(3);
-		for(int i=0;i<vertices.size();i++)mesh.Vertices()[i]=vertices[i];
-		mesh.Elements().resize(1);mesh.Elements()[0]=Vector3i(0,1,2);
-
-		mesh_object_array.push_back(mesh_obj);
-		return (int)mesh_object_array.size()-1;
-	}
-
-	////This function demonstrates how to manipulate the vertex array of a mesh on the CPU end.
-	////The updated vertices will be sent to GPU for rendering automatically.
-	void Translate_Vertex_Position_For_Mesh_Object(OpenGLTriangleMesh* obj,const Vector3& translate)
-	{
-		std::vector<Vector3>& vertices=obj->mesh.Vertices();		
-		for(auto& v:vertices){
-			v+=translate;
+		if(use_obj_mesh){
+			Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+			Obj::Read_From_Obj_File(obj_mesh_name,meshes);
+			*tri_mesh=*meshes[0];
+			std::cout<<"load tri_mesh, #vtx: "<<tri_mesh->Vertices().size()<<", #ele: "<<tri_mesh->Elements().size()<<std::endl;		
 		}
-	}
-
-	////This function demonstrates how to manipulate the color and normal arrays of a mesh on the CPU end.
-	////The updated colors and normals will be sent to GPU for rendering automatically.
-	void Update_Vertex_Color_And_Normal_For_Mesh_Object(OpenGLTriangleMesh* obj)
-	{
-		int vn=(int)obj->mesh.Vertices().size();					////number of vertices of a mesh
-		std::vector<Vector3>& vertices=obj->mesh.Vertices();		////you might find this array useful
-		std::vector<Vector3i>& elements=obj->mesh.Elements();		////you might find this array also useful
-
-		std::vector<Vector4f>& vtx_color=obj->vtx_color;
-		vtx_color.resize(vn);
-		std::fill(vtx_color.begin(),vtx_color.end(),Vector4f::Zero());
-
-		////TODO [Step 0]: update the color for each vertex.
-		////NOTICE: This code updates the vertex color array on the CPU end. The array will then be sent to GPU and read it the vertex shader as v_color.
-		////You don't need to implement the CPU-GPU data transfer code.
-		for(int i=0;i<vn;i++){
-			vtx_color[i]=Vector4f(0.,1.,0.,1.);	////specify color for each vertex
-		}
-
-		std::vector<Vector3>& vtx_normal=obj->vtx_normal;
-		vtx_normal.resize(vn);
-		std::fill(vtx_normal.begin(),vtx_normal.end(),Vector3::Zero());
-
-		//TODO: update the normal for each vertex
-		//NOTICE: This code updates the vertex normal array on the CPU end. The array will then be sent to GPU and read it the vertex shader as normal.
-		//This is a default implementation of vertex normal that works for a sphere centered around the origin only.
-		for(int i=0;i<vn;i++){
-			vtx_normal[i]=Vector3(vertices[i][0],vertices[i][1],vertices[i][2]);
+		else{
+			Initialize_Icosahedron_Mesh(.5,tri_mesh);
 		}	
-
-		////TODO [Step 1]: Comment the default implementation and uncomment the following function and implement it to calculate mesh normals.
-		//Update_Vertex_Normal(vertices,elements,vtx_normal);
-	}
-
-	////TODO [Step 1]: implement your function to update vertex normals
-	void Update_Vertex_Normal(const std::vector<Vector3>& vertices,const std::vector<Vector3i>& elements,std::vector<Vector3>& normals)
-	{
-		////TODO [Step 1]: your implementation to calculate the normal vector for each mesh vertex
 	}
 
 	virtual void Initialize_Data()
 	{
-		////Add a sphere mesh
-		{
-			int obj_idx=Add_Sphere_Object();
-			auto obj=mesh_object_array[obj_idx];
-			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		}
+		////initialize tri mesh
+		opengl_tri_mesh=Add_Interactive_Object<OpenGLTriangleMesh>();
+		tri_mesh=&opengl_tri_mesh->mesh;
 
-		////Add an obj mesh
-		////TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
-		//{
-		//	int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
+		Load_Mesh();
 
-		////If you want to put multiple objects in the scene, uncomment this block. It will add another sphere mesh in the scene.
-		//{
-		//	int obj_idx=Add_Sphere_Object();	////add a sphere
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Translate_Vertex_Position_For_Mesh_Object(obj,Vector3::Unit(0)*3.);
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
+		opengl_edges=Add_Interactive_Object<OpenGLSegmentMesh>();
+		Set_Polygon_Mode(opengl_edges,PolygonMode::Fill);
+		Set_Shading_Mode(opengl_edges,ShadingMode::None);
+		Update_OpenGL_Seg_Mesh();
 
-		//////Add a manually built triangle mesh (with a single triangle). This is the demo code I showed in class.
-		//// You don't need this part for your homework. Just put them here for your reference.
-		//{
-		//	std::vector<Vector3> triangle_vertices={Vector3(0,0,0),Vector3(1,0,0),Vector3(1,1,0)};
-		//	int obj_idx=Add_Triangle_Object(triangle_vertices);	////add a sphere
-		//	auto obj=mesh_object_array[obj_idx];
-		//	
-		//	////specify the vertex colors on the CPU end
-		//	std::vector<Vector4f>& vtx_color=obj->vtx_color;
-		//	vtx_color={Vector4f(1.f,0.f,0.f,1.f),Vector4f(0.f,1.f,0.f,1.f),Vector4f(0.f,0.f,1.f,1.f)};
-
-		//	std::vector<Vector3>& vtx_normal=obj->vtx_normal;
-		//	vtx_normal={Vector3(0.,0.,1.),Vector3(0.,0.,1.),Vector3(0.,0.,1.)};
-		//}
-
-		////initialize shader
-		////TODO [Step 2,3,4]: switch the shaders by changing the file names here. We use the helloworld shader by default. 
-		////You need to switch them to my_lambertian and my_phong for step 2,3, and 4. 
-		std::string vertex_shader_file_name="helloworld.vert";
-		std::string fragment_shader_file_name="helloworld.frag";
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name,fragment_shader_file_name,"a2_shader");
-
-		////bind the shader with each mesh object in the object array
-		for(auto& mesh_obj: mesh_object_array){
-			mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a2_shader"));
-			Set_Polygon_Mode(mesh_obj,PolygonMode::Fill);
-			Set_Shading_Mode(mesh_obj,ShadingMode::A2);
-			mesh_obj->Set_Data_Refreshed();
-			mesh_obj->Initialize();	
-		}
+		Set_Polygon_Mode(opengl_tri_mesh,PolygonMode::Fill);
+		Set_Shading_Mode(opengl_tri_mesh,ShadingMode::None);
+		Set_Color(opengl_tri_mesh,OpenGLColor(.3f,.3f,.3f,1.f));
+		opengl_tri_mesh->Set_Data_Refreshed();
+		opengl_tri_mesh->Initialize();
 	}
 
-	//// Go to next frame 
+	////synchronize data to visualization
+	void Sync_Simulation_And_Visualization_Data()
+	{
+		opengl_tri_mesh->Set_Data_Refreshed();
+		opengl_tri_mesh->Initialize();
+		Update_OpenGL_Seg_Mesh();
+	}
+
+	////update simulation and visualization for each time step
 	virtual void Toggle_Next_Frame()
 	{
-		for (auto& mesh_obj : mesh_object_array) {
-			mesh_obj->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
-		}
+		Sync_Simulation_And_Visualization_Data();
 		OpenGLViewer::Toggle_Next_Frame();
 	}
 
@@ -199,11 +91,64 @@ public:
 	{
 		OpenGLViewer::Run();
 	}
+
+	////Keyboard interaction
+	virtual void Initialize_Common_Callback_Keys()
+	{
+		OpenGLViewer::Initialize_Common_Callback_Keys();
+		Bind_Callback_Key('s',&Keyboard_Event_Subdivision_Func,"Loop subdivision");
+		Bind_Callback_Key('r',&Keyboard_Event_Restore_Func,"Restore");
+	}
+
+	virtual void Keyboard_Event_Subdivision()
+	{
+		std::cout<<"Loop subdivision"<<std::endl;
+		LoopSubdivision(*tri_mesh);
+		Sync_Simulation_And_Visualization_Data();
+		OpenGLViewer::Toggle_Next_Frame();
+	}
+	Define_Function_Object(MeshDriver,Keyboard_Event_Subdivision);
+
+	virtual void Keyboard_Event_Restore()
+	{
+		frame=0;
+		Load_Mesh();
+		Sync_Simulation_And_Visualization_Data();
+		OpenGLViewer::Toggle_Next_Frame();		
+	}
+	Define_Function_Object(MeshDriver,Keyboard_Event_Restore);
+
+protected:
+	void Get_Triangle_Mesh_Edges(const TriangleMesh<3>& triangle_mesh,std::unordered_set<Vector2i>& hashset)
+	{
+		for(int i=0;i<triangle_mesh.elements.size();i++){
+			const Vector3i& tri=triangle_mesh.elements[i];
+			for(int j=0;j<3;j++){
+				Vector2i edge(tri[j],tri[(j+1)%3]);
+				if(edge[0]>edge[1]){int tmp=edge[0];edge[0]=edge[1];edge[1]=tmp;}
+				hashset.insert(edge);}}
+	}
+
+	void Update_OpenGL_Seg_Mesh()
+	{
+		auto seg_mesh=&opengl_edges->mesh;
+		seg_mesh->elements.clear();
+		std::unordered_set<Vector2i> edge_hashset;
+		Get_Triangle_Mesh_Edges(*tri_mesh,edge_hashset);
+		(*seg_mesh->vertices)=(*tri_mesh->vertices);
+		for(auto& e:edge_hashset)
+			seg_mesh->elements.push_back(e);
+		opengl_edges->Set_Data_Refreshed();
+		opengl_edges->Initialize();
+		Set_Line_Width(opengl_edges,3.f);
+		Set_Shading_Mode(opengl_edges,ShadingMode::None);
+		Set_Color(opengl_edges,OpenGLColor(.1f,1.f,.1f,1.f));
+	}
 };
 
 int main(int argc,char* argv[])
 {
-	ShaderDriver driver;
+	MeshDriver driver;
 	driver.Initialize();
 	driver.Run();	
 }
