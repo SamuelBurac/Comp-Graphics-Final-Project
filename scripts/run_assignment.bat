@@ -1,7 +1,7 @@
 @echo off
 
 set assignment=%1
-
+if "%~1"=="" goto :error
 set proj_name=%assignment%
 
 cmake --build ./build --config Release --target %proj_name%

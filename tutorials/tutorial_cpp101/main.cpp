@@ -16,7 +16,7 @@ void Test_Array()
 	array.resize(5,1);
 	array.resize(5);
 	array.resize(6);
-	array.resize(8,2)
+	array.resize(8,2);
 
 	for(int i=0;i<array.size();i++){
 		cout << array[i] << " ";

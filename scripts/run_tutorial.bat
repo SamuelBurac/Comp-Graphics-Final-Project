@@ -1,22 +1,16 @@
 @echo off
 
-set assignment=%1
-
+set tutorial=%1
 if "%~1"=="" goto :error
-
-set test=%2
-
-set proj_name=%assignment%
+set proj_name=%tutorial%
 
 cmake --build ./build --config Release --target %proj_name%
 if not %ERRORLEVEL% == 0 goto :error
 
-cd tutorials\%assignment%
-..\..\build\tutorials\%assignment%\Release\%proj_name%.exe %test%
+cd tutorials\%tutorial%
+..\..\build\tutorials\%tutorial%\Release\%proj_name%.exe %test%
 cd ..\..\
 if not %ERRORLEVEL% == 0 goto :error
-
-
 
 goto :endofscript
 
