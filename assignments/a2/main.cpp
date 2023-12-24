@@ -6,22 +6,19 @@
 #include <iostream>
 #include <random>
 #include <unordered_set>
-#include "Common.h"
-#include "Driver.h"
-#include "Particles.h"
+
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
-#include "OpenGLMarkerObjects.h"
 #include "TinyObjLoader.h"
 #include "LoopSubdivision.h"
 
 #ifndef __Main_cpp__
 #define __Main_cpp__
 
-class MeshDriver : public Driver, public OpenGLViewer
-{using Base=Driver;
+class MeshDriver : public OpenGLViewer
+{
 	OpenGLTriangleMesh* opengl_tri_mesh=nullptr;						////mesh
 	TriangleMesh<3>* tri_mesh=nullptr;
 	OpenGLSegmentMesh* opengl_normals=nullptr;							////normals
@@ -41,7 +38,7 @@ public:
 	void Load_Mesh()
 	{
 		if(use_obj_mesh){
-			Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+			std::vector<std::shared_ptr<TriangleMesh<3> > > meshes;
 			Obj::Read_From_Obj_File(obj_mesh_name,meshes);
 			*tri_mesh=*meshes[0];
 			std::cout<<"load tri_mesh, #vtx: "<<tri_mesh->Vertices().size()<<", #ele: "<<tri_mesh->Elements().size()<<std::endl;		

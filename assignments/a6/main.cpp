@@ -4,11 +4,8 @@
 // Contact: Bo Zhu (bo.zhu@gatech.edu)
 //#####################################################################
 #include <iostream>
-
 #include <random>
-#include "Common.h"
-#include "Driver.h"
-#include "Particles.h"
+
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
@@ -16,7 +13,7 @@
 #include "OpenGLMarkerObjects.h"
 #include "OpenGLParticles.h"
 
-class A5_Driver : public Driver, public OpenGLViewer
+class RayTracingDriver : public OpenGLViewer
 {
 	OpenGLScreenCover* screen_cover=nullptr;
 	clock_t startTime;
@@ -79,8 +76,7 @@ public:
 		startTime=clock();
 		frame=1;
 	}
-	Define_Function_Object(A5_Driver, Keyboard_Event_R);
-
+	Define_Function_Object(RayTracingDriver, Keyboard_Event_R);
 
 	virtual void Run()
 	{
@@ -90,7 +86,7 @@ public:
 
 int main(int argc,char* argv[])
 {
-	A5_Driver driver;
+	RayTracingDriver driver;
 	driver.Initialize();
 	driver.Run();	
 }

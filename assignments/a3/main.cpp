@@ -8,8 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_set>
-#include "Common.h"
-#include "Driver.h"
+
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
@@ -23,8 +22,8 @@
 #define CLOCKS_PER_SEC 100000
 #endif
 
-class ShaderDriver : public Driver, public OpenGLViewer
-{using Base=Driver;
+class ShaderDriver : public OpenGLViewer
+{
 	std::vector<OpenGLTriangleMesh*> mesh_object_array;						////mesh objects, every object you put in this array will be rendered.
 	clock_t startTime;
 

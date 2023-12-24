@@ -9,7 +9,6 @@
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 #include "Mesh.h"
-#include "Skeleton.h"
 #include "OpenGLObject.h"
 #include "OpenGLShaderProgram.h"
 #include "OpenGLTexture.h"

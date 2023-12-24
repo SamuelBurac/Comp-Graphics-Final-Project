@@ -8,8 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_set>
-#include "Common.h"
-#include "Driver.h"
+
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
@@ -23,8 +22,8 @@
 #define CLOCKS_PER_SEC 100000
 #endif
 
-class NoiseDriver : public Driver, public OpenGLViewer
-{using Base=Driver;
+class NoiseDriver : public OpenGLViewer
+{
 	std::vector<OpenGLTriangleMesh*> mesh_object_array;		////mesh objects, every object you put in this array will be rendered.
 	clock_t startTime;
 	const int part=1;										////TODO: set the value of part to be 2 when working on part 2
@@ -55,8 +54,7 @@ public:
 	virtual void Initialize_Data()
 	{
 		std::string name="model";
-		if(part ==1)
-			name="perlin";
+		if(part==1) name="perlin";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(name + ".vert", name +".frag", "a4_shader");		
 		////add the plane mesh object
 		int obj_idx=Add_Obj_Mesh_Object("plane.obj");

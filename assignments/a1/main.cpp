@@ -5,15 +5,11 @@
 //#####################################################################
 #include <iostream>
 #include <random>
-#include "Common.h"
-#include "Driver.h"
-#include "Particles.h"
+
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
-#include "OpenGLMarkerObjects.h"
-#include "OpenGLParticles.h"
 
 /////////////////////////////////////////////////////////////////////
 //// TODO: put your name in the string               
@@ -105,7 +101,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
 );
 
-class A0_Driver : public Driver, public OpenGLViewer
+class ScreenDriver : public OpenGLViewer
 {
 	OpenGLScreenCover* screen_cover=nullptr;
 	clock_t startTime=clock();
@@ -158,9 +154,9 @@ public:
 int main(int argc,char* argv[])
 {
 	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
-	else std::cout<<"Assignment 0 demo by "<<author<<" started"<<std::endl;
+	else std::cout<<"Assignment 1 demo by "<<author<<" started"<<std::endl;
 
-	A0_Driver driver;
+	ScreenDriver driver;
 	driver.Initialize();
 	driver.Run();	
 }
