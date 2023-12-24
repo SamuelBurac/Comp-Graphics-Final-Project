@@ -54,15 +54,15 @@ The executables are generated in the Release or Debug folder under the subdirect
     .\scripts\setup.bat [Windows]
     ./scripts/setup.sh [Linux/OSX]
 
-Note: you need to run the command in your root folder (dartmouth-cg-starter-code). Otherwise your computer will not be able find the cmake file.  
+Note: you need to run the command in your root folder (cs3451-computer-graphics-starter-code). Otherwise your computer will not be able find the cmake file.  
  
 
 ### Step 3: Compile and run the code
 
 To test if everything works correctly you can run:
 
-    .\scripts\run_assignment.bat a1 1 [Windows]
-    ./scripts/run_assignment.sh a1 1 [Linux/Mac]
+    .\scripts\run_assignment.bat a1 [Windows]
+    ./scripts/run_assignment.sh a1 [Linux/Mac]
 
 This will:
 
