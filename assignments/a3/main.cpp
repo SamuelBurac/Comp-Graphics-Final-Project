@@ -35,7 +35,7 @@ public:
 		////Goto OpenGLShaderProgrammcpp Line 239 and 240, change the two colors, and you will get a different background.
 		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
 		draw_axes=false;					////if you don't like the axes, turn them off!
-		startTime = clock();
+		startTime=clock();
 		OpenGLViewer::Initialize();
 	}
 

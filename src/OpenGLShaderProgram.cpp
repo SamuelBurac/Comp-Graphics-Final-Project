@@ -306,15 +306,15 @@ void main()
 }
 );
 
-const std::string shadertoy_vert = To_String(
+const std::string shadertoy_vert=To_String(
 ~include version;
 uniform vec2 iResolution;
 out vec2 fragCoord;
 void main()
 {
-	vec2 vertices[3] = vec2[3](vec2(-1, -1), vec2(3, -1), vec2(-1, 3));
-	gl_Position = vec4(vertices[gl_VertexID], 0, 1);
-	fragCoord = (0.5 * gl_Position.xy + vec2(0.5)) * iResolution;
+	vec2 vertices[3]=vec2[3](vec2(-1, -1), vec2(3, -1), vec2(-1, 3));
+	gl_Position=vec4(vertices[gl_VertexID], 0, 1);
+	fragCoord=(0.5 * gl_Position.xy + vec2(0.5)) * iResolution;
 }
 );
 
@@ -434,22 +434,22 @@ geo_output_type=_geo_output_type;max_geo_vtx_output=_max_geo_vtx_output;}
 bool OpenGLShaderProgram::Reload(const std::string& vtx_shader_input, const std::string& frg_shader_input)
 {
 	// Save old state
-	std::string old_vtx = vtx_shader;
-	std::string old_frg = frg_shader;
-	GLint old_prg = prg_id;
+	std::string old_vtx=vtx_shader;
+	std::string old_frg=frg_shader;
+	GLint old_prg=prg_id;
 
 	// Setup for compilation
-	vtx_shader = vtx_shader_input; 
-	frg_shader = frg_shader_input; 
-	compiled = false;
+	vtx_shader=vtx_shader_input; 
+	frg_shader=frg_shader_input; 
+	compiled=false;
 	
 	// If compilation failed
 	if (!Compile()) {
 		// Restore old state
-		prg_id = old_prg;
-		vtx_shader = old_vtx;
-		frg_shader = old_frg;
-		compiled = true;
+		prg_id=old_prg;
+		vtx_shader=old_vtx;
+		frg_shader=old_frg;
+		compiled=true;
 		return false;
 	}
 	else {
@@ -668,12 +668,12 @@ std::string Read_All_Text(std::string filename) {
 
 bool OpenGLShaderLibrary::Load_Shader_From_File(const ShaderFile& file, std::shared_ptr<OpenGLShaderProgram> shader)
 {
-	std::string vtx_shader = Read_All_Text(file.vtx_file);
+	std::string vtx_shader=Read_All_Text(file.vtx_file);
 	if (vtx_shader == "") {
 		std::cerr << "Error: [OpenGLShaderLibrary] could not read file: " << file.vtx_file << std::endl;
 		return false;
 	}
-	std::string frg_shader = Read_All_Text(file.frg_file);
+	std::string frg_shader=Read_All_Text(file.frg_file);
 	if (frg_shader == "") {
 		std::cerr << "Error: [OpenGLShaderLibrary] could not read file: " << file.frg_file << std::endl;
 		return false;
@@ -686,10 +686,10 @@ bool OpenGLShaderLibrary::Load_Shader_From_File(const ShaderFile& file, std::sha
 
 void OpenGLShaderLibrary::Add_Shader_From_File(const std::string& vtx_shader_file, const std::string& frg_shader_file, const std::string& name)
 {
-	{std::shared_ptr<OpenGLShaderProgram> shader = std::make_shared<OpenGLShaderProgram>();
-	shader->name = name;
+	{std::shared_ptr<OpenGLShaderProgram> shader=std::make_shared<OpenGLShaderProgram>();
+	shader->name=name;
 
-	ShaderFile shader_file = {
+	ShaderFile shader_file={
 		vtx_shader_file, frg_shader_file,
 	};
 

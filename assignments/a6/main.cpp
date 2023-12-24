@@ -18,15 +18,15 @@
 
 class A5_Driver : public Driver, public OpenGLViewer
 {
-	OpenGLScreenCover* screen_cover = nullptr;
+	OpenGLScreenCover* screen_cover=nullptr;
 	clock_t startTime;
 	int frame;
 
 public:
 	virtual void Initialize()
 	{
-		startTime = clock();
-		frame = 1;
+		startTime=clock();
+		frame=1;
 		OpenGLViewer::Initialize();
 		Disable_Resize_Window(); // Changing window size would cause trouble in progressive rendering
 	}
@@ -34,13 +34,13 @@ public:
 	//// Initialize the screen covering mesh and shaders
 	virtual void Initialize_Data()
 	{
-		std::string vertex_shader_file_name = "common.vert";
-		std::string fragment_shader_file_name = "basic_frag.frag";
+		std::string vertex_shader_file_name="common.vert";
+		std::string fragment_shader_file_name="basic_frag.frag";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "a5_shader");
 	
-		fragment_shader_file_name = "ray_tracing.frag";	
+		fragment_shader_file_name="ray_tracing.frag";	
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name, fragment_shader_file_name, "shader_buffer");
-		screen_cover = Add_Interactive_Object<OpenGLScreenCover>();
+		screen_cover=Add_Interactive_Object<OpenGLScreenCover>();
 		Set_Polygon_Mode(screen_cover, PolygonMode::Fill);
 		Uniform_Update();
 
@@ -76,8 +76,8 @@ public:
 	virtual void Keyboard_Event_R()
 	{
 		std::cout << "Restart" << std::endl;
-		startTime = clock();
-		frame = 1;
+		startTime=clock();
+		frame=1;
 	}
 	Define_Function_Object(A5_Driver, Keyboard_Event_R);
 

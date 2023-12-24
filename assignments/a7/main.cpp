@@ -188,22 +188,22 @@ public:
 
 	//// Use this function to set up lighting only if you are using Shadow mode
 	void Init_Lighting() {
-		auto dir_light = OpenGLUbos::Add_Directional_Light(glm::vec3(-1.f, -1.f, -1.f));//Light direction
-		dir_light->dif = glm::vec4(.9,.8,.7, 1.0);//diffuse reflection color
+		auto dir_light=OpenGLUbos::Add_Directional_Light(glm::vec3(-1.f, -1.f, -1.f));//Light direction
+		dir_light->dif=glm::vec4(.9,.8,.7, 1.0);//diffuse reflection color
 		dir_light->Set_Shadow();////SHADOW TODO: turn on the shadow by uncommenting this line, currenly our base code only supports shadow for one light
 
 		//This is an example to add a second directional light
-		//auto dir_light_2 = OpenGLUbos::Add_Directional_Light(glm::vec3(1.,1.,1.));//the parameter is light direction
-		//dir_light_2->dif = glm::vec4(.9,.9,.9,1.0);
-		//dir_light_2->spec = glm::vec4(.2,.2,.2,1.0);
+		//auto dir_light_2=OpenGLUbos::Add_Directional_Light(glm::vec3(1.,1.,1.));//the parameter is light direction
+		//dir_light_2->dif=glm::vec4(.9,.9,.9,1.0);
+		//dir_light_2->spec=glm::vec4(.2,.2,.2,1.0);
 
 		//This is an example to add a point light
-		//auto point_light = OpenGLUbos::Add_Point_Light(glm::vec3(1.,1.,1.));//the parameter is the position of point light
-		//point_light->dif = glm::vec4(.9,.8,.7, 1.0);
+		//auto point_light=OpenGLUbos::Add_Point_Light(glm::vec3(1.,1.,1.));//the parameter is the position of point light
+		//point_light->dif=glm::vec4(.9,.8,.7, 1.0);
 
 		//This is an example to add a spot light
-		//auto spot_light = OpenGLUbos::Add_Spot_Light(glm::vec3(1.,1.,1.),glm::vec3(1.,1.,1.));//first param: position, second param: direction
-		//spot_light->dif = glm::vec4(.9,.8,.7, 1.0);
+		//auto spot_light=OpenGLUbos::Add_Spot_Light(glm::vec3(1.,1.,1.),glm::vec3(1.,1.,1.));//first param: position, second param: direction
+		//spot_light->dif=glm::vec4(.9,.8,.7, 1.0);
 
 		OpenGLUbos::Set_Ambient(glm::vec4(.01f, .01f, .02f, 1.f));
 		OpenGLUbos::Update_Lights_Ubo();	

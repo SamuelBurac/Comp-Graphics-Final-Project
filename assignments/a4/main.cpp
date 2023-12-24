@@ -33,7 +33,7 @@ public:
 	{
 		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
 		draw_axes=false;					////if you don't like the axes, turn them off!
-		startTime = clock();
+		startTime=clock();
 		OpenGLViewer::Initialize();
 	}
 

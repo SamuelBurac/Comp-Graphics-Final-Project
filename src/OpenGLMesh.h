@@ -85,76 +85,11 @@ class OpenGLSegmentMesh : public OpenGLMesh<SegmentMesh<3> >
     }
 };
 
-class OpenGLColoredSegmentMesh : public OpenGLMesh<SegmentMesh<3> >
-{public:typedef OpenGLMesh<SegmentMesh<3> > Base;
-    OpenGLColoredSegmentMesh(){color=default_mesh_color;name="segment_mesh";}
-	Array<real> colors;
-	OpenGLColorMapper mapper;
-
-	virtual void Initialize()
-	{
-		Base::Initialize();
-
-		Array<float> v={-.2f,-.1f,0.f,.1f,.2f};
-		Array<OpenGLColor> c={OpenGLColor(0,0,.5),OpenGLColor(0,0,1),OpenGLColor(0,1,1),OpenGLColor(1,1,0),OpenGLColor(1,0,0)};
-		mapper.Initialize(v,c);
-	}
-
-	virtual void Update_Data_To_Render()
-	{
-		if(!Update_Data_To_Render_Pre())return;
-
-		if(colors.size()==0)for(auto& e:mesh.elements){
-			OpenGL_Vertex4_And_Color4(mesh.Vertices()[e[0]],color.rgba,opengl_vertices);
-			OpenGL_Vertex4_And_Color4(mesh.Vertices()[e[1]],color.rgba,opengl_vertices);}
-		else for(size_type i=0;i<mesh.elements.size();i++){Vector2i e=mesh.elements[i];
-			OpenGLColor c=mapper.Get((float)colors[i]);
-			OpenGL_Vertex4_And_Color4(mesh.Vertices()[e[0]],c.rgba,opengl_vertices);
-			OpenGL_Vertex4_And_Color4(mesh.Vertices()[e[1]],c.rgba,opengl_vertices);}
-
-		Set_OpenGL_Vertices();
-		Set_OpenGL_Vertex_Attribute(0,4,8,0);	////position
-		Set_OpenGL_Vertex_Attribute(1,4,8,4);	////color
-
-		Update_Data_To_Render_Post();
-	}
-
-	virtual void Display() const
-    {
-		if(!visible||mesh.elements.empty())return;
-		Update_Polygon_Mode();
-
-		GLfloat old_line_width;glGetFloatv(GL_LINE_WIDTH,&old_line_width);
-        
-		{std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
-		shader->Begin();
-        // On MacOSX only 1.0f is a valid line width
-#ifndef __APPLE__
-		glLineWidth(line_width);
-#endif
-		OpenGLUbos::Bind_Uniform_Block_To_Ubo(shader,"camera");
-		glBindVertexArray(vao);
-		glDrawArrays(GL_LINES,0,vtx_size/8);
-        glLineWidth(old_line_width);
-
-		shader->End();}
-    }
-
-	virtual void Refresh(const int frame)
-	{
-		Base::Refresh(frame);
-		std::string color_file_name=output_dir+"/"+std::to_string(frame)+"/"+name+"_color";
-		if(File::File_Exists(color_file_name)){
-			colors.clear();colors.resize(mesh.elements.size());
-			File::Read_Binary_Array_From_File(color_file_name,&colors[0],(int)mesh.elements.size());}
-	}
-};
-
 class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 {public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 	std::shared_ptr<OpenGLFbos::OpenGLFbo> fbo;
 	glm::mat4 shadow_pv;
-	glm::mat4 model_matrix = glm::mat4(1.0f);
+	glm::mat4 model_matrix=glm::mat4(1.0f);
 	
 	bool use_mat=false;
 	Material mat;
@@ -162,9 +97,9 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 	Array<Vector4f> vtx_color;
 	Array<Vector3> vtx_normal;
 
-	GLfloat iTime = 0;
+	GLfloat iTime=0;
 
-	void setTime(GLfloat time) { iTime = time; }
+	void setTime(GLfloat time) { iTime=time; }
 
     OpenGLTriangleMesh(){color=default_mesh_color;name="triangle_mesh";shading_mode=ShadingMode::Lighting;}
 
@@ -224,11 +159,11 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		case ShadingMode::None:
 		{use_vtx_color=true;use_vtx_normal=false;use_vtx_tangent=false; use_vtx_tex =false;}break;
 		case ShadingMode::Lighting:
-		{use_vtx_color=false;use_vtx_normal=true; use_vtx_tangent = false; use_vtx_tex = false; }break;
+		{use_vtx_color=false;use_vtx_normal=true; use_vtx_tangent=false; use_vtx_tex=false; }break;
 		case ShadingMode::A2:
-		{use_vtx_color=true;use_vtx_normal=true; use_vtx_tangent = false; use_vtx_tex = false;}break;
+		{use_vtx_color=true;use_vtx_normal=true; use_vtx_tangent=false; use_vtx_tex=false;}break;
 		case ShadingMode::Texture:
-		{use_vtx_color = true; use_vtx_normal = true; use_vtx_tangent = true; use_vtx_tex = true; }break;
+		{use_vtx_color=true; use_vtx_normal=true; use_vtx_tangent=true; use_vtx_tex=true; }break;
 		case ShadingMode::Shadow:
 		{use_vtx_color=true;use_vtx_normal=true;use_vtx_tangent=true;use_vtx_tex=true;}break;
 		}
@@ -242,7 +177,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		if (use_vtx_tangent && (mesh.Tangents().size() < mesh.Vertices().size() || recomp_vtx_tangent)) {
 			Update_Tangents(mesh);}
 
-		bool doSkinning = mesh.Weights().size() != 0;
+		bool doSkinning=mesh.Weights().size() != 0;
 
 		GLuint stride_size=4+(use_vtx_color?4:0)+(use_vtx_normal?4:0)+(use_vtx_tex?4:0)+(use_vtx_tangent?4:0) + (doSkinning ? 8 : 0);
 		int i=0;for(auto& p:mesh.Vertices()){
@@ -323,7 +258,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 			shader->Begin();
 			shader->Set_Uniform("iTime", iTime);
 
-			for (int i = 0; i < textures.size(); i++) {
+			for (int i=0; i < textures.size(); i++) {
 				shader->Set_Uniform(textures[i].binding_name, i);
 				textures[i].texture->Bind(i);
 			}
@@ -339,7 +274,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];		/////SHADOW TODO: Set the index to be the shadow depth shader
 			shader->Begin();
 			shader->Set_Uniform("iTime", iTime);
-			for (int i = 1; i <= textures.size(); i++) {
+			for (int i=1; i <= textures.size(); i++) {
 				shader->Set_Uniform(textures[i-1].binding_name, i);
 				textures[i-1].texture->Bind(i);
 			}
@@ -367,17 +302,17 @@ class OpenGLScreenCover : public OpenGLMesh<TriangleMesh<3> >
 {
 public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 	std::shared_ptr<OpenGLFbos::OpenGLFbo> fbo;
-	GLfloat iTime = 0;
-	GLint iFrame = 0;
-	Vector2f iResolution = Vector2f(1280, 960);
-	GLuint FramebufferName = 0;
+	GLfloat iTime=0;
+	GLint iFrame=0;
+	Vector2f iResolution=Vector2f(1280, 960);
+	GLuint FramebufferName=0;
 	GLuint renderedTexture;
 
-	void setResolution(float w, float h) { iResolution = Vector2f(w, h); }
+	void setResolution(float w, float h) { iResolution=Vector2f(w, h); }
 
-	void setTime(GLfloat time) { iTime = time; }
+	void setTime(GLfloat time) { iTime=time; }
 
-	void setFrame(int frame) { iFrame = frame; }
+	void setFrame(int frame) { iFrame=frame; }
 
 	void Add_Buffer() {
 		glGenFramebuffers(1, &FramebufferName);
@@ -394,25 +329,25 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
-		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		GLenum DrawBuffers[1]={ GL_COLOR_ATTACHMENT0 };
 		glDrawBuffers(1, DrawBuffers);
 	}
 
 	OpenGLScreenCover() {
-		color = default_mesh_color; name = "screen_cover"; shading_mode = ShadingMode::Lighting;
-		mesh.Vertices().resize(3); mesh.Elements().resize(1); mesh.Elements()[0] = Vector3i(0, 1, 2);
+		color=default_mesh_color; name="screen_cover"; shading_mode=ShadingMode::Lighting;
+		mesh.Vertices().resize(3); mesh.Elements().resize(1); mesh.Elements()[0]=Vector3i(0, 1, 2);
 	}
 
 	virtual void Update_Data_To_Render()
 	{
 		if (!Update_Data_To_Render_Pre())return;
 
-		GLuint stride_size = 4;
-		int i = 0; for (auto& p : mesh.Vertices()) OpenGL_Vertex4(p, opengl_vertices);	////position, 4 floats
+		GLuint stride_size=4;
+		int i=0; for (auto& p : mesh.Vertices()) OpenGL_Vertex4(p, opengl_vertices);	////position, 4 floats
 		for (auto& e : mesh.elements)OpenGL_Vertex(e, opengl_elements);
 
 		Set_OpenGL_Vertices();
-		int idx = 0; {Set_OpenGL_Vertex_Attribute(0, 4, stride_size, 0); idx++; }	////position
+		int idx=0; {Set_OpenGL_Vertex_Attribute(0, 4, stride_size, 0); idx++; }	////position
 
 		Set_OpenGL_Elements();
 		Update_Data_To_Render_Post();
@@ -430,7 +365,7 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, renderedTexture);
-			std::shared_ptr<OpenGLShaderProgram> shader = shader_programs[4];
+			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[4];
 			shader->Begin();
 			shader->Set_Uniform("iResolution", iResolution);
 			shader->Set_Uniform("iTime", iTime);
@@ -443,7 +378,7 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 			shader->End();
 		}
 
-		std::shared_ptr<OpenGLShaderProgram> shader = shader_programs[3];
+		std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[3];
 		shader->Begin();
 		shader->Set_Uniform("iResolution", iResolution);
 		shader->Set_Uniform("iTime", iTime);

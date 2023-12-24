@@ -27,14 +27,14 @@ class NoiseDriver : public Driver, public OpenGLViewer
 {using Base=Driver;
 	std::vector<OpenGLTriangleMesh*> mesh_object_array;		////mesh objects, every object you put in this array will be rendered.
 	clock_t startTime;
-	const int part = 1;										////TODO: set the value of part to be 2 when working on part 2
+	const int part=1;										////TODO: set the value of part to be 2 when working on part 2
 
 public:
 	virtual void Initialize()
 	{
 		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
 		draw_axes=false;					////if you don't like the axes, turn them off!
-		startTime = clock();
+		startTime=clock();
 		OpenGLViewer::Initialize();
 	}
 
@@ -54,9 +54,9 @@ public:
 
 	virtual void Initialize_Data()
 	{
-		std::string name = "model";
+		std::string name="model";
 		if(part ==1)
-			name = "perlin";
+			name="perlin";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(name + ".vert", name +".frag", "a4_shader");		
 		////add the plane mesh object
 		int obj_idx=Add_Obj_Mesh_Object("plane.obj");

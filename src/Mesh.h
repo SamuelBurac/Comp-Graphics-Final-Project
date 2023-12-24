@@ -12,14 +12,14 @@ template<int d,int e_d> class SimplicialMesh
 {using VectorD=Vector<real,d>;using VectorDi=Vector<int,d>;using VectorEi=Vector<int,e_d>;
 public:
 	////Basic attributes
-	ArrayPtr<VectorD> vertices = nullptr;
-	ArrayPtr<VectorD> normals = nullptr;
-	ArrayPtr<Vector2> uvs = nullptr;
+	ArrayPtr<VectorD> vertices=nullptr;
+	ArrayPtr<VectorD> normals=nullptr;
+	ArrayPtr<Vector2> uvs=nullptr;
 	ArrayPtr<Vector4> tangents=nullptr;
 
 	////Skinning
-	ArrayPtr<Vector4> weights = nullptr;
-	ArrayPtr<Vector4i> joints = nullptr;
+	ArrayPtr<Vector4> weights=nullptr;
+	ArrayPtr<Vector4i> joints=nullptr;
 
 
 	std::vector<VectorEi> elements;
@@ -27,29 +27,29 @@ public:
 	////Constructors
 	SimplicialMesh(
 		const ArrayPtr<VectorD> _vertices=nullptr, 
-		const ArrayPtr<VectorD> _normals = nullptr, 
-		const ArrayPtr<Vector2> _uvs = nullptr, 
-		const ArrayPtr<Vector4> _tangets = nullptr,
-		const ArrayPtr<Vector4> _weights = nullptr,
-		const ArrayPtr<Vector4i> _joints = nullptr)
+		const ArrayPtr<VectorD> _normals=nullptr, 
+		const ArrayPtr<Vector2> _uvs=nullptr, 
+		const ArrayPtr<Vector4> _tangets=nullptr,
+		const ArrayPtr<Vector4> _weights=nullptr,
+		const ArrayPtr<Vector4i> _joints=nullptr)
 	{
-		if (_vertices == nullptr)vertices = std::make_shared<std::vector<VectorD> >();
-		else vertices = _vertices;
+		if (_vertices == nullptr)vertices=std::make_shared<std::vector<VectorD> >();
+		else vertices=_vertices;
 
-		if (_normals == nullptr)normals = std::make_shared<std::vector<VectorD> >();
-		else normals = _normals;
+		if (_normals == nullptr)normals=std::make_shared<std::vector<VectorD> >();
+		else normals=_normals;
 
-		if (_uvs == nullptr)uvs = std::make_shared<std::vector<Vector2> >();
-		else uvs = _uvs;
+		if (_uvs == nullptr)uvs=std::make_shared<std::vector<Vector2> >();
+		else uvs=_uvs;
 	
 		if(_tangets ==nullptr)tangents =std::make_shared<std::vector<Vector4> >();
-		else tangents = _tangets;
+		else tangents=_tangets;
 
-		if (_weights == nullptr)weights = std::make_shared<std::vector<Vector4> >();
-		else weights = _weights;
+		if (_weights == nullptr)weights=std::make_shared<std::vector<Vector4> >();
+		else weights=_weights;
 
-		if (_joints == nullptr)joints = std::make_shared<std::vector<Vector4i> >();
-		else joints = _joints;
+		if (_joints == nullptr)joints=std::make_shared<std::vector<Vector4i> >();
+		else joints=_joints;
 	}
 
 	////Copy constructor
@@ -57,11 +57,11 @@ public:
 	SimplicialMesh<d,e_d>& operator=(const SimplicialMesh<d,e_d>& copy)
 	{
 		if(vertices==nullptr)vertices=std::make_shared<std::vector<VectorD> >();
-		*vertices = *(copy.vertices);
-		*normals = *(copy.normals);
-		*uvs = *(copy.uvs);
-		*tangents = *(copy.tangents);
-		*weights = *(copy.weights);
+		*vertices=*(copy.vertices);
+		*normals=*(copy.normals);
+		*uvs=*(copy.uvs);
+		*tangents=*(copy.tangents);
+		*weights=*(copy.weights);
 		*joints =*(copy.joints);
 
 		elements=copy.elements;
@@ -214,66 +214,66 @@ inline void Update_Tangents(TriangleMesh<3>& mesh)
 	mesh.Tangents().resize(mesh.Vertices().size());
 
 	SMikkTSpaceInterface iTSpace;
-	iTSpace.m_getNumFaces = [](const SMikkTSpaceContext * pContext) -> int {
-		TriangleMesh<3>* mesh = (TriangleMesh<3>*)pContext->m_pUserData;
+	iTSpace.m_getNumFaces=[](const SMikkTSpaceContext * pContext) -> int {
+		TriangleMesh<3>* mesh=(TriangleMesh<3>*)pContext->m_pUserData;
 		return (int)mesh->Elements().size();
 	};
 
-	iTSpace.m_getNumVerticesOfFace = [](const SMikkTSpaceContext * pContext, const int iFace) -> int {
-		TriangleMesh<3>* mesh = (TriangleMesh<3>*)pContext->m_pUserData;
+	iTSpace.m_getNumVerticesOfFace=[](const SMikkTSpaceContext * pContext, const int iFace) -> int {
+		TriangleMesh<3>* mesh=(TriangleMesh<3>*)pContext->m_pUserData;
 		return (int)mesh->Elements()[iFace].size();
 	};
 
-	iTSpace.m_getPosition = [](const SMikkTSpaceContext * pContext, float fvPosOut[], const int iFace, const int iVert) -> void {
-		TriangleMesh<3>* mesh = (TriangleMesh<3>*)pContext->m_pUserData;
+	iTSpace.m_getPosition=[](const SMikkTSpaceContext * pContext, float fvPosOut[], const int iFace, const int iVert) -> void {
+		TriangleMesh<3>* mesh=(TriangleMesh<3>*)pContext->m_pUserData;
 
-		auto& face = mesh->Elements()[iFace];
-		auto& vert = mesh->Vertices()[face(iVert)];
+		auto& face=mesh->Elements()[iFace];
+		auto& vert=mesh->Vertices()[face(iVert)];
 
-		fvPosOut[0] = (float)vert(0);
-		fvPosOut[1] = (float)vert(1);
-		fvPosOut[2] = (float)vert(2);
+		fvPosOut[0]=(float)vert(0);
+		fvPosOut[1]=(float)vert(1);
+		fvPosOut[2]=(float)vert(2);
 	};
 
-	iTSpace.m_getNormal = [](const SMikkTSpaceContext * pContext, float fvNormOut[], const int iFace, const int iVert) -> void {
-		TriangleMesh<3>* mesh = (TriangleMesh<3>*)pContext->m_pUserData;
+	iTSpace.m_getNormal=[](const SMikkTSpaceContext * pContext, float fvNormOut[], const int iFace, const int iVert) -> void {
+		TriangleMesh<3>* mesh=(TriangleMesh<3>*)pContext->m_pUserData;
 
-		auto& face = mesh->Elements()[iFace];
-		auto& norm = mesh->Normals()[face(iVert)];
+		auto& face=mesh->Elements()[iFace];
+		auto& norm=mesh->Normals()[face(iVert)];
 
-		fvNormOut[0] = (float)norm(0);
-		fvNormOut[1] = (float)norm(1);
-		fvNormOut[2] = (float)norm(2);
+		fvNormOut[0]=(float)norm(0);
+		fvNormOut[1]=(float)norm(1);
+		fvNormOut[2]=(float)norm(2);
 	};
 
-	iTSpace.m_getTexCoord = [](const SMikkTSpaceContext * pContext, float fvTexcOut[], const int iFace, const int iVert) -> void {
-		TriangleMesh<3>* mesh = (TriangleMesh<3>*)pContext->m_pUserData;
+	iTSpace.m_getTexCoord=[](const SMikkTSpaceContext * pContext, float fvTexcOut[], const int iFace, const int iVert) -> void {
+		TriangleMesh<3>* mesh=(TriangleMesh<3>*)pContext->m_pUserData;
 
-		auto& face = mesh->Elements()[iFace];
-		auto& uv = mesh->Uvs()[face(iVert)];
+		auto& face=mesh->Elements()[iFace];
+		auto& uv=mesh->Uvs()[face(iVert)];
 
-		fvTexcOut[0] = (float)uv(0);
-		fvTexcOut[1] = (float)uv(1);
+		fvTexcOut[0]=(float)uv(0);
+		fvTexcOut[1]=(float)uv(1);
 	};
 
-	iTSpace.m_setTSpaceBasic = [](const SMikkTSpaceContext * pContext, const float fvTangent[], const float fSign, const int iFace, const int iVert) -> void {
-		TriangleMesh<3>* mesh = (TriangleMesh<3>*)pContext->m_pUserData;
+	iTSpace.m_setTSpaceBasic=[](const SMikkTSpaceContext * pContext, const float fvTangent[], const float fSign, const int iFace, const int iVert) -> void {
+		TriangleMesh<3>* mesh=(TriangleMesh<3>*)pContext->m_pUserData;
 
-		auto& face = mesh->Elements()[iFace];
-		auto& tangent = mesh->Tangents()[face(iVert)];
+		auto& face=mesh->Elements()[iFace];
+		auto& tangent=mesh->Tangents()[face(iVert)];
 
-		tangent(0) = fvTangent[0];
-		tangent(1) = fvTangent[1];
-		tangent(2) = fvTangent[2];
-		tangent(3) = fSign;
+		tangent(0)=fvTangent[0];
+		tangent(1)=fvTangent[1];
+		tangent(2)=fvTangent[2];
+		tangent(3)=fSign;
 	};
 
-	iTSpace.m_setTSpace = nullptr;
+	iTSpace.m_setTSpace=nullptr;
 
 
 	SMikkTSpaceContext ctx;
-	ctx.m_pInterface = &iTSpace;
-	ctx.m_pUserData = &mesh;
+	ctx.m_pInterface=&iTSpace;
+	ctx.m_pUserData=&mesh;
 
 	if (!genTangSpaceDefault(&ctx)) {
 		std::cerr << "Failed to generate tangents." << std::endl;

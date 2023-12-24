@@ -33,15 +33,15 @@ const std::string author="name";
 //// You can also test it (copy the whole string) in Shadertoy: https://www.shadertoy.com/new    
 /////////////////////////////////////////////////////////////////////
 
-const std::string draw_pixels = To_String(
-const float M_PI = 3.1415926535; 
+const std::string draw_pixels=To_String(
+const float M_PI=3.1415926535; 
 
 // The side length of the minimum unit (or the new "pixels")
-const float PIXEL_SIZE = 10.; 
+const float PIXEL_SIZE=10.; 
 
 // To check if a point is inside a circle
 bool inCircle(vec2 p, vec2 center, float radius) {
-	vec2 to_center = p - center;
+	vec2 to_center=p - center;
 	if (dot(to_center, to_center) < radius * radius) {
 		return true;
 	}
@@ -76,15 +76,15 @@ vec2 polar2cart(float angle, float length) {
 
 // Return the rgba color of the grid at position (x, y) 
 vec4 paintGrid(float x, float y) {
-	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
-	vec2 p1 = polar2cart(iTime, 16.) + center;
-	vec2 p2 = polar2cart(iTime + 2. * M_PI / 3., 16.) + center;
-	vec2 p3 = polar2cart(iTime + 4. * M_PI / 3., 16.) + center;
-	vec2 p4 = polar2cart(iTime + M_PI / 3., 16.) + center;
-	vec2 p5 = polar2cart(iTime + M_PI, 16.) + center;
-	vec2 p6 = polar2cart(iTime + 5. * M_PI / 3., 16.) + center;
-	bool inTrangle1 = inTriangle(vec2(x, y), p1, p2, p3);
-	bool inTrangle2 = inTriangle(vec2(x, y), p4, p5, p6);
+	vec2 center=vec2(iResolution / PIXEL_SIZE / 2.); // window center
+	vec2 p1=polar2cart(iTime, 16.) + center;
+	vec2 p2=polar2cart(iTime + 2. * M_PI / 3., 16.) + center;
+	vec2 p3=polar2cart(iTime + 4. * M_PI / 3., 16.) + center;
+	vec2 p4=polar2cart(iTime + M_PI / 3., 16.) + center;
+	vec2 p5=polar2cart(iTime + M_PI, 16.) + center;
+	vec2 p6=polar2cart(iTime + 5. * M_PI / 3., 16.) + center;
+	bool inTrangle1=inTriangle(vec2(x, y), p1, p2, p3);
+	bool inTrangle2=inTriangle(vec2(x, y), p4, p5, p6);
 	if (inTrangle1 && inTrangle2) {
 		return vec4(1.0);
 	}
@@ -100,15 +100,15 @@ vec4 paintGrid(float x, float y) {
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
 	// To divide the screen into the grids for painting!
-	fragColor = paintGrid(floor(fragCoord.x / PIXEL_SIZE), floor(fragCoord.y / PIXEL_SIZE));
+	fragColor=paintGrid(floor(fragCoord.x / PIXEL_SIZE), floor(fragCoord.y / PIXEL_SIZE));
 }
 
 );
 
 class A0_Driver : public Driver, public OpenGLViewer
 {
-	OpenGLScreenCover* screen_cover = nullptr;
-	clock_t startTime = clock();
+	OpenGLScreenCover* screen_cover=nullptr;
+	clock_t startTime=clock();
 
 public:
 	virtual void Initialize()
@@ -120,7 +120,7 @@ public:
 	virtual void Initialize_Data()
 	{
 		OpenGLShaderLibrary::Instance()->Create_Screen_Shader(draw_pixels, "shaderToy");
-		screen_cover = Add_Interactive_Object<OpenGLScreenCover>();
+		screen_cover=Add_Interactive_Object<OpenGLScreenCover>();
 		Set_Polygon_Mode(screen_cover, PolygonMode::Fill);
 		Uniform_Update();
 

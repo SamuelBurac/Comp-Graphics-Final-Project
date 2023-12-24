@@ -418,7 +418,7 @@ void OpenGLWindow::Timer_Func()
 void OpenGLWindow::Reshape_Func(int w,int h)
 {
 	if (resizable) {
-		win_w = w; win_h = h;
+		win_w=w; win_h=h;
 		glViewport(0, 0, (GLsizei)win_w, (GLsizei)win_h);
 	}
 	else {
@@ -647,5 +647,5 @@ GLuint Win_Height()
 void Disable_Resize_Window()
 {
 	if (OpenGLWindow::instance == nullptr)return;
-	else OpenGLWindow::instance->resizable = false;
+	else OpenGLWindow::instance->resizable=false;
 }

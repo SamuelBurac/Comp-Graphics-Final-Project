@@ -14,7 +14,6 @@
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
 #include "OpenGLMarkerObjects.h"
-#include "OpenGLParticles.h"
 #include "TinyObjLoader.h"
 #include "LoopSubdivision.h"
 

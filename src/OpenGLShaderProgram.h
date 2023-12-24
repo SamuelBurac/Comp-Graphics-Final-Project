@@ -71,17 +71,19 @@ class OpenGLShaderLibrary
 	void Update_Shaders();
 	void Add_Shader_From_File(const std::string& vtx_shader_file, const std::string& frg_shader_file, const std::string& name);
 
-	// Mimic shader toy
+	//// Mimic shader toy
 	void Create_Screen_Shader(const std::string& drawFunc, const std::string& name);
 
 protected:
 	Hashtable<std::string,std::shared_ptr<OpenGLShaderProgram> > shader_hashtable;
 	Hashtable<std::string,std::string> shader_header_hashtable;
 	
-	struct ShaderFile {
-		std::string   vtx_file, frg_file;
-		FileWatchInfo vtx_info, frg_info;
+	struct ShaderFile 
+	{
+		std::string vtx_file,frg_file;
+		FileWatchInfo vtx_info,frg_info;
 	};
+
 	Hashtable<std::string, ShaderFile> shader_file_hashtable;
 
 	OpenGLShaderLibrary();

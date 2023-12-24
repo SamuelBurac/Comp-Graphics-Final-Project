@@ -52,10 +52,10 @@ public:
 	bool normalize=false;
 	bool draw_dis=true;
 	bool use_vtx_color=true;
-	bool use_vtx_normal = true;
-	bool recomp_vtx_normal = false;
+	bool use_vtx_normal=true;
+	bool recomp_vtx_normal=false;
 	bool use_vtx_tangent=false;
-	bool recomp_vtx_tangent = false;
+	bool recomp_vtx_tangent=false;
 
 	bool use_vtx_tex=false;
 	std::string tex_name="";

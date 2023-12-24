@@ -18,7 +18,7 @@ OpenGLTexture::~OpenGLTexture() {
 
 OpenGLTextureLibrary* OpenGLTextureLibrary::Instance() { static OpenGLTextureLibrary instance; return &instance; }
 std::shared_ptr<OpenGLTexture> OpenGLTextureLibrary::Get(const std::string& name) {
-	auto search = texture_hashtable.find(name);
+	auto search=texture_hashtable.find(name);
 	if (search != texture_hashtable.end())return search->second;
 	else return std::shared_ptr<OpenGLTexture>(nullptr);
 }
@@ -39,7 +39,7 @@ void OpenGLTextureLibrary::Add_Texture_From_File(std::string filename, std::stri
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// load and generate the texture
 	int width, height, nrChannels;
-	unsigned char *data = nullptr;
+	unsigned char *data=nullptr;
 	Stb::Read_Image(filename, width, height, nrChannels, data);
 
 	if (data)
@@ -54,5 +54,5 @@ void OpenGLTextureLibrary::Add_Texture_From_File(std::string filename, std::stri
 
 	free(data);
 
-	texture_hashtable[name] = std::shared_ptr<OpenGLTexture>(new OpenGLTexture(texture));
+	texture_hashtable[name]=std::shared_ptr<OpenGLTexture>(new OpenGLTexture(texture));
 }
