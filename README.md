@@ -8,7 +8,7 @@ If you are already experienced with using CMake to generate a C++ project, pleas
 
 The starter codebase is organized as `ext`, `src`, `assignments` and `tutorials`. We put all external codes (e.g., the Eigen library) in `ext`. We put the common headers that can be shared among different subprojects in `src` (e.g., the classes of mesh, grid, file IO, etc.). The folder `assignments` maintains all assignments. An assignment is dependent on `src` and `ext`, but is independent from other assignments.
 
-Usually, you are asked to write code in one or multiple files in an assignment folder (e.g., in `assignments/a1/LoopSubdivision.h`). You don’t need to change files in ext or src.
+Usually, you are asked to write code in one or multiple files in an assignment folder. You don’t need to change files in ext or src.
 
 ### Build and Compile
 
@@ -37,8 +37,9 @@ The executables are generated in the Release or Debug folder under the subdirect
 - **OSX**: `brew install cmake` (using [Homebrew](https://brew.sh/))
 
 **Substep 2.1.0: Install IDE (Windows only)**
-  - If you are using Windows and you don't have Visual Studio, please install [Visual Studio 2017](https://visualstudio.microsoft.com/vs/older-downloads/) , as well as it's [C/C++ support](https://docs.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-150) 
-  - If you have already installed another version of VS (not Visual Studio 15 2017) or if you are not sure about the version, [check the version](https://stackoverflow.com/questions/33917454/cmake-how-to-specify-the-version-of-visual-c-to-work-with) by running 
+  - If you are using Windows and you don't have Visual Studio, please install [Visual Studio 2022](https://visualstudio.microsoft.com/vs/older-downloads/) , as well as it's [C/C++ support](https://docs.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-150) 
+  - Make sure to install the C++ development environment by selecting "Desktop development with C++" under the tag of Workloads. 
+  - If you have already installed another version of VS (not Visual Studio 17 2022) or if you are not sure about the version, [check the version](https://stackoverflow.com/questions/33917454/cmake-how-to-specify-the-version-of-visual-c-to-work-with) by running 
   ` camke --help `
   in your command.   
   **Find setup.bat in your script folder, and change "Visual Studio 17 2015" to your own version**, or you might get an error at step 2.2
