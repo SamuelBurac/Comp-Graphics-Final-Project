@@ -37,7 +37,7 @@ The executables are generated in the Release or Debug folder under the subdirect
 - **OSX**: `brew install cmake` (using [Homebrew](https://brew.sh/))
 
 **Substep 2.1.0: Install IDE (Windows only)**
-  - If you are using Windows and you don't have Visual Studio, please install [Visual Studio 2022](https://visualstudio.microsoft.com/vs/older-downloads/) , as well as it's [C/C++ support](https://docs.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-150) 
+  - If you are using Windows and you don't have Visual Studio, please install [Visual Studio 2022] (Community Version) (https://visualstudio.microsoft.com/vs/older-downloads/) , as well as it's [C/C++ support](https://docs.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-150) 
   - Make sure to install the C++ development environment by selecting "Desktop development with C++" under the tag of Workloads. 
   - If you have already installed another version of VS (not Visual Studio 17 2022) or if you are not sure about the version, [check the version](https://stackoverflow.com/questions/33917454/cmake-how-to-specify-the-version-of-visual-c-to-work-with) by running 
   ` camke --help `
