@@ -155,7 +155,7 @@ int main(int argc,char* argv[])
 {
 	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
 	else std::cout<<"Assignment 1 demo by "<<author<<" started"<<std::endl;
-
+	
 	ScreenDriver driver;
 	driver.Initialize();
 	driver.Run();	
