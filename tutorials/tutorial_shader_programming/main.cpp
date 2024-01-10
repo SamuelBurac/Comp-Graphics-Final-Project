@@ -4,10 +4,9 @@
 // Contact: Bo Zhu (bo.zhu@dartmouth.edu)
 //#####################################################################
 #include <iostream>
-
 #include <random>
+
 #include "Common.h"
-#include "Driver.h"
 #include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
@@ -17,9 +16,9 @@
 #include "OpenGLParticles.h"
 #include "TinyObjLoader.h"
 
-template<int d> class ToolkitDriver : public Driver, public OpenGLViewer
+template<int d> class ToolkitDriver : public OpenGLViewer
 {
-	using VectorD = Vector<real, d>; using VectorDi = Vector<int, d>; using Base = Driver;
+	using VectorD = Vector<real, d>; using VectorDi = Vector<int, d>;
 	real dt = .02;
 
 	OpenGLTriangleMesh* opengl_tri_mesh = nullptr;

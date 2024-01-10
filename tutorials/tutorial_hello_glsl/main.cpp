@@ -7,7 +7,6 @@
 
 #include <random>
 #include "Common.h"
-#include "Driver.h"
 #include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
@@ -105,7 +104,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
 );
 
-class A0_Driver : public Driver, public OpenGLViewer
+class A0_Driver : public OpenGLViewer
 {
 	OpenGLScreenCover* screen_cover = nullptr;
 	clock_t startTime = clock();

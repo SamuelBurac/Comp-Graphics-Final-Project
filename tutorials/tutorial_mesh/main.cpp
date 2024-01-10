@@ -7,7 +7,6 @@
 #include <random>
 #include <unordered_set>
 #include "Common.h"
-#include "Driver.h"
 #include "Particles.h"
 #include "OpenGLMesh.h"
 #include "OpenGLCommon.h"
@@ -20,8 +19,8 @@
 #ifndef __Main_cpp__
 #define __Main_cpp__
 
-class MeshDriver : public Driver, public OpenGLViewer
-{using Base=Driver;
+class MeshDriver : public OpenGLViewer
+{
 	OpenGLTriangleMesh* opengl_tri_mesh=nullptr;						////mesh
 	TriangleMesh<3>* tri_mesh=nullptr;
 	OpenGLSegmentMesh* opengl_normals=nullptr;							////normals
