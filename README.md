@@ -22,7 +22,7 @@ The executables are generated in the Release or Debug folder under the subdirect
 
 ### Video Tutorial:
 Watch the video tutorials made by our awesome TA Kevin:
-- **Windos**: https://youtu.be/f6KYyLUswcg
+- **Windows**: https://youtu.be/f6KYyLUswcg
 
 ## 1. Compile and run the first assignment:
 
