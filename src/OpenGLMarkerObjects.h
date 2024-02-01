@@ -15,6 +15,7 @@ class OpenGLBackground : public OpenGLObject
 	std::string shader_name="gcolor_bk";
 	real depth;
 	bool use_fbo_tex;
+	OpenGLColor mix_color = OpenGLColor(.01f, .01f, .2f, 1.f);
 
 	OpenGLBackground();
 
@@ -22,6 +23,7 @@ class OpenGLBackground : public OpenGLObject
 	void Set_Texture(const std::string& _tex_name){use_vtx_tex=true;tex_name=_tex_name;}
 	void Set_Depth(const real _depth){depth=_depth;}
 	void Set_Fbo(){}
+	void Set_Color(const OpenGLColor& _color, const OpenGLColor& _mix_color){color=_color; mix_color=_mix_color;}
 	virtual void Initialize();
 	virtual void Display() const;
 };

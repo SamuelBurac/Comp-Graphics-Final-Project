@@ -238,18 +238,15 @@ void main()
 
 const std::string gcolor_frg_shader=To_String(
 ~include version;
-uniform vec4 color=vec4(0.f,0.f,0.f,1.f);
+uniform vec4 color;
+uniform vec4 mix_color;
 in vec3 vtx_frg_pos;
 out vec4 frag_color;
 void main()								
 { 
-	// customize c1 and c2 to specify a background!
-	vec3 c1=vec3(0.f,0.f,0.f);
-	vec3 c2=vec3(0.01f,0.01f,0.2f);
-
-	float m=abs(vtx_frg_pos.x);
-	vec3 c=mix(c2,c1,m*m);
-	frag_color=vec4(c,1.f);
+	float m = abs(vtx_frg_pos.x);
+	vec3 c = mix(mix_color.xyz ,color.xyz, m*m);
+	frag_color = vec4(c,1.f);
 }										
 );
 

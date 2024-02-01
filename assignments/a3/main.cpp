@@ -10,6 +10,7 @@
 #include <unordered_set>
 
 #include "OpenGLMesh.h"
+#include "OpenGLMarkerObjects.h"
 #include "OpenGLCommon.h"
 #include "OpenGLWindow.h"
 #include "OpenGLViewer.h"
@@ -22,166 +23,354 @@
 #define CLOCKS_PER_SEC 100000
 #endif
 
-class ShaderDriver : public OpenGLViewer
+#define DegreesToRadians(degrees) (degrees * M_PI / 180)
+
+class MyDriver : public OpenGLViewer
 {
 	std::vector<OpenGLTriangleMesh*> mesh_object_array;						////mesh objects, every object you put in this array will be rendered.
+	OpenGLSegmentMesh* floor = nullptr;
+	std::vector<OpenGLSegmentMesh*> coords, trajectory;
 	clock_t startTime;
-
 public:
 	virtual void Initialize()
 	{
-		////For those who are unhappy about the current background color: Here is a secret passage. 
-		////Goto OpenGLShaderProgrammcpp Line 239 and 240, change the two colors, and you will get a different background.
-		draw_bk=true;						////this flag specifies a customized way to draw the background. If you turn it off, there is no background.
-		draw_axes=false;					////if you don't like the axes, turn them off!
-		startTime=clock();
+		draw_axes = false;
+		startTime = clock();
 		OpenGLViewer::Initialize();
+		opengl_window->camera_distance = 25.f;
+		opengl_window->camera_target = Vector3f(0, 3.5, 0);
+		opengl_window->Update_Clip_Planes();
 	}
 
-	////This function adds a mesh object from an obj file
-	int Add_Obj_Mesh_Object(std::string obj_file_name)
+	void Create_Background(const OpenGLColor& color1, const OpenGLColor& color2)
 	{
-		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
-
-		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
-		Obj::Read_From_Obj_File(obj_file_name,meshes);
-		mesh_obj->mesh=*meshes[0];
-		std::cout<<"load tri_mesh from obj file, #vtx: "<<mesh_obj->mesh.Vertices().size()<<", #ele: "<<mesh_obj->mesh.Elements().size()<<std::endl;		
-
-		mesh_object_array.push_back(mesh_obj);
-		return (int)mesh_object_array.size()-1;
-	}
-
-	////This function adds a sphere mesh
-	int Add_Sphere_Object(const double radius=1.)
-	{
-		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
-
-		Initialize_Sphere_Mesh(radius,&mesh_obj->mesh,3);		////add a sphere with radius=1. if the obj file name is not specified
-
-		mesh_object_array.push_back(mesh_obj);
-		return (int)mesh_object_array.size()-1;
-	}
-
-	////This function adds a triangle (the in-class demo)
-	int Add_Triangle_Object(const std::vector<Vector3>& vertices)
-	{
-		auto mesh_obj=Add_Interactive_Object<OpenGLTriangleMesh>();
-		auto& mesh=mesh_obj->mesh;
-
-		////manually initialize the vertices and elements for a triangle mesh
-		mesh.Vertices().resize(3);
-		for(int i=0;i<vertices.size();i++)mesh.Vertices()[i]=vertices[i];
-		mesh.Elements().resize(1);mesh.Elements()[0]=Vector3i(0,1,2);
-
-		mesh_object_array.push_back(mesh_obj);
-		return (int)mesh_object_array.size()-1;
-	}
-
-	////This function demonstrates how to manipulate the vertex array of a mesh on the CPU end.
-	////The updated vertices will be sent to GPU for rendering automatically.
-	void Translate_Vertex_Position_For_Mesh_Object(OpenGLTriangleMesh* obj,const Vector3& translate)
-	{
-		std::vector<Vector3>& vertices=obj->mesh.Vertices();		
-		for(auto& v:vertices){
-			v+=translate;
-		}
-	}
-
-	////This function demonstrates how to manipulate the color and normal arrays of a mesh on the CPU end.
-	////The updated colors and normals will be sent to GPU for rendering automatically.
-	void Update_Vertex_Color_And_Normal_For_Mesh_Object(OpenGLTriangleMesh* obj)
-	{
-		int vn=(int)obj->mesh.Vertices().size();					////number of vertices of a mesh
-		std::vector<Vector3>& vertices=obj->mesh.Vertices();		////you might find this array useful
-		std::vector<Vector3i>& elements=obj->mesh.Elements();		////you might find this array also useful
-
-		std::vector<Vector4f>& vtx_color=obj->vtx_color;
-		vtx_color.resize(vn);
-		std::fill(vtx_color.begin(),vtx_color.end(),Vector4f::Zero());
-
-		////TODO [Step 0]: update the color for each vertex.
-		////NOTICE: This code updates the vertex color array on the CPU end. The array will then be sent to GPU and read it the vertex shader as v_color.
-		////You don't need to implement the CPU-GPU data transfer code.
-		for(int i=0;i<vn;i++){
-			vtx_color[i]=Vector4f(0.,1.,0.,1.);	////specify color for each vertex
-		}
-
-		std::vector<Vector3>& vtx_normal=obj->vtx_normal;
-		vtx_normal.resize(vn);
-		std::fill(vtx_normal.begin(),vtx_normal.end(),Vector3::Zero());
-
-		//TODO: update the normal for each vertex
-		//NOTICE: This code updates the vertex normal array on the CPU end. The array will then be sent to GPU and read it the vertex shader as normal.
-		//This is a default implementation of vertex normal that works for a sphere centered around the origin only.
-		for(int i=0;i<vn;i++){
-			vtx_normal[i]=Vector3(vertices[i][0],vertices[i][1],vertices[i][2]);
-		}	
-
-		////TODO [Step 1]: Comment the default implementation and uncomment the following function and implement it to calculate mesh normals.
-		//Update_Vertex_Normal(vertices,elements,vtx_normal);
-	}
-
-	////TODO [Step 1]: implement your function to update vertex normals
-	void Update_Vertex_Normal(const std::vector<Vector3>& vertices,const std::vector<Vector3i>& elements,std::vector<Vector3>& normals)
-	{
-		////TODO [Step 1]: your implementation to calculate the normal vector for each mesh vertex
+		auto bg = Add_Interactive_Object<OpenGLBackground>();
+		bg->Set_Color(color1, color2);
+		bg->Initialize();
 	}
 
 	virtual void Initialize_Data()
 	{
-		////Add a sphere mesh
+		Create_Background(OpenGLColor(0.71f, 0.6f, 0.17f, 1.f), OpenGLColor(0.71f, 0.87f, 0.17f, 1.f));
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("a3_vert.vert", "a3_frag.frag", "a3_shading");	////bind shader for this assignment
+
+		Create_Angry_Bird_Palace();					////TODO: Comment this line when you start to implement your customized scene
+		//// Create_Angry_Bird_Garden();			////TODO: Uncomment this line when you start to implement your customized scene
+
+	}
+
+	void Create_Angry_Bird_Palace()
+	{
+		//// draw the three axes
+		Add_Coord({ Vector3(0, 0.01, 0), Vector3(5, 0.01, 0) }, OpenGLColor(1, 0, 0, 1));	//// X axis
+		Add_Coord({ Vector3(0, 0, 0), Vector3(0, 5, 0) }, OpenGLColor(0, 1, 0, 1));	//// Y axis
+		Add_Coord({ Vector3(0, 0.01, 0), Vector3(0, 0.01, 5) }, OpenGLColor(0, 0, 1, 1));	//// Z zxis
+
+		//// draw the ground
+		Add_Ground();
+
+		//// Step 1: add the castle by reading the model from "castle.obj" 
+		//// The model needs to undergo the following transform operations in sequence: 
+		//// (1) rotate clockwisely around the y-axis by 90 degrees, 
+		//// (2) uniformly scale by a factor of 5,
+		//// (3) translate upwards by 1.3 units in the y direction.
+		//// Your task is to specify the values of the 4x4 transform matrix and send it to the mesh model via Set_Model_Matrix().
+		//// You are allowed to use a chain of matrix multiplications to calculate the matrix.
+
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		auto castle = Add_Obj_Mesh_Object_From_File("castle.obj", OpenGLColor(.6f, .6f, .6f, 1.f));
 		{
-			int obj_idx=Add_Sphere_Object();
-			auto obj=mesh_object_array[obj_idx];
-			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+			Matrix4f t;
+			t << 1., 0., 0., 0.,
+				0., 1., 0., 0.,
+				0., 0., 1., 0.,
+				0., 0., 0., 1.;
+
+			castle->Set_Model_Matrix(t);
 		}
+		/* Your implementation ends. */
 
-		////Add an obj mesh
-		////TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
-		//{
-		//	int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
+		//// Step 2: add the axes statue by reading the model from "axes.obj" 
+		//// The model needs to undergo the following transform operations in sequence: 
+		//// (1) rotate clockwisely around the y-axis by 90 degrees, 
+		//// (2) uniformly scale by a factor of 2,
+		//// (3) translate by 6 units in the positive x direction and 1 unit in the z direction.
 
-		////If you want to put multiple objects in the scene, uncomment this block. It will add another sphere mesh in the scene.
-		//{
-		//	int obj_idx=Add_Sphere_Object();	////add a sphere
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Translate_Vertex_Position_For_Mesh_Object(obj,Vector3::Unit(0)*3.);
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		auto axes = Add_Obj_Mesh_Object_From_File("axes.obj", OpenGLColor(.9f, .5f, .0f, 1.f));
+		{
+			Matrix4f t;
+			t << 1., 0., 0., 0.,
+				0., 1., 0., 0.,
+				0., 0., 1., 0.,
+				0., 0., 0., 1.;
 
-		//////Add a manually built triangle mesh (with a single triangle). This is the demo code I showed in class.
-		//// You don't need this part for your homework. Just put them here for your reference.
-		//{
-		//	std::vector<Vector3> triangle_vertices={Vector3(0,0,0),Vector3(1,0,0),Vector3(1,1,0)};
-		//	int obj_idx=Add_Triangle_Object(triangle_vertices);	////add a sphere
-		//	auto obj=mesh_object_array[obj_idx];
-		//	
-		//	////specify the vertex colors on the CPU end
-		//	std::vector<Vector4f>& vtx_color=obj->vtx_color;
-		//	vtx_color={Vector4f(1.f,0.f,0.f,1.f),Vector4f(0.f,1.f,0.f,1.f),Vector4f(0.f,0.f,1.f,1.f)};
+			axes->Set_Model_Matrix(t);
+		}
+		/* Your implementation ends. */
 
-		//	std::vector<Vector3>& vtx_normal=obj->vtx_normal;
-		//	vtx_normal={Vector3(0.,0.,1.),Vector3(0.,0.,1.),Vector3(0.,0.,1.)};
-		//}
+		//// Step 3: add the magic tower by reading the model from "tower.obj" 
+		//// The model needs to undergo the following transform operations in sequence: 
+		//// (1) rotate counterclockwisely around the y-axis by 45 degrees, 
+		//// (2) non-uniformly scale by factors of 2, 6, 2 in the x, y, z directions
+		//// (3) translate by 6 units in the negative x direction and 3 units in the z direction.
 
-		////initialize shader
-		////TODO [Step 2,3,4]: switch the shaders by changing the file names here. We use the helloworld shader by default. 
-		////You need to switch them to my_lambertian and my_phong for step 2,3, and 4. 
-		std::string vertex_shader_file_name="helloworld.vert";
-		std::string fragment_shader_file_name="helloworld.frag";
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name,fragment_shader_file_name,"a2_shader");
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		auto tower = Add_Obj_Mesh_Object_From_File("tower.obj", OpenGLColor(.0f, .5f, .5f, 1.f));
+		{
+			Matrix4f t;
+			t << 1., 0., 0., 0.,
+				0., 1., 0., 0.,
+				0., 0., 1., 0.,
+				0., 0., 0., 1.;
 
-		////bind the shader with each mesh object in the object array
-		for(auto& mesh_obj: mesh_object_array){
-			mesh_obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a2_shader"));
-			Set_Polygon_Mode(mesh_obj,PolygonMode::Fill);
-			Set_Shading_Mode(mesh_obj,ShadingMode::A2);
-			mesh_obj->Set_Data_Refreshed();
-			mesh_obj->Initialize();	
+			tower->Set_Model_Matrix(t);
+		}
+		/* Your implementation ends. */
+
+		//// Step 4: add 24 trees by reading the model from "tree1.obj" 
+		//// The 24 trees need to be distributed evenly and at equal distances along the circumference of the inner circle. 
+		//// The circle has its center at the origin and a radius of 8.
+		//// Each tree needs to be translated in the positive y axis by 0.5 unit to ensure its base is above the ground.
+		//// Calculate the transform matrix for each tree in the following for-loop.
+
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		int tree_num = 24;
+		for (int i = 0; i < tree_num; i++) {
+			auto tree = Add_Obj_Mesh_Object_From_File("tree1.obj", OpenGLColor(0.f, 1.f, 0.f, 1.f));
+			{
+				Matrix4f t;
+				t << 1., 0., 0., 0.,
+					0., 1., 0., 0.,
+					0., 0., 1., 0.,
+					0., 0., 0., 1.;
+				tree->Set_Model_Matrix(t);
+			}
+		}
+		/* Your implementation ends. */
+
+		//// Step 5: add 36 trees by reading the model from "tree2.obj" 
+		//// The 36 trees need to be distributed evenly and at equal distances along the circumference of the outer circle. 
+		//// The circle has its center at the origin and a radius of 10.
+		//// Each tree needs to be translated in the positive y axis by 0.5 unit to ensure its base is above the ground.
+		//// Calculate the transform matrix for each tree in the following for-loop.
+
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		int tree2_num = 36;
+		for (int i = 0; i < tree2_num; i++) {
+			auto tree = Add_Obj_Mesh_Object_From_File("tree2.obj", OpenGLColor(0.f, 1.f, 0.f, 1.f));
+			{
+				Matrix4f t;
+				t << 1., 0., 0., 0.,
+					0., 1., 0., 0.,
+					0., 0., 1., 0.,
+					0., 0., 0., 1.;
+				tree->Set_Model_Matrix(t);
+			}
+		}
+		/* Your implementation ends. */
+
+		//// Step 6: add 5 stone steps by using the function `Add_Cube()`
+		//// `Add_Cube()` adds a cube mesh to the scene with its bottom-left corner at the origin and each side measuring 1 unit.
+		//// Each stone step has its size as 1, 0.1, and 0.5 along x, y, z axes.
+		//// The bottom-left corner of the first stone step is in (0, 0, 3), incremented by 1 in positive z direction for the following stone steps.
+		//// Calculate the transform matrix for each stone step in the following for-loop.
+
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		for (int i = 0; i < 5; i++) {
+			auto cube1 = Add_Cube(1.f, OpenGLColor(0.1f, 0.1f, 0.1f, 1.f));
+			{
+				Matrix4f t;
+				t << 1., 0., 0., 0.,
+					0., 1., 0., 0.,
+					0., 0., 1., 0.,
+					0., 0., 0., 1.;
+				cube1->Set_Model_Matrix(t);
+			}
+		}
+		/* Your implementation ends. */
+
+		//// Step 7: add 6 keyframes of a throwing angry bird following a parabola.
+		//// The angry bird is thrown from (-5, 0, 0) with initial velocity (5, 9.8, 0) (unit/sec)
+		//// Its angular velocity omega = 150 (deg/sec) clockwise 		 
+		//// The gravity is g = 9.8 (unit/sec) in negative y direction
+		//// The x coordinate of the bird can be calculated as x = x0 + ux * t
+		//// The y coordinate of the bird can be calculated as y = uy * t - 0.5 * g * t * t
+		//// Your task is to draw keyframes at time t = 0.2, 0.5, 0.8, 1.1, 1.4, 1.7 respectively.
+		//// To this end, you need to calculate the transform matrix for each keyframe of the angry bird in the following for-loop.
+		//// You can temporarily uncomment the following line to visualize the parabola trajectory as a reference during implementation. Comment it out again once you complete the task.
+		//// Add_Arc_Trajectory();
+
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+		std::vector<float> time = { 0.2, 0.5, 0.8, 1.1, 1.4, 1.7 };
+		int bird_num = 6;
+		for (int i = 0; i < bird_num; i++) {
+			auto bird = Add_Obj_Mesh_Object_From_File("bird.obj", OpenGLColor(1.f, 0.2f, 0.f, 1.f));
+			{
+				Matrix4f t;
+				t << 1., 0., 0., 0.,
+					0., 1., 0., 0.,
+					0., 0., 1., 0.,
+					0., 0., 0., 1.;
+				bird->Set_Model_Matrix(t);
+			}
+		}
+		/* Your implementation ends. */
+	}
+
+	//// Step 8: Create a new garden scene by using the mesh objects we provided, or download your own from online resources. 
+	//// Practise matrix transformation by mimicking the way we setup matrices in the `Create_Angry_Bird_Palace()` function.
+
+	void Create_Angry_Bird_Garden()
+	{
+		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
+
+		//// draw the three axes, comment them out if you don't need them
+		Add_Coord({ Vector3(0, 0.01, 0), Vector3(5, 0.01, 0) }, OpenGLColor(1, 0, 0, 1));	//// X axis
+		Add_Coord({ Vector3(0, 0, 0), Vector3(0, 5, 0) }, OpenGLColor(0, 1, 0, 1));	//// Y axis
+		Add_Coord({ Vector3(0, 0.01, 0), Vector3(0, 0.01, 5) }, OpenGLColor(0, 0, 1, 1));	//// Z zxis
+
+		//// draw the ground, comment them out if you don't need them
+		Add_Ground();
+
+		/* Your implementation ends. */
+	}
+
+	//////////////////////////////////////////////////////////////
+	//// The following functions are auxiliary functions to add mesh objects into the scene
+	//////////////////////////////////////////////////////////////
+
+	//// This function adds a mesh object from an obj file
+	int Add_Obj_Mesh_Object(std::string obj_file_name)
+	{
+		auto mesh_obj = Add_Interactive_Object<OpenGLTriangleMesh>();
+
+		Array<std::shared_ptr<TriangleMesh<3> > > meshes;
+		Obj::Read_From_Obj_File(obj_file_name, meshes);
+		mesh_obj->mesh = *meshes[0];
+		std::cout << "load tri_mesh from obj file, #vtx: " << mesh_obj->mesh.Vertices().size() << ", #ele: " << mesh_obj->mesh.Elements().size() << std::endl;
+
+		mesh_object_array.push_back(mesh_obj);
+		return (int)mesh_object_array.size() - 1;
+	}
+
+	//// This function adds a mesh object from an .obj file and allows the user to specify its model matrix
+	OpenGLTriangleMesh* Add_Obj_Mesh_Object_From_File(std::string file_name, OpenGLColor color = OpenGLColor::White())
+	{
+		int obj_idx = Add_Obj_Mesh_Object(file_name);
+		auto obj = mesh_object_array[obj_idx];
+		obj->color = color; // set color
+
+		obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a3_shading"));
+		Set_Polygon_Mode(obj, PolygonMode::Fill);
+		Set_Shading_Mode(obj, ShadingMode::A2);
+		obj->Set_Data_Refreshed();
+		obj->Initialize();
+
+		return obj;
+	}
+	//// This function adds a cube with a specified length and color
+	OpenGLTriangleMesh* Add_Cube(float length = 1, OpenGLColor color = OpenGLColor::White()) {
+		auto obj = Add_Interactive_Object<OpenGLTriangleMesh>();
+		mesh_object_array.push_back(obj);
+		obj->color = color; // set color
+		// set up vertices and elements
+		std::vector<Vector3> vertices{ Vector3(0,0,0),Vector3(1,0,0),Vector3(0,1,0),Vector3(1,1,0), Vector3(0,0,1),Vector3(1,0,1),Vector3(0,1,1),Vector3(1,1,1) };
+		std::vector<Vector3i> elements{ Vector3i(4,5,7),Vector3i(4,7,6),
+										Vector3i(5,1,7),Vector3i(7,1,3),
+										Vector3i(2,3,1),Vector3i(0,2,1),
+										Vector3i(6,2,4),Vector3i(2,0,4),
+										Vector3i(2,6,3),Vector3i(6,7,3),
+										Vector3i(0,1,4),Vector3i(1,5,4) };
+		for (auto& v3 : vertices) { v3 -= Vector3(0.5, 0.5, 0.5); v3 *= length; };
+		obj->mesh.Vertices() = vertices;
+		obj->mesh.Elements() = elements;
+
+		obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a3_shading"));
+		Set_Polygon_Mode(obj, PolygonMode::Fill);
+		Set_Shading_Mode(obj, ShadingMode::A2);
+		obj->Set_Data_Refreshed();
+		obj->Initialize();
+
+		return obj;
+	}
+
+	//// This function adds an axis with a specified color
+	void Add_Coord(std::vector<Vector3> pts, OpenGLColor color)
+	{
+		auto axis = Add_Interactive_Object<OpenGLSegmentMesh>();
+		coords.push_back(axis);
+		Set_Polygon_Mode(axis, PolygonMode::Fill);
+		Set_Shading_Mode(axis, ShadingMode::None);
+		auto line_mesh = &axis->mesh;
+		line_mesh->Vertices() = pts;
+		line_mesh->Elements() = { Vector2i(0,1) };
+		Set_Line_Width(axis, 2.5f);
+		Set_Color(axis, color);
+		axis->Set_Data_Refreshed();
+		axis->Initialize();
+	}
+
+	//// This function adds a wireframe ground
+	void Add_Ground()
+	{
+		floor = Add_Interactive_Object<OpenGLSegmentMesh>();
+		Set_Polygon_Mode(floor, PolygonMode::Fill);
+		Set_Shading_Mode(floor, ShadingMode::None);
+		auto line_mesh = &floor->mesh;
+		std::vector<Vector3> pts;
+		std::vector<Vector2i> eles;
+		for (int i = -10; i <= 10; i++) {
+			pts.push_back(Vector3(i, 0, -10));
+			pts.push_back(Vector3(i, 0, 10));
+			pts.push_back(Vector3(-10, 0, i));
+			pts.push_back(Vector3(10, 0, i));
+		}
+		for (int i = 0; i < pts.size(); i += 2) {
+			eles.push_back(Vector2i(i, i + 1));
+		}
+		line_mesh->Vertices() = pts;
+		line_mesh->Elements() = eles;
+		Set_Line_Width(floor, 3.f);
+		Set_Color(floor, OpenGLColor(0, 0, 0, 1));
+		floor->Set_Data_Refreshed();
+		floor->Initialize();
+	}
+
+	//// This function adds a parabola trajectory
+	void Add_Arc_Trajectory()
+	{
+		float ux = 5, uy = 9.8, g = 9.8;
+		std::vector<Vector3> pts;
+		std::vector<Vector2i> eles;
+		for (float t = 0; t <= 2; t += 0.02) {
+			float x = ux * t - 5;
+			float y = uy * t - 0.5 * g * t * t;
+			pts.push_back(Vector3(x, y, 0));
+		}
+		for (int i = 0; i < pts.size() - 1; i++) {
+			eles.push_back(Vector2i(i, i + 1));
+		}
+		auto traj = Add_Interactive_Object<OpenGLSegmentMesh>();
+		trajectory.push_back(traj);
+		Set_Polygon_Mode(traj, PolygonMode::Fill);
+		Set_Shading_Mode(traj, ShadingMode::None);
+		auto line_mesh = &traj->mesh;
+		line_mesh->Vertices() = pts;
+		line_mesh->Elements() = eles;
+		Set_Line_Width(traj, 2.f);
+		Set_Color(traj, OpenGLColor(0, 0, 1, 1));
+		traj->Set_Data_Refreshed();
+		traj->Initialize();
+	}
+
+	void Init_Bird_Vertices(OpenGLTriangleMesh* obj)
+	{
+		std::vector<Vector3>& vertices = obj->mesh.Vertices();
+		for (auto& v : vertices) {
+			v += Vector3(-8.35, 0, 0);
+			auto x = v.x(); v.x() = v.z(); v.z() = -x;
+			v /= 10.f;
 		}
 	}
 
@@ -200,11 +389,11 @@ public:
 	}
 };
 
-int main(int argc,char* argv[])
+int main(int argc, char* argv[])
 {
-	ShaderDriver driver;
+	MyDriver driver;
 	driver.Initialize();
-	driver.Run();	
+	driver.Run();
 }
 
 #endif

@@ -55,6 +55,7 @@ void OpenGLBackground::Display() const
 	shader->Begin();
 	glDepthMask(GL_FALSE);
 	shader->Set_Uniform_Vec4f("color",color.rgba);
+	shader->Set_Uniform_Vec4f("mix_color",mix_color.rgba);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES,0,vtx_size/8);
 	glDepthMask(GL_TRUE);

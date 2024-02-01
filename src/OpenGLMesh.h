@@ -89,7 +89,9 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 	std::shared_ptr<OpenGLFbos::OpenGLFbo> fbo;
 	glm::mat4 shadow_pv;
 	glm::mat4 model_matrix=glm::mat4(1.0f);
-	
+	Vector2f iResolution=Vector2f(1280, 960);
+	void setResolution(float w, float h) { iResolution=Vector2f(w, h); }
+
 	bool use_mat=false;
 	Material mat;
 
@@ -128,6 +130,13 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 
 		view=glm::lookAt(light_pos,glm::vec3(0.f),glm::vec3(1.f,0.f,0.f));
 		shadow_pv=proj*view;
+	}
+
+	void Set_Model_Matrix(const Eigen::Matrix<float,4,4>& _model_matrix)
+	{
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				model_matrix[j][i]=_model_matrix(i,j); // j,i = i,j
 	}
 
 	virtual void Preprocess()
@@ -225,6 +234,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		case ShadingMode::None:{
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
 			shader->Begin();
+			shader->Set_Uniform_Matrix4f("model",glm::value_ptr(model_matrix));
 			Bind_Uniform_Block_To_Ubo(shader,"camera");
 			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
@@ -236,6 +246,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 			if(use_mat)shader->Set_Uniform_Mat(&mat);
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.f,1.f);
+			shader->Set_Uniform_Matrix4f("model",glm::value_ptr(model_matrix));
 			Bind_Uniform_Block_To_Ubo(shader,"camera");
 			Bind_Uniform_Block_To_Ubo(shader,"lights");
 			glBindVertexArray(vao);
@@ -246,6 +257,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		case ShadingMode::A2:{
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
 			shader->Begin();
+			shader->Set_Uniform_Matrix4f("model",glm::value_ptr(model_matrix));
 			shader->Set_Uniform("iTime", iTime);
 			Bind_Uniform_Block_To_Ubo(shader,"camera");
 			glBindVertexArray(vao);
