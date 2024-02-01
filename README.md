@@ -20,6 +20,10 @@ To generate build files (e.g., an .sln file for Windows or a makefile for Linux)
 
 The executables are generated in the Release or Debug folder under the subdirectory (e.g., `build/a1/Release`) for Windows and just in e.g. `build/a1` for Linux/Mac.
 
+### Video Tutorial:
+Watch the video tutorials made by our awesome TAs Kevin and Vibha:
+- **Windows**: https://youtu.be/f6KYyLUswcg
+- **OSX**: https://youtu.be/44jzYA2upHU
 
 ## 1. Compile and run the first assignment:
 
