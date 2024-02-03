@@ -171,9 +171,9 @@ public:
 		/* Your implementation ends. */
 
 		//// Step 6: add 5 stone steps by using the function `Add_Cube()`
-		//// `Add_Cube()` adds a cube mesh to the scene with its bottom-left corner at the origin and each side measuring 1 unit.
+		//// `Add_Cube()` adds a cube mesh to the scene with its center at the origin and each side measuring 1 unit.
 		//// Each stone step has its size as 1, 0.1, and 0.5 along x, y, z axes.
-		//// The bottom-left corner of the first stone step is in (0, 0, 3), incremented by 1 in positive z direction for the following stone steps.
+		//// The center of the first stone step is in (0, 0, 3), incremented by 1 in positive z direction for the following stone steps.
 		//// Calculate the transform matrix for each stone step in the following for-loop.
 
 		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
