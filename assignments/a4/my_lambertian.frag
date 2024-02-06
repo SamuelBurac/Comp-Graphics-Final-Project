@@ -12,23 +12,34 @@ layout (std140) uniform camera
 	vec4 position;		/*camera's position in world space*/
 };
 
-/* Passed time from the begining of the program */ 
-uniform float iTime;
-
 /*input variables*/
 in vec4 vtx_color;
-////TODO [Step 2]: add your in variables from the vertex shader
+in vec3 vtx_normal;
+in vec3 vtx_position;
 
 /*output variables*/
 out vec4 frag_color;
 
 /*hard-coded lighting parameters*/
 const vec3 LightPosition = vec3(3, 1, 3);
-////TODO [Step 2]: add your Lambertian lighting parameters here
+const vec3 LightIntensity = vec3(20);
+const vec3 ka = 0.1*vec3(1., 1., 1.);
+const vec3 kd = 0.7*vec3(1., 1., 1.);
+const vec3 ks = vec3(2.);
+const float n = 400.0;
 
 void main()							
-{		
-	////TODO [Step 2]: add your Lambertian lighting calculation
+{										
+	vec3 _viewDir = normalize(position.xyz);
+	vec3 _normal = normalize((vec4(vtx_normal, 0)).xyz);
+	vec3 lightDir = LightPosition - vtx_position;
+	float _lightDist = length(lightDir);
+	vec3 _lightDir = normalize(lightDir);
+	vec3 _localLight = LightIntensity / (_lightDist * _lightDist);
+	vec3 ambColor = ka;
+	vec3 difColor = kd * _localLight * max(0., dot(_lightDir, _normal));
+	vec3 specColor = vec3(0);
 
-	frag_color = vec4(0.f,1.f,0.f,1.f);
+	gl_FragColor = vec4(ambColor + difColor*vtx_color.rgb, 1); // Lambertian
+	// gl_FragColor = vec4(ambColor + difColor, 1); // Phong
 }	

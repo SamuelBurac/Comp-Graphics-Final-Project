@@ -120,6 +120,7 @@ public:
 
 		////TODO [Step 1]: Comment the default implementation and uncomment the following function and implement it to calculate mesh normals.
 		//Update_Vertex_Normal(vertices,elements,vtx_normal);
+		Update_Normals(obj->mesh,vtx_normal);		//// I implemented the update normal function in my starter code
 	}
 
 	////TODO [Step 1]: implement your function to update vertex normals
@@ -131,19 +132,19 @@ public:
 	virtual void Initialize_Data()
 	{
 		////Add a sphere mesh
-		{
+		/* {
 			int obj_idx=Add_Sphere_Object();
 			auto obj=mesh_object_array[obj_idx];
 			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		}
+		}*/
 
-		////Add an obj mesh
-		////TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
-		//{
-		//	int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
+		//Add an obj mesh
+		//TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
+		{
+			int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
+			auto obj=mesh_object_array[obj_idx];
+			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+		}
 
 		////If you want to put multiple objects in the scene, uncomment this block. It will add another sphere mesh in the scene.
 		//{
@@ -171,8 +172,8 @@ public:
 		////initialize shader
 		////TODO [Step 2,3,4]: switch the shaders by changing the file names here. We use the helloworld shader by default. 
 		////You need to switch them to my_lambertian and my_phong for step 2,3, and 4. 
-		std::string vertex_shader_file_name="helloworld.vert";
-		std::string fragment_shader_file_name="helloworld.frag";
+		std::string vertex_shader_file_name="my_phong.vert";
+		std::string fragment_shader_file_name="my_phong.frag";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name,fragment_shader_file_name,"a2_shader");
 
 		////bind the shader with each mesh object in the object array

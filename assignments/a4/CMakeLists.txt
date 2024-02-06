@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 
 #initialize project
-set(proj_name a4)
+set(proj_name assignment3)
 project(${proj_name})
 
 #set paths
