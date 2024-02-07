@@ -1,4 +1,4 @@
-﻿﻿#ifndef __LoopSubdivision_h__
+﻿#ifndef __LoopSubdivision_h__
 #define __LoopSubdivision_h__
 #include <unordered_map>
 #include <vector>

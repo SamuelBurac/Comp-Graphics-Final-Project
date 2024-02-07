@@ -94,7 +94,7 @@ public:
 		//// The model needs to undergo the following transform operations in sequence: 
 		//// (1) rotate *counterclockwisely* around the y-axis by 90 degrees, 
 		//// (2) uniformly scale by a factor of 2,
-		//// (3) translate by 6 units in the positive x direction and 1 unit in the z direction.
+		//// (3) translate by 6 units in the positive x direction and 1 unit in the y direction.
 
 		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
 		auto axes = Add_Obj_Mesh_Object_From_File("axes.obj", OpenGLColor(.9f, .5f, .0f, 1.f));
@@ -113,7 +113,7 @@ public:
 		//// The model needs to undergo the following transform operations in sequence: 
 		//// (1) rotate *clockwisely* around the y-axis by 45 degrees, 
 		//// (2) non-uniformly scale by factors of 2, 6, 2 in the x, y, z directions
-		//// (3) translate by 6 units in the negative x direction and 3 units in the z direction.
+		//// (3) translate by 6 units in the negative x direction and 3 units in the y direction.
 
 		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
 		auto tower = Add_Obj_Mesh_Object_From_File("tower.obj", OpenGLColor(.0f, .5f, .5f, 1.f));
