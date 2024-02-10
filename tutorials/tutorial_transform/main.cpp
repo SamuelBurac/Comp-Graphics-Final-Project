@@ -70,6 +70,7 @@ public:
 		Add_Ground();
 
 		// add castle with a single matrix
+		/*
 		auto castle = Add_Tranformable_Obj_From_File("castle.obj", OpenGLColor(.5f, .5f, .5f, 1.f));
 		{
 			Matrix4f t;
@@ -79,9 +80,10 @@ public:
 				 0., 0., 0., 1.;
 			castle->Set_Model_Matrix(t);
 		}
+		*/
 		
 		// add castle with matrix multiplications
-		/*
+		
 		auto castle = Add_Tranformable_Obj_From_File("castle.obj",OpenGLColor(.5f,.5f,.5f,1.f));
 		{
 			Matrix4f t;
@@ -101,7 +103,7 @@ public:
 
 			castle->Set_Model_Matrix(r);
 		}
-		*/
+		
 		
 	}
 
