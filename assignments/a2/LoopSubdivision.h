@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿
 =======
+=======
+>>>>>>> parent of 3de9110 (fix Y-axis rotation for a3)
 ﻿#ifndef __LoopSubdivision_h__
 #define __LoopSubdivision_h__
 #include <unordered_map>
