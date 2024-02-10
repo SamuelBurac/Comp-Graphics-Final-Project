@@ -1,4 +1,22 @@
+<<<<<<< HEAD
 ﻿
+=======
+﻿#ifndef __LoopSubdivision_h__
+#define __LoopSubdivision_h__
+#include <unordered_map>
+#include <vector>
+#include "Mesh.h"
+
+inline void LoopSubdivision(TriangleMesh<3>& mesh)
+{
+	std::vector<Vector3>& old_vtx=mesh.Vertices();
+	std::vector<Vector3i>& old_tri=mesh.Elements();
+	std::vector<Vector3> new_vtx;		////vertex array for the new mesh
+	std::vector<Vector3i> new_tri;		////element array for the new mesh
+	
+	new_vtx=old_vtx;	////copy all the old vertices to the new_vtx array
+
+>>>>>>> parent of 3de9110 (fix Y-axis rotation for a3)
 	////step 1: add mid-point vertices and triangles
 	////for each old triangle, 
 	////add three new vertices (in the middle of each edge) to new_vtx 

@@ -175,7 +175,7 @@ template<class MESH_T1,class MESH_T2> void Dim_Conversion(const MESH_T1& mesh2,/
 {
 	mesh3.vertices->resize((int)(mesh2.vertices->size()));
 	for(size_type i=0;i<(*mesh3.vertices).size();i++)
-		Dim_Conversion<double,MESH_T1::Dim(),MESH_T2::Dim()>((*mesh2.vertices)[i],(*mesh3.vertices)[i],(double)0);
+		Dim_Conversion<real,MESH_T1::Dim(),MESH_T2::Dim()>((*mesh2.vertices)[i],(*mesh3.vertices)[i],(real)0);
 	mesh3.elements.resize((int)mesh2.elements.size());
 	for(size_type i=0;i<mesh2.elements.size();i++)
 		Dim_Conversion<int,MESH_T1::Element_Dim(),MESH_T2::Element_Dim()>(mesh2.elements[i],mesh3.elements[i],(int)-1);
@@ -304,7 +304,7 @@ template<int d> void Subdivide(TriangleMesh<d>* mesh)
 	std::vector<Vector2i> edges;Get_Edges(*mesh,edges);
 	Hashtable<Vector2i,int> edge_vtx_hashtable;
 	for(const auto& e:edges){
-		Vector<double,d> pos=(double).5*(mesh->Vertices()[e[0]]+mesh->Vertices()[e[1]]);
+		Vector<real,d> pos=(real).5*(mesh->Vertices()[e[0]]+mesh->Vertices()[e[1]]);
 		mesh->Vertices().push_back(pos);
 		int i=(int)mesh->Vertices().size()-1;
 		edge_vtx_hashtable.insert(std::make_pair(e,i));}

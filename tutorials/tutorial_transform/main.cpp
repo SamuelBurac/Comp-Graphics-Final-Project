@@ -43,67 +43,52 @@ public:
 		opengl_window->Update_Clip_Planes();
 	}
 
-	void Create_Background(const OpenGLColor& color1, const OpenGLColor& color2)
-	{
-		auto bg = Add_Interactive_Object<OpenGLBackground>();
-		bg->Set_Color(color1, color2);
-		bg->Initialize();
-	}
-
 	virtual void Initialize_Data()
 	{
-		Create_Background(OpenGLColor(0.71f, 0.6f, 0.17f, 1.f), OpenGLColor(0.71f, 0.87f, 0.17f, 1.f));
-		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("a3_vert.vert", "a3_frag.frag", "a3_shading");	////bind shader for this assignment
-
-
+		OpenGLShaderLibrary::Instance()->Add_Shader_From_File("a3_vert.vert","a3_frag.frag","a3_shading");	////bind shader for this assignment
 		Create_Angry_Bird_Palace();
 	}
 
 	void Create_Angry_Bird_Palace()
 	{
 		//// draw the three axes
-		Add_Coord({ Vector3(0, 0.01, 0), Vector3(5, 0.01, 0) }, OpenGLColor(1, 0, 0, 1));	//// X axis
+		Add_Coord({ Vector3(-5, 0.01, 0), Vector3(5, 0.01, 0) }, OpenGLColor(1, 0, 0, 1));	//// X axis
 		Add_Coord({ Vector3(0, 0, 0), Vector3(0, 5, 0) }, OpenGLColor(0, 1, 0, 1));	//// Y axis
-		Add_Coord({ Vector3(0, 0.01, 0), Vector3(0, 0.01, 5) }, OpenGLColor(0, 0, 1, 1));	//// Z zxis
+		Add_Coord({ Vector3(0, 0.01, -5), Vector3(0, 0.01, 5) }, OpenGLColor(0, 0, 1, 1));	//// Z zxis
 		
 		//// draw the ground
 		Add_Ground();
 
-		// add castle with a single matrix
-		/*
+		// add castle
 		auto castle = Add_Tranformable_Obj_From_File("castle.obj", OpenGLColor(.5f, .5f, .5f, 1.f));
 		{
 			Matrix4f t;
-			t << 10., 0., 0., 0.,
-				 0., 5., 0., 1.3,
-				 0., 0., 2., 0.,
+			t << 1., 0., 0., 0.,
+				 0., 1., 0., 0.,
+				 0., 0., 1., 0.,
 				 0., 0., 0., 1.;
 			castle->Set_Model_Matrix(t);
 		}
-		*/
-		
-		// add castle with matrix multiplications
-		
+
+		// add castle
+		/*
 		auto castle = Add_Tranformable_Obj_From_File("castle.obj",OpenGLColor(.5f,.5f,.5f,1.f));
 		{
 			Matrix4f t;
-			t << 1., 0., 0., 0.,
-				 0., 1., 0., 1.3,
-				 0., 0., 1., 0.,
+			t << 5., 0., 0., 0.,
+				 0., 5., 0., 1.3,
+				 0., 0., 5., 0.,
 				 0., 0., 0., 1.;
-			float angle = 3.1415927f * .5f;
-
+			float angle = 3.1415927f * -.5f;
 			Matrix4f r;
-			r << cos(angle), 0., sin(angle), 0.,
+			r << cos(angle), 0., -sin(angle), 0.,
 				0., 1., 0., 0.,
-				-sin(angle), 0., cos(angle), 0.,
+				sin(angle), 0., cos(angle), 0.,
 				0., 0., 0., 1.;
 
-			Matrix4f transf = r;
-
-			castle->Set_Model_Matrix(r);
+			castle->Set_Model_Matrix(t*r);
 		}
-		
+		*/
 		
 	}
 
@@ -130,6 +115,7 @@ public:
 	{
 		int obj_idx = Add_Obj_Mesh_Object(file_name);
 		auto obj = mesh_object_array[obj_idx];
+		obj->use_model_matrix = true; // enable model matrix to be set to shader
 		obj->color = color; // set color
 
 		obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a3_shading"));
@@ -144,6 +130,7 @@ public:
 	OpenGLTriangleMesh* Add_Cube(float length = 1, OpenGLColor color = OpenGLColor::White()) {
 		auto obj = Add_Interactive_Object<OpenGLTriangleMesh>();
 		mesh_object_array.push_back(obj);
+		obj->use_model_matrix = true; // enable model matrix to be set to shader
 		obj->color = color; // set color
 		// set up vertices and elements
 		std::vector<Vector3> vertices{Vector3(0,0,0),Vector3(1,0,0),Vector3(0,1,0),Vector3(1,1,0), Vector3(0,0,1),Vector3(1,0,1),Vector3(0,1,1),Vector3(1,1,1)};

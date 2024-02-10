@@ -71,7 +71,7 @@ public:
 
 		//// Step 1: add the castle by reading the model from "castle.obj" 
 		//// The model needs to undergo the following transform operations in sequence: 
-		//// (1) rotate *counterclockwisely* around the y-axis by 90 degrees, 
+		//// (1) rotate clockwisely around the y-axis by 90 degrees, 
 		//// (2) uniformly scale by a factor of 5,
 		//// (3) translate upwards by 1.3 units in the y direction.
 		//// Your task is to specify the values of the 4x4 transform matrix and send it to the mesh model via Set_Model_Matrix().
@@ -92,7 +92,7 @@ public:
 
 		//// Step 2: add the axes statue by reading the model from "axes.obj" 
 		//// The model needs to undergo the following transform operations in sequence: 
-		//// (1) rotate *counterclockwisely* around the y-axis by 90 degrees, 
+		//// (1) rotate clockwisely around the y-axis by 90 degrees, 
 		//// (2) uniformly scale by a factor of 2,
 		//// (3) translate by 6 units in the positive x direction and 1 unit in the y direction.
 
@@ -111,7 +111,7 @@ public:
 
 		//// Step 3: add the magic tower by reading the model from "tower.obj" 
 		//// The model needs to undergo the following transform operations in sequence: 
-		//// (1) rotate *clockwisely* around the y-axis by 45 degrees, 
+		//// (1) rotate counterclockwisely around the y-axis by 45 degrees, 
 		//// (2) non-uniformly scale by factors of 2, 6, 2 in the x, y, z directions
 		//// (3) translate by 6 units in the negative x direction and 3 units in the y direction.
 
@@ -192,15 +192,13 @@ public:
 
 		//// Step 7: add 6 keyframes of a throwing angry bird following a parabola.
 		//// The angry bird is thrown from (-5, 0, 0) with initial velocity (5, 9.8, 0) (unit/sec)
-		//// Its angular velocity omega = 150 (deg/sec) *clockwise* 		 
+		//// Its angular velocity omega = 150 (deg/sec) clockwise 		 
 		//// The gravity is g = 9.8 (unit/sec) in negative y direction
 		//// The x coordinate of the bird can be calculated as x = x0 + ux * t
 		//// The y coordinate of the bird can be calculated as y = uy * t - 0.5 * g * t * t
 		//// Your task is to draw keyframes at time t = 0.2, 0.5, 0.8, 1.1, 1.4, 1.7 respectively.
 		//// To this end, you need to calculate the transform matrix for each keyframe of the angry bird in the following for-loop.
-		//// You can temporarily uncomment the following line to visualize the parabola trajectory as a reference during implementation. 
-		//// Comment it out again once you complete the task.
-		
+		//// You can temporarily uncomment the following line to visualize the parabola trajectory as a reference during implementation. Comment it out again once you complete the task.
 		//// Add_Arc_Trajectory();
 
 		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */

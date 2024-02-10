@@ -120,7 +120,6 @@ public:
 
 		////TODO [Step 1]: Comment the default implementation and uncomment the following function and implement it to calculate mesh normals.
 		//Update_Vertex_Normal(vertices,elements,vtx_normal);
-		Update_Normals(obj->mesh,vtx_normal);		//// I implemented the update normal function in my starter code
 	}
 
 	////TODO [Step 1]: implement your function to update vertex normals
@@ -138,13 +137,13 @@ public:
 			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
 		}
 
-		//Add an obj mesh
-		//TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
-		/* {
-			int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
-			auto obj=mesh_object_array[obj_idx];
-			Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		}*/
+		////Add an obj mesh
+		////TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
+		//{
+		//	int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
+		//	auto obj=mesh_object_array[obj_idx];
+		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
+		//}
 
 		////If you want to put multiple objects in the scene, uncomment this block. It will add another sphere mesh in the scene.
 		//{
