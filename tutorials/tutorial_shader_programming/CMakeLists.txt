@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8.7)
 #initialize project
 set(proj_name tutorial_shader_programming)
 project(${proj_name})
+add_definitions(-w)
 
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
 

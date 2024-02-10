@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8.7)
 set(proj_name matrix)
 project(${proj_name})
 set(src_files main.cpp)
+add_definitions(-w)
 
 #include Eigen
 include_directories(${PROJECT_SOURCE_DIR}/../../ext/eigen)

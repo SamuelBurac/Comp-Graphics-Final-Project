@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8.7)
 #initialize project
 set(proj_name tutorial_opengl)
 project(${proj_name})
+add_definitions(-w)
 
 add_subdirectory(glfw-3.3)
 
