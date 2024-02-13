@@ -114,7 +114,6 @@ public:
 	{
 		int obj_idx = Add_Obj_Mesh_Object(file_name);
 		auto obj = mesh_object_array[obj_idx];
-		obj->use_model_matrix = true; // enable model matrix to be set to shader
 		obj->color = color; // set color
 
 		obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("a3_shading"));
@@ -129,7 +128,6 @@ public:
 	OpenGLTriangleMesh* Add_Cube(float length = 1, OpenGLColor color = OpenGLColor::White()) {
 		auto obj = Add_Interactive_Object<OpenGLTriangleMesh>();
 		mesh_object_array.push_back(obj);
-		obj->use_model_matrix = true; // enable model matrix to be set to shader
 		obj->color = color; // set color
 		// set up vertices and elements
 		std::vector<Vector3> vertices{Vector3(0,0,0),Vector3(1,0,0),Vector3(0,1,0),Vector3(1,1,0), Vector3(0,0,1),Vector3(1,0,1),Vector3(0,1,1),Vector3(1,1,1)};

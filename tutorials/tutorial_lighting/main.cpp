@@ -100,9 +100,6 @@ public:
 		vtx_color.resize(vn);
 		std::fill(vtx_color.begin(),vtx_color.end(),Vector4f::Zero());
 
-		////TODO [Step 0]: update the color for each vertex.
-		////NOTICE: This code updates the vertex color array on the CPU end. The array will then be sent to GPU and read it the vertex shader as v_color.
-		////You don't need to implement the CPU-GPU data transfer code.
 		for(int i=0;i<vn;i++){
 			vtx_color[i]=Vector4f(1.,1.,0.,1.);	////specify color for each vertex
 		}
@@ -111,26 +108,14 @@ public:
 		vtx_normal.resize(vn);
 		std::fill(vtx_normal.begin(),vtx_normal.end(),Vector3::Zero());
 
-		//TODO: update the normal for each vertex
-		//NOTICE: This code updates the vertex normal array on the CPU end. The array will then be sent to GPU and read it the vertex shader as normal.
-		//This is a default implementation of vertex normal that works for a sphere centered around the origin only.
 		for(int i=0;i<vn;i++){
 			vtx_normal[i]=Vector3(vertices[i][0],vertices[i][1],vertices[i][2]);
-		}	
-
-		////TODO [Step 1]: Comment the default implementation and uncomment the following function and implement it to calculate mesh normals.
-		//Update_Vertex_Normal(vertices,elements,vtx_normal);
-	}
-
-	////TODO [Step 1]: implement your function to update vertex normals
-	void Update_Vertex_Normal(const std::vector<Vector3>& vertices,const std::vector<Vector3i>& elements,std::vector<Vector3>& normals)
-	{
-		////TODO [Step 1]: your implementation to calculate the normal vector for each mesh vertex
+		}
 	}
 
 	virtual void Initialize_Data()
 	{
-		////Add a sphere mesh
+		////Add two sphere meshes
 		{
 			int obj_idx=Add_Sphere_Object();
 			auto obj=mesh_object_array[obj_idx];
@@ -144,40 +129,7 @@ public:
 			Translate_Vertex_Position_For_Mesh_Object(obj,Vector3(2.,0.,0.));
 		}
 
-		////Add an obj mesh
-		////TODO [Step 4]: uncomment this part and use your own mesh for Step 4.
-		//{
-		//	int obj_idx=Add_Obj_Mesh_Object("bunny.obj");
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
-
-		////If you want to put multiple objects in the scene, uncomment this block. It will add another sphere mesh in the scene.
-		//{
-		//	int obj_idx=Add_Sphere_Object();	////add a sphere
-		//	auto obj=mesh_object_array[obj_idx];
-		//	Translate_Vertex_Position_For_Mesh_Object(obj,Vector3::Unit(0)*3.);
-		//	Update_Vertex_Color_And_Normal_For_Mesh_Object(obj);		
-		//}
-
-		//////Add a manually built triangle mesh (with a single triangle). This is the demo code I showed in class.
-		//// You don't need this part for your homework. Just put them here for your reference.
-		//{
-		//	std::vector<Vector3> triangle_vertices={Vector3(0,0,0),Vector3(1,0,0),Vector3(1,1,0)};
-		//	int obj_idx=Add_Triangle_Object(triangle_vertices);	////add a sphere
-		//	auto obj=mesh_object_array[obj_idx];
-		//	
-		//	////specify the vertex colors on the CPU end
-		//	std::vector<Vector4f>& vtx_color=obj->vtx_color;
-		//	vtx_color={Vector4f(1.f,0.f,0.f,1.f),Vector4f(0.f,1.f,0.f,1.f),Vector4f(0.f,0.f,1.f,1.f)};
-
-		//	std::vector<Vector3>& vtx_normal=obj->vtx_normal;
-		//	vtx_normal={Vector3(0.,0.,1.),Vector3(0.,0.,1.),Vector3(0.,0.,1.)};
-		//}
-
 		////initialize shader
-		////TODO [Step 2,3,4]: switch the shaders by changing the file names here. We use the helloworld shader by default. 
-		////You need to switch them to my_lambertian and my_phong for step 2,3, and 4. 
 		std::string vertex_shader_file_name="helloworld.vert";
 		std::string fragment_shader_file_name="helloworld.frag";
 		OpenGLShaderLibrary::Instance()->Add_Shader_From_File(vertex_shader_file_name,fragment_shader_file_name,"a2_shader");

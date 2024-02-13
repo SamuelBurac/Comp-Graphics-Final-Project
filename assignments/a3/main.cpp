@@ -133,7 +133,7 @@ public:
 		//// The circle has its center at the origin and a radius of 8.
 		//// Each tree needs to be translated in the positive y axis by 0.5 unit to ensure its base is above the ground.
 		//// Calculate the transform matrix for each tree in the following for-loop.
-
+		 
 		/* Your implementation starts. You may add/remove/edit any part of the code in the following. */
 		int tree_num = 24;
 		for (int i = 0; i < tree_num; i++) {
