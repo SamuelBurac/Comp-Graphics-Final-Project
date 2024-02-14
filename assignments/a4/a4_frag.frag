@@ -132,8 +132,8 @@ Light get_spinny_light(Light light)
     /* your implementation starts */
 
     mat4 light_model_mtx = 
-        mat4(1., 1., 0., 0., 
-             1., 1., 0., 0., 
+        mat4(1., 0., 0., 0., 
+             0., 1., 0., 0., 
              0., 0., 1., 0., 
              0., 0., 0., 1.);
     
@@ -183,10 +183,11 @@ void main()
     // frag_color = shading_phong(light1, e, p, s1, n);
 
     //// Step 5: multiple lights
-    //// Your task is to declare one additional light source and add its contribution to the fragment color
+    //// By default we calculate the contribution from light1. 
+    //// Your task is to declare one additional light (light2) and add its contribution to the fragment color
     //// The additional light source is a point light, with its position in (-3, 1, 3), 
     //// ambient coefficient (0.05, 0.02, 0.03), both diffuse and specular coefficients (0.4, 0.2, 0.3)
-    //// By default we calculate the contribution from light1. 
+    //// Uncomment the following line, declare a new light, and add its contribution to frag_color.
 
     /* Your implementation starts here */
     
@@ -207,7 +208,7 @@ void main()
     //// Implement your customized lighting effects on your customized mesh objects 
     //// You may reuse any functions you have implemented above
     //// Here we provide the phong shading model as the default implementation
-    //// Customize it to your own lighting model
+    //// Customize it with your own lighting model
 
     // frag_color = shading_phong(light1, e, p, s1, n);
 }

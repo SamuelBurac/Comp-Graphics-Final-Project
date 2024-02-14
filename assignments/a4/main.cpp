@@ -24,7 +24,7 @@
 #endif
 
 class ShaderDriver : public OpenGLViewer {
-    std::vector<OpenGLTriangleMesh *> mesh_object_array;
+    std::vector<OpenGLTriangleMesh*> mesh_object_array;
     clock_t startTime;
 
 public:
@@ -43,7 +43,7 @@ public:
         //// set material properties
         bunny->Set_Ka(Vector3f(0.f, 0.9f, 0.f));
         bunny->Set_Kd(Vector3f(0.f, 0.9f, 0.f));
-        bunny->Set_Ks(Vector3f(0.f, 0.9f, 0.f));
+        bunny->Set_Ks(Vector3f(5.f, 5.f, 5.f));
         bunny->Set_Shininess(128.f);
 
         auto sphere1 = Add_Sphere_Object(0.4);
@@ -57,7 +57,7 @@ public:
         //// set material properties
         sphere1->Set_Ka(Vector3f(0.9f, 0.9f, 0.f));
         sphere1->Set_Kd(Vector3f(0.9f, 0.9f, 0.f));
-        sphere1->Set_Ks(Vector3f(0.9f, 0.9f, 0.f));
+        sphere1->Set_Ks(Vector3f(2.f, 2.f, 2.f));
         sphere1->Set_Shininess(32.f);
 
         auto sphere2 = Add_Sphere_Object(0.4);
@@ -71,7 +71,7 @@ public:
         //// set material properties
         sphere2->Set_Ka(Vector3f(1.f, 0.f, 0.7f));
         sphere2->Set_Kd(Vector3f(1.f, 0.f, 0.7f));
-        sphere2->Set_Ks(Vector3f(1.f, 0.f, 0.7f));
+        sphere2->Set_Ks(Vector3f(2.f, 2.f, 2.f));
         sphere2->Set_Shininess(128.f);
     }
 
@@ -114,7 +114,7 @@ public:
     }
 
     ////This function adds a mesh object from an obj file
-    OpenGLTriangleMesh *Add_Obj_Mesh_Object(std::string obj_file_name) {
+    OpenGLTriangleMesh* Add_Obj_Mesh_Object(std::string obj_file_name) {
         auto mesh_obj = Add_Interactive_Object<OpenGLTriangleMesh>();
         Array<std::shared_ptr<TriangleMesh<3>>> meshes;
         Obj::Read_From_Obj_File(obj_file_name, meshes);
@@ -125,7 +125,7 @@ public:
         return mesh_obj;
     }
 
-    OpenGLTriangleMesh *Add_Sphere_Object(const double radius = 1.) 
+    OpenGLTriangleMesh* Add_Sphere_Object(const double radius = 1.)
     {
         auto mesh_obj = Add_Interactive_Object<OpenGLTriangleMesh>();
         Initialize_Sphere_Mesh(radius, &mesh_obj->mesh, 3);
@@ -136,7 +136,7 @@ public:
 
     //// Go to next frame
     virtual void Toggle_Next_Frame() {
-        for (auto &mesh_obj : mesh_object_array) {
+        for (auto& mesh_obj : mesh_object_array) {
             mesh_obj->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
         }
         OpenGLViewer::Toggle_Next_Frame();
@@ -147,7 +147,7 @@ public:
     }
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     ShaderDriver driver;
     driver.Initialize();
     driver.Run();
