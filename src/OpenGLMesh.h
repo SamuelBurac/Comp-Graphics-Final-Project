@@ -281,6 +281,10 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 			}
 
 			shader->Set_Uniform_Matrix4f("model",glm::value_ptr(model_matrix));
+			shader->Set_Uniform("ka", ka);
+			shader->Set_Uniform("kd", kd);
+			shader->Set_Uniform("ks", ks);
+			shader->Set_Uniform("shininess", shininess);
 
 			Bind_Uniform_Block_To_Ubo(shader,"camera");
 			glBindVertexArray(vao);
