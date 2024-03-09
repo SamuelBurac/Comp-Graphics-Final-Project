@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 2.8.7)
 #initialize project
 set(proj_name a6)
 project(${proj_name})
-add_definitions(-w)
 
 #set paths
 if(NOT proj_path)

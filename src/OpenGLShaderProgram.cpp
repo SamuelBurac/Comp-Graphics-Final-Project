@@ -604,7 +604,8 @@ void OpenGLShaderLibrary::Update_Shaders()
 	for (auto& file_shaders : shader_file_hashtable) {
 		// Check if any associated file changed
 		if (dasfw_did_change(&file_shaders.second.vtx_info) || 
-			dasfw_did_change(&file_shaders.second.frg_info)) {
+			dasfw_did_change(&file_shaders.second.frg_info) ||
+			dasfw_did_change(&file_shaders.second.common_header_info)) {
 			// Reload if yes
 			std::cout << "[OpenGLShaderLibrary] reloading shader: " << file_shaders.first << std::endl;
 			Load_Shader_From_File(file_shaders.second, Get(file_shaders.first));
@@ -663,6 +664,14 @@ std::string Read_All_Text(std::string filename) {
 	return std::string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 }
 
+void Add_Common_Header(std::string& shader, const std::string& header) {
+    size_t startPos = shader.find("#\n");
+    size_t endPos = shader.find("\n#", startPos + 1);
+
+    if (startPos != std::string::npos && endPos != std::string::npos)
+        shader.replace(startPos, endPos - startPos + 2, header);
+}
+
 bool OpenGLShaderLibrary::Load_Shader_From_File(const ShaderFile& file, std::shared_ptr<OpenGLShaderProgram> shader)
 {
 	std::string vtx_shader=Read_All_Text(file.vtx_file);
@@ -675,8 +684,14 @@ bool OpenGLShaderLibrary::Load_Shader_From_File(const ShaderFile& file, std::sha
 		std::cerr << "Error: [OpenGLShaderLibrary] could not read file: " << file.frg_file << std::endl;
 		return false;
 	}
+	std::string header=Read_All_Text(file.common_header);
 
-	std::cout<<"load vertex shader: "<<vtx_shader<<"\nload fragment shader: "<<frg_shader<<std::endl;
+	if (header != "") {
+		Add_Common_Header(vtx_shader, header);
+		Add_Common_Header(frg_shader, header);
+	}
+
+	// std::cout<<"load vertex shader: "<<vtx_shader<<"\nload fragment shader: "<<frg_shader<<std::endl;
 
 	return shader->Reload(Parse(vtx_shader), Parse(frg_shader));
 }
@@ -697,6 +712,26 @@ void OpenGLShaderLibrary::Add_Shader_From_File(const std::string& vtx_shader_fil
 
 	shader_file_hashtable.insert(std::make_pair(shader->name, shader_file));
 	shader_hashtable.insert(std::make_pair(shader->name, shader));}
+}
+
+void OpenGLShaderLibrary::Add_Shader_From_File(const std::string& vtx_shader_file, const std::string& frg_shader_file, const std::string& common_header ,const std::string& name) 
+{
+	{std::shared_ptr<OpenGLShaderProgram> shader=std::make_shared<OpenGLShaderProgram>();
+	shader->name=name;
+
+	ShaderFile shader_file={
+		vtx_shader_file, frg_shader_file, common_header,
+	};
+
+	dasfw_start_watching(vtx_shader_file, &shader_file.vtx_info);
+	dasfw_start_watching(frg_shader_file, &shader_file.frg_info);
+	dasfw_start_watching(common_header, &shader_file.common_header_info);
+
+	Load_Shader_From_File(shader_file, shader);
+
+	shader_file_hashtable.insert(std::make_pair(shader->name, shader_file));
+	shader_hashtable.insert(std::make_pair(shader->name, shader));}
+
 }
 
 void OpenGLShaderLibrary::Create_Screen_Shader(const std::string& drawFunc, const std::string& name) {
