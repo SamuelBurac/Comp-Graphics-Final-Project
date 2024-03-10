@@ -28,7 +28,7 @@ vec3 shading_terrain(vec3 vtx_pos);
 
 void main()
 {
-	#if Terrain == 1
+	#ifdef Terrain
         frag_color = vec4(shading_terrain(vtx_pos), 1.0);
     #else
         frag_color = vec4(shading_noise(vtx_pos), 1.0);
