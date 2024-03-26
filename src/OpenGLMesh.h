@@ -325,7 +325,8 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 	Vector2f iResolution=Vector2f(1280, 960);
 	GLuint FramebufferName=0;
 	GLuint renderedTexture;
-
+	bool use_tex = false;
+	
 	void setResolution(float w, float h) { iResolution=Vector2f(w, h); }
 
 	void setTime(GLfloat time) { iTime=time; }
@@ -383,11 +384,18 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, renderedTexture);
-			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[4];
+			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[3];
 			shader->Begin();
 			shader->Set_Uniform("iResolution", iResolution);
 			shader->Set_Uniform("iTime", iTime);
 			shader->Set_Uniform("iFrame", iFrame);
+			if (use_tex) {
+                // ! We must use i+1 since 0 slot is used by the renderedTexture
+                for (int i = 0; i < textures.size(); i++) {
+                    shader->Set_Uniform(textures[i].binding_name, i + 1);
+                    textures[i].texture->Bind(i + 1);
+                }
+            }
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(1.f, 1.f);
 			glBindVertexArray(vao);
@@ -396,7 +404,7 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 			shader->End();
 		}
 
-		std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[3];
+		std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[4];
 		shader->Begin();
 		shader->Set_Uniform("iResolution", iResolution);
 		shader->Set_Uniform("iTime", iTime);
