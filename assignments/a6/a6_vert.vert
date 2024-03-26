@@ -32,7 +32,7 @@ void main()
 {
 	vtx_pos = pos.xyz;
 	
-	#if Terrain == 1
+	#ifdef Terrain
 		vtx_pos.z = height(pos.xy);
 	#endif
 
