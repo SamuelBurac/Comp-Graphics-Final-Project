@@ -5,7 +5,16 @@ uniform float iTime;            /* time */
 uniform int iFrame;             /* frame index */
 in vec2 fragCoord;              /* screen space coordinate */
 out vec4 outputColor;           /* output color */
-#define Time (iTime)            /* macro definition for time */
+
+/////////////////////////////////////////////////////
+//// Macro definition for time: this is the actual time you use for your animation
+/////////////////////////////////////////////////////
+//// You may adjust the multipler below to make the animaiton run fast (by increasing the value) 
+//// or run slower (by decreasing the value), according to your needs (it varies on different laptops).
+//// We set the default value to be 1.0.
+/////////////////////////////////////////////////////
+
+#define Time (iTime*1.0)            
 
 #define PI 3.14159265359
 #define TWO_PI 6.28318530718
