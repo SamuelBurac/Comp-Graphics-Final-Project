@@ -27,7 +27,7 @@ public:
         startTime = clock();
         frame = 1;
         OpenGLViewer::Initialize();
-        Disable_Resize_Window(); // Changing window size would cause trouble in progressive rendering
+        // Disable_Resize_Window(); // Changing window size would cause trouble in progressive rendering
     }
 
     //// Initialize the screen covering mesh and shaders
