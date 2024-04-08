@@ -384,7 +384,7 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, renderedTexture);
-			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[3];
+			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[4];
 			shader->Begin();
 			shader->Set_Uniform("iResolution", iResolution);
 			shader->Set_Uniform("iTime", iTime);
@@ -404,7 +404,7 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 			shader->End();
 		}
 
-		std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[4];
+		std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[3];
 		shader->Begin();
 		shader->Set_Uniform("iResolution", iResolution);
 		shader->Set_Uniform("iTime", iTime);

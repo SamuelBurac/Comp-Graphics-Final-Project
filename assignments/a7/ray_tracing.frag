@@ -136,18 +136,21 @@ void initScene()
     materials[0].shininess = 100.0;
     materials[0].kr = 0.5 * materials[0].ks;
 
+    //// Sphere 0 Material
     materials[1].ka = vec3(0.1);
     materials[1].kd = vec3(0.8, 0.2, 0.2);
     materials[1].ks = vec3(0.8);
     materials[1].shininess = 128;
     materials[1].kr = 0.5 * materials[1].ks;
 
+    //// Sphere 1 Material
     materials[2].ka = vec3(0.1);
     materials[2].kd = vec3(0.2, 0.7, 0.2);
     materials[2].ks = vec3(0.8);
     materials[2].shininess = 128;
     materials[2].kr = 0.5 * materials[2].ks;
 
+    //// Sphere 2 Material
     materials[3].ka = vec3(0.2);
     materials[3].kd = vec3(0.2, 0.2, 0.9);
     materials[3].ks = vec3(0.8);
@@ -195,6 +198,7 @@ Hit hitPlane(const Ray r, const Plane pl)
 
     // vec3 hitP = r.ori + t * r.dir;
     // vec3 normal = pl.n;
+
     // hit = Hit(t, hitP, normal, pl.matId);
 
     /* default implementation ends */
