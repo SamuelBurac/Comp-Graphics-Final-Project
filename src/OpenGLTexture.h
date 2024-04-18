@@ -15,12 +15,14 @@
 
 class OpenGLTexture {
 public:
-	OpenGLTexture(GLuint texture) : texture(texture) {}
+	OpenGLTexture(GLuint texture) : texture(texture), target(GL_TEXTURE_2D) {}
+	OpenGLTexture(GLuint texture, GLenum target) : texture(texture), target(target) {}
 	~OpenGLTexture();
 
 	void Bind(int textureSlot);
 private:
 	GLuint texture;
+	GLenum target;
 };
 
 
@@ -31,6 +33,7 @@ public:
 	static std::shared_ptr<OpenGLTexture> Get_Texture(const std::string& name);
 	std::shared_ptr<OpenGLTexture> Get(const std::string& name);
 	void Add_Texture_From_File(std::string filename, std::string name);
+	void Add_CubeMap_From_Files(const std::vector<std::string>& filenames, std::string name);
 protected:
 	Hashtable<std::string, std::shared_ptr<OpenGLTexture> > texture_hashtable;
 };

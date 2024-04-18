@@ -221,7 +221,7 @@ template<class T_UBO> void OpenGLUboInstance<T_UBO>::Set_Block_Attributes_Helper
 	GLint offset=block_offset;
 	offset=Set_Block_Attribute(obj.amb,offset);
 	offset=Set_Block_Attribute(obj.lt_att,offset);
-	for(int i=0;i<2;i++){
+	for(int i=0;i<obj.lt_att[0];i++){
 		offset=Set_Block_Attribute(obj.lt[i].att,offset);
 		offset=Set_Block_Attribute(obj.lt[i].pos,offset);
 		offset=Set_Block_Attribute(obj.lt[i].dir,offset);

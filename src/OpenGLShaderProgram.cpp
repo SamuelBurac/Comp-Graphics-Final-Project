@@ -412,6 +412,35 @@ void main()
 }
 );
 
+const std::string skybox_vert = To_String(
+~include version;
+~include camera;
+layout(location = 0) in vec4 pos;
+
+out vec3 vtx_model_position;
+void main() {
+    vtx_model_position = pos.xyz;
+	// ! get rid of the translation part of the view matrix; set z to w; Also see https://learnopengl.com/Advanced-OpenGL/Cubemaps
+    gl_Position = (projection * mat4(mat3(view)) * vec4(pos.xyz, 1.0)).xyww;
+    // gl_Position = pvm * vec4(pos.xyz, 1.0);
+}
+);
+
+const std::string skybox_frag = To_String(
+~include version;
+
+uniform samplerCube skybox;
+in vec3 vtx_model_position;
+out vec4 frag_color;
+
+void main()
+{
+    vec3 color = texture(skybox, vtx_model_position).rgb;
+    frag_color = vec4(color, 1.0);
+	// frag_color = vec4(1.0, 0.0, 0.0, 1.0);
+}
+);
+
 using namespace OpenGLShaders;
 
 //////////////////////////////////////////////////////////////////////////
@@ -596,6 +625,7 @@ void OpenGLShaderLibrary::Initialize_Shaders()
 	Add_Shader(vpos_model_vnormal_vfpos_vtx_shader,vnormal_vfpos_dl_fast_frg_shader,"vpos_model_vnormal_dl_fast");
 	Add_Shader(shadow_vtx_shader,none_frg_shader,"sd_depth");
 	Add_Shader(vnormal_vfpos_vsdpos_vtx_shader,vnormal_vfpos_lt_sd_frg_shader,"sd_lt");
+	Add_Shader(skybox_vert, skybox_frag, "skybox_default");
 }
 
 void OpenGLShaderLibrary::Update_Shaders()

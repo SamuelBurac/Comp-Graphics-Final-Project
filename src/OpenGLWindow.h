@@ -93,6 +93,9 @@ public:
 	void Initialize_Camera();
 	void Update_Camera();
 
+	////Light
+	void Add_Light(const Vector3f& pos,const Vector3f& Ia,const Vector3f& Id,const Vector3f& Is);
+
 	////Glut callbacks
 	static void Idle_Func_Glut();
 	static void Timer_Func_Glut(int value);

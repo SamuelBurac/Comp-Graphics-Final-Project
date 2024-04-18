@@ -177,6 +177,7 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 		case ShadingMode::Phong:
 		{use_vtx_color=true;use_vtx_normal=true; use_vtx_tangent=false; use_vtx_tex=false;}break;
 		case ShadingMode::Texture:
+		case ShadingMode::TexAlpha:
 		{use_vtx_color=true; use_vtx_normal=true; use_vtx_tangent=true; use_vtx_tex=true; }break;
 		case ShadingMode::Shadow:
 		{use_vtx_color=true;use_vtx_normal=true;use_vtx_tangent=true;use_vtx_tex=true;}break;
@@ -291,6 +292,36 @@ class OpenGLTriangleMesh : public OpenGLMesh<TriangleMesh<3> >
 			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
 			shader->End();		
 		}break;
+		case ShadingMode::TexAlpha: {
+			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];
+			shader->Begin();
+			Enable_Alpha_Blend(); // enable alpha blending
+
+			for (int i=0; i < textures.size(); i++) {
+				shader->Set_Uniform(textures[i].binding_name, i);
+				textures[i].texture->Bind(i);
+			}
+
+			shader->Set_Uniform("iTime", iTime);
+			shader->Set_Uniform_Matrix4f("model",glm::value_ptr(model_matrix));
+			shader->Set_Uniform("ka", ka);
+			shader->Set_Uniform("kd", kd);
+			shader->Set_Uniform("ks", ks);
+			shader->Set_Uniform("shininess", shininess);
+
+			// bind cube map
+			auto cube_map = OpenGLTextureLibrary::Get_Texture("cube_map");
+			if (cube_map) {
+				shader->Set_Uniform("skybox", (int)textures.size());
+				cube_map->Bind((int)textures.size());
+			}
+
+			Bind_Uniform_Block_To_Ubo(shader,"camera");
+			Bind_Uniform_Block_To_Ubo(shader,"lights");
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES,ele_size,GL_UNSIGNED_INT,0);
+			shader->End();	
+		} break;
 		case ShadingMode::Shadow:{
 			std::shared_ptr<OpenGLShaderProgram> shader=shader_programs[0];		/////SHADOW TODO: Set the index to be the shadow depth shader
 			shader->Begin();
@@ -410,6 +441,13 @@ public:typedef OpenGLMesh<TriangleMesh<3> > Base;
 		shader->Set_Uniform("iTime", iTime);
 		shader->Set_Uniform("iFrame", iFrame);
 		if (FramebufferName)shader->Bind_Texture2D("bufferTexture", renderedTexture, 0);
+		if (use_tex) {
+			// ! also start from 1
+			for (int i = 0; i < textures.size(); i++) {
+				shader->Set_Uniform(textures[i].binding_name, i + 1);
+				textures[i].texture->Bind(i + 1);
+			}
+		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glEnable(GL_POLYGON_OFFSET_FILL);

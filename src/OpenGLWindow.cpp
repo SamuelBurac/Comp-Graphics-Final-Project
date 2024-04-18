@@ -352,6 +352,16 @@ void OpenGLWindow::Update_Camera()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void OpenGLWindow::Add_Light(const Vector3f& pos,const Vector3f& Ia,const Vector3f& Id,const Vector3f& Is)
+{
+    auto light = Add_Point_Light(glm::vec3(pos[0],pos[1],pos[2]));
+    light->amb=glm::vec4(Ia[0],Ia[1],Ia[2],1.f);
+    light->dif=glm::vec4(Id[0],Id[1],Id[2],1.f);
+    light->spec=glm::vec4(Is[0],Is[1],Is[2],1.f);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 void OpenGLWindow::Idle_Func_Glut()
 {
 	instance->Idle_Func();

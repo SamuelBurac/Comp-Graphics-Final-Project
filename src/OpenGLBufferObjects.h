@@ -158,7 +158,7 @@ class Lights
 	const int& Light_Num() const {return lt_att[0];}
 	int Last(){return Light_Num()-1;}
 	Light* Get(const int i){if(i>Light_Num()-1)return nullptr;return &lt[i];}
-	Light* First_Shadow_Light(){for(int i=0;i<2;i++)if(lt[i].Has_Shadow())return &lt[i];return nullptr;}
+	Light* First_Shadow_Light(){for(int i=0;i<Light_Num();i++)if(lt[i].Has_Shadow())return &lt[i];return nullptr;}
 };
 
 const std::string lights=To_String(
