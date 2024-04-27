@@ -70,6 +70,8 @@ public:
         shader->Begin();
         glDepthMask(GL_FALSE);
 
+        Enable_Alpha_Blend(); // enable alpha blending
+
         shader->Set_Uniform("iResolution", iResolution);
         shader->Set_Uniform("iTime", iTime);
         shader->Set_Uniform("iFrame", iFrame);

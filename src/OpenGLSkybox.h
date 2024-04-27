@@ -18,6 +18,10 @@ public:
     typedef OpenGLObject Base;
 
     bool use_self_defined_shader = false;
+    GLfloat iTime = 0;
+
+    void setTime(GLfloat time) { iTime = time; }
+
 
     OpenGLSkybox()
     {
@@ -102,6 +106,8 @@ public:
 
         glBindVertexArray(vao);
 
+        shader->Set_Uniform("iTime", iTime);
+        
         auto cube_map = OpenGLTextureLibrary::Get_Texture("cube_map");
         if (cube_map)
         {

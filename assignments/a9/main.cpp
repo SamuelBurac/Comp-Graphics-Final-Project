@@ -279,6 +279,29 @@ public:
         }
         */
 
+        //// Here we create a mesh object with two triangle specified using a vertex array and a triangle array.
+        //// This is an example showing how to create a mesh object without reading an .obj file. 
+        //// If you are creating your own L-system, you may use this function to visualize your mesh.
+        {
+            std::vector<Vector3> vertices = { Vector3(0.5, 0, 0), Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(0, 1, 0) };
+            std::vector<Vector3i> elements = { Vector3i(0, 1, 2), Vector3i(0, 2, 3) };
+            auto obj = Add_Tri_Mesh_Object(vertices, elements);
+            // ! you can also set uvs 
+            obj->mesh.Uvs() = { Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1) };
+
+            Matrix4f t;
+            t << 1, 0, 0, -0.5,
+                0, 1, 0, -1.5,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
+
+            obj->Set_Model_Matrix(t);
+
+            obj->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("buzz_color"));
+
+            obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+
         //// This for-loop updates the rendering model for each object on the list
         for (auto &mesh_obj : mesh_object_array){
             Set_Polygon_Mode(mesh_obj, PolygonMode::Fill);
@@ -289,6 +312,7 @@ public:
         Toggle_Play();
     }
 
+    //// add mesh object by reading an .obj file
     OpenGLTriangleMesh *Add_Obj_Mesh_Object(std::string obj_file_name)
     {
         auto mesh_obj = Add_Interactive_Object<OpenGLTriangleMesh>();
@@ -303,6 +327,18 @@ public:
         return mesh_obj;
     }
 
+    //// add mesh object by reading an array of vertices and an array of elements
+    OpenGLTriangleMesh* Add_Tri_Mesh_Object(const std::vector<Vector3>& vertices, const std::vector<Vector3i>& elements)
+    {
+        auto obj = Add_Interactive_Object<OpenGLTriangleMesh>();
+        mesh_object_array.push_back(obj);
+        // set up vertices and elements
+        obj->mesh.Vertices() = vertices;
+        obj->mesh.Elements() = elements;
+
+        return obj;
+    }
+
     //// Go to next frame
     virtual void Toggle_Next_Frame()
     {
@@ -314,6 +350,11 @@ public:
             bgEffect->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
             bgEffect->setFrame(frame++);
         }
+
+        if (skybox){
+            skybox->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
+        }   
+
         OpenGLViewer::Toggle_Next_Frame();
     }
 
