@@ -33,7 +33,7 @@ const std::string draw_pixels=To_String(
 const float M_PI=3.1415926535; 
 
 // The side length of the minimum unit (or the new "pixels")
-const float PIXEL_SIZE=10.; 
+const float PIXEL_SIZE=5.; 
 
 // To check if a point is inside a circle
 bool inCircle(vec2 p, vec2 center, float radius) {
