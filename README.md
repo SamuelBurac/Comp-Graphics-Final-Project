@@ -74,7 +74,7 @@ To test if everything works correctly you can run:
 This will:
 
 - Compile the code for the assignment 1 and any dependencies
-- Popup a window and show an OpenGL window. You should see this image if everything works properly: ![a1image](misc/a1.JPG)  
+- Popup a window and show an OpenGL window. You should see this image if everything works properly: ![a1image](misc/a1.png)  
 
 ### Step 4: Start implementing!
 
