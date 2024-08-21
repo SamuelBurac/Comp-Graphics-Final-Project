@@ -23,11 +23,6 @@
 //// You can also test it (copy the whole string) in Shadertoy: https://www.shadertoy.com/new    
 /////////////////////////////////////////////////////////////////////
 
-const std::string draw_pixels=To_String(
-
-
-);
-
 class ScreenDriver : public OpenGLViewer
 {
 	OpenGLScreenCover* screen_cover=nullptr;
