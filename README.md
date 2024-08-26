@@ -44,7 +44,7 @@ Watch the video tutorials made by our awesome TAs Kevin and Vibha:
   - If you are using Windows and you don't have Visual Studio, please install [Visual Studio 2022] (Community Version) (https://visualstudio.microsoft.com/vs/older-downloads/) , as well as it's [C/C++ support](https://docs.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-150). 
   - Make sure to install the C++ development environment by selecting "Desktop development with C++" under the tag of Workloads. ![C++](misc/vs.JPG) 
   - If you have already installed another version of VS (not Visual Studio 17 2022) or if you are not sure about the version, [check the version](https://stackoverflow.com/questions/33917454/cmake-how-to-specify-the-version-of-visual-c-to-work-with) by running 
-  ` camke --help `
+  ` cmake --help `
   in your command.   
   **Find setup.bat in your script folder, and change "Visual Studio 17 2015" to your own version**, or you might get an error at step 2.2
 
