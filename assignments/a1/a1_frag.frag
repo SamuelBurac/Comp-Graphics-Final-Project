@@ -55,7 +55,10 @@ vec3 drawTriangle(vec2 pos, vec2 center, vec3 color)
 bool inCircle(vec2 pos, vec2 center, float radius)
 {
     /* your implementation starts */
-
+    vec2 to_center = pos - center;
+    if(dot(to_center, to_center) < radius * radius){
+        return true;
+    }
     /* your implementation ends */
     
     return false;
@@ -83,7 +86,10 @@ vec3 drawCircle(vec2 pos, vec2 center, float radius, vec3 color)
 bool inRectangle(vec2 pos, vec2 leftBottom, vec2 rightTop)
 {
     /* your implementation starts */
-
+    
+    if(pos.x >= leftBottom.x && pos.x <= rightTop.x && pos.y >= leftBottom.y && pos.y <= rightTop.y){
+        return true;
+    }
     
     /* your implementation ends */
     

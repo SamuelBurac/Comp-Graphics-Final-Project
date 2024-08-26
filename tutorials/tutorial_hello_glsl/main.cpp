@@ -1,7 +1,7 @@
 //#####################################################################
 // Main
-// Dartmouth COSC 77/177 Computer Graphics, starter code
-// Contact: Bo Zhu (bo.zhu@dartmouth.edu)
+// CS 3451 Computer Graphics, tutorial code
+// Contact: Bo Zhu (bo.zhu@gatech.edu)
 //#####################################################################
 #include <iostream>
 
@@ -15,21 +15,14 @@
 #include "OpenGLMarkerObjects.h"
 #include "OpenGLParticles.h"
 
-/////////////////////////////////////////////////////////////////////
-//// TODO: put your name in the string               
-/////////////////////////////////////////////////////////////////////
-
-const std::string author="glsl tutorial";
-
 const std::string draw_pixels = To_String(
-
-const float PIXEL_SIZE=1.f;
 
 //////////////////////////////////////////////////////////////////////////
 //// demo 0: draw a circle
-vec4 paint_circle(float x,float y) {
-	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
-	float radius = 100.f/PIXEL_SIZE;
+vec4 paint_circle(float x,float y) 
+{
+	vec2 center = vec2(iResolution / 2.); // window center
+	float radius = 100.f;
 	if(pow(x-center.x,2)+pow(y-center.y,2)<radius*radius)
 		return vec4(1.f,1.f,0.f,1.f);
 	else return vec4(0.f,0.f,0.f,1.f);
@@ -37,7 +30,7 @@ vec4 paint_circle(float x,float y) {
 
 //////////////////////////////////////////////////////////////////////////
 //// demo 1: draw a triangle
-vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
+vec2 center = vec2(iResolution / 2.); // window center
 vec2 v0 = center - vec2(100.,0.);
 vec2 v1 = center + vec2(100.,0.);
 vec2 v2 = center + vec2(0.,173.);
@@ -50,7 +43,8 @@ vec2 n0 = rot*e0;
 vec2 n1 = rot*e1;
 vec2 n2 = rot*e2;
 
-vec4 paint_triangle(float x,float y) {
+vec4 paint_triangle(float x,float y) 
+{
 	vec2 p = vec2(x,y);
 	
 	if(dot(p-v0,n0)<=0. && dot(p-v1,n1)<=0. && dot(p-v2,n2)<=0.){
@@ -61,11 +55,13 @@ vec4 paint_triangle(float x,float y) {
 
 //////////////////////////////////////////////////////////////////////////
 //// demo 2: draw a checkerboard
-float mod(float x,float y){
+float mod(float x,float y)
+{
 	return x-y*floor(x/y);
 }
 
-vec4 paint_checkerboard(float x, float y) {
+vec4 paint_checkerboard(float x, float y) 
+{
 	if(mod(x,32.)<16.&&mod(y,32.)>=16.||
 		mod(x,32.)>=16.&&mod(y,32.)<16.)
 		return vec4(0,0,0,1.);
@@ -75,8 +71,9 @@ vec4 paint_checkerboard(float x, float y) {
 
 //////////////////////////////////////////////////////////////////////////
 //// demo 3: draw a sin wave
-vec4 paintSin(float x,float y) {
-	vec2 center = vec2(iResolution / PIXEL_SIZE / 2.); // window center
+vec4 paint_sin(float x,float y) 
+{
+	vec2 center = vec2(iResolution / 2.); // window center
 	float x0=x-center.x;
 	float y0=y-center.y;
 	float f=100.*sin(x0/50.);
@@ -87,24 +84,25 @@ vec4 paintSin(float x,float y) {
 }
 
 // Return the rgba color of the grid at position (x, y) 
-vec4 paintGrid(float x, float y) {
+vec4 paint_canvas(float x, float y) 
+{
 	//// uncomment the following functions to see different demo implementations
 	//return paint_circle(x,y);
 	return paint_triangle(x,y);
 	//return paint_checkerboard(x,y);
-	//return paintSin(x,y);
+	//return paint_sin(x,y);
 }
 
 // The function called in the fragment shader
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
 	// To divide the screen into the grids for painting!
-	fragColor = paintGrid(floor(fragCoord.x / PIXEL_SIZE), floor(fragCoord.y / PIXEL_SIZE));
+	fragColor = paint_canvas(fragCoord.x, fragCoord.y);
 }
 
 );
 
-class A0_Driver : public OpenGLViewer
+class TutorialHelloGLSL : public OpenGLViewer
 {
 	OpenGLScreenCover* screen_cover = nullptr;
 	clock_t startTime = clock();
@@ -160,11 +158,8 @@ public:
 
 int main(int argc,char* argv[])
 {
-	if(author==""){std::cerr<<"***** The author name is not specified. Please put your name in the author string first. *****"<<std::endl;return 0;}
-	else std::cout<<"Assignment 0 demo by "<<author<<" started"<<std::endl;
-
-	A0_Driver driver;
-	driver.Initialize();
-	driver.Run();	
+	TutorialHelloGLSL tutorial;
+	tutorial.Initialize();
+	tutorial.Run();
 }
 
