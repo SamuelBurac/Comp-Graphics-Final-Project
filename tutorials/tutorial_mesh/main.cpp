@@ -37,9 +37,9 @@ public:
 	void Load_Mesh()
 	{
 		//Initialize_Icosahedron_Mesh(.5,tri_mesh);
-		//Create_Circle_Mesh(Vector3::Zero(),1.,32,*tri_mesh);
-		Create_Cube_Mesh(1.,*tri_mesh);
-		Find_Vertex_Neighbors(7,*tri_mesh);	
+		// Create_Square_Mesh(*tri_mesh);
+		// Create_Cube_Mesh(1.,*tri_mesh);
+		Create_Cone_Mesh(Vector3::Zero(),1.,32,*tri_mesh);
 	}
 
 	virtual void Initialize_Data()
@@ -82,7 +82,7 @@ public:
 		OpenGLViewer::Run();
 	}
 
-	//// demo
+	//// tutorial for using Eigen vectors
 	void Use_Eigen_Vectors()
 	{
 		using namespace std;
@@ -100,7 +100,69 @@ public:
 		std::cout<<v[0]<<", "<<v[1]<<std::endl;
 	}
 
-	void Create_Circle_Mesh(const Vector3& center,double radius,int n,TriangleMesh<3>& tri_mesh)
+	//// tutorial for using std map
+	void Find_Vertex_Neighbors(const int p,TriangleMesh<3>& tri_mesh)
+	{
+		std::unordered_map<int,std::vector<int> > vtx_vtx_map;
+
+		std::vector<Vector3>& vtx=tri_mesh.Vertices();
+		std::vector<Vector3i>& tri=tri_mesh.Elements();
+
+		for(int i=0;i<tri.size();i++){
+			Vector3i& t=tri[i];
+			for(int j=0;j<3;j++){
+				if(vtx_vtx_map.find(t[j])==vtx_vtx_map.end()){
+					vtx_vtx_map[t[j]]=std::vector<int>();
+				}
+				std::vector<int>& nbs=vtx_vtx_map[t[j]];
+				for(int k=0;k<3;k++){
+					if(t[k]==t[j])continue;
+					if(std::find(nbs.begin(),nbs.end(),t[k])!=nbs.end())continue;
+					nbs.push_back(t[k]);
+				}
+			}
+		}
+
+		auto& p_nbs=vtx_vtx_map[p];
+		std::cout<<"nbs of "<<p<<": "<<std::endl;
+		for(auto& v:p_nbs){std::cout<<v<<", ";}std::cout<<std::endl;
+	}
+
+	//// tutorial for creating a square mesh
+	void Create_Square_Mesh(TriangleMesh<3>& tri_mesh)
+	{
+		tri_mesh.Clear();
+
+		std::vector<Vector3>& vtx=tri_mesh.Vertices();
+		std::vector<Vector3i>& tri=tri_mesh.Elements();
+
+		vtx = {Vector3(0.,0.,0.),Vector3(1.,0.,0.),Vector3(1.,1.,0.),Vector3(0.,1.,0.)};
+		tri.push_back(Vector3i(0,1,2));
+		tri.push_back(Vector3i(0,2,3));
+	}
+
+	//// tutorial for creating a cube mesh
+	void Create_Cube_Mesh(double length,TriangleMesh<3>& tri_mesh)
+	{
+		std::vector<Vector3>& vtx=tri_mesh.Vertices();
+		std::vector<Vector3i>& tri=tri_mesh.Elements();
+
+		vtx={Vector3(0,0,0),Vector3(1,0,0),Vector3(0,1,0),Vector3(1,1,0),
+			 Vector3(0,0,1),Vector3(1,0,1),Vector3(0,1,1),Vector3(1,1,1)};
+		for(int i=0;i<vtx.size();i++){
+			vtx[i]*=length;
+		}
+
+		tri={Vector3i(4,5,7),Vector3i(4,7,6),
+			Vector3i(5,1,7),Vector3i(7,1,3),
+			Vector3i(2,3,1),Vector3i(0,2,1),
+			Vector3i(6,2,4),Vector3i(2,0,4),
+			Vector3i(2,6,3),Vector3i(6,7,3),
+			Vector3i(0,1,4),Vector3i(1,5,4)};
+	}
+
+	//// tutorial for creating a cone mesh
+	void Create_Cone_Mesh(const Vector3& center,double radius,int n,TriangleMesh<3>& tri_mesh)
 	{
 		tri_mesh.Clear();
 
@@ -134,70 +196,16 @@ public:
 		double two_pi=2*3.1415927;
 		double angle=two_pi/(double)n;
 
-		vtx[0]=center;
+		vtx[0]=center+Vector3(0.,0.,1.);
 		for(int i=1;i<n+1;i++){
 			double theta=angle*i;
 			vtx[i]=Vector3(radius*cos(theta),radius*sin(theta),0.);
 		}
 
-		vtx.push_back(Vector3(1.f,0.f,0.f));
-
-		vtx[0]=center+Vector3(0,0,1);
-
 		for(int i=0;i<n-1;i++){
 			tri.push_back(Vector3i(0,i+1,i+2));
 		}
 		tri.push_back(Vector3i(0,n,1));
-
-		//for(int i=0;i<n;i++){
-		//	tri.push_back(Vector3i(0,(i+1),(i+2)%n));
-		//}
-	}
-
-	void Create_Cube_Mesh(double length,TriangleMesh<3>& tri_mesh)
-	{
-		std::vector<Vector3>& vtx=tri_mesh.Vertices();
-		std::vector<Vector3i>& tri=tri_mesh.Elements();
-
-		vtx={Vector3(0,0,0),Vector3(1,0,0),Vector3(0,1,0),Vector3(1,1,0),
-			 Vector3(0,0,1),Vector3(1,0,1),Vector3(0,1,1),Vector3(1,1,1)};
-		for(int i=0;i<vtx.size();i++){
-			vtx[i]*=length;
-		}
-
-		tri={Vector3i(4,5,7),Vector3i(4,7,6),
-			Vector3i(5,1,7),Vector3i(7,1,3),
-			Vector3i(2,3,1),Vector3i(0,2,1),
-			Vector3i(6,2,4),Vector3i(2,0,4),
-			Vector3i(2,6,3),Vector3i(6,7,3),
-			Vector3i(0,1,4),Vector3i(1,5,4)};
-	}
-
-	void Find_Vertex_Neighbors(const int p,TriangleMesh<3>& tri_mesh)
-	{
-		std::unordered_map<int,std::vector<int> > vtx_vtx_map;
-
-		std::vector<Vector3>& vtx=tri_mesh.Vertices();
-		std::vector<Vector3i>& tri=tri_mesh.Elements();
-
-		for(int i=0;i<tri.size();i++){
-			Vector3i& t=tri[i];
-			for(int j=0;j<3;j++){
-				if(vtx_vtx_map.find(t[j])==vtx_vtx_map.end()){
-					vtx_vtx_map[t[j]]=std::vector<int>();
-				}
-				std::vector<int>& nbs=vtx_vtx_map[t[j]];
-				for(int k=0;k<3;k++){
-					if(t[k]==t[j])continue;
-					if(std::find(nbs.begin(),nbs.end(),t[k])!=nbs.end())continue;
-					nbs.push_back(t[k]);
-				}
-			}
-		}
-
-		auto& p_nbs=vtx_vtx_map[p];
-		std::cout<<"nbs of "<<p<<": "<<std::endl;
-		for(auto& v:p_nbs){std::cout<<v<<", ";}std::cout<<std::endl;
 	}
 
 protected:
