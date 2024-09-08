@@ -9,7 +9,7 @@
 
 #define Edge Vector2i		/* data structure for an edge: Vector2 with each component as an integer */
 #define Vertex Vector3		/* data structure for a vertex: Vector3 with each component as a floating-point number */
-#define Triangle Vector3i	/* data structure for a triangle: Vector3 with each component as a floating-point number */
+#define Triangle Vector3i	/* data structure for a triangle: Vector3i with each component as an integer number */
 
 // This function sort the two vertices of the input edge to make it unique to be used as a map key
 inline void SortEdgeVertices(Edge &edge) 
