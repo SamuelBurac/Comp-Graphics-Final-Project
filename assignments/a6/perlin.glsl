@@ -168,7 +168,7 @@ vec3 shading_noise(vec3 p)
 
 vec3 shading_terrain(vec3 pos) 
 {
-	const Light light = Light(vec3(3, 1, 3), vec3(1, 1, 1), vec3(20, 20, 20), vec3(1, 1, 1));
+	const Light light = Light(vec3(3, 1, 3), vec3(1, 1, 1), vec3(2, 2, 2), vec3(1, 1, 1));
 
 	//// calculate Phong shading color with normal
 	
