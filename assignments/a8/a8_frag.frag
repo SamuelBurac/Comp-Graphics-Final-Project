@@ -105,7 +105,8 @@ vec3 renderStars(vec2 fragPos)
     float t = Time;
 
     for(float i = 0.; i < NUM_STAR; i++){
-        vec2 pos = hash2d(i) * 2. - 1.;
+        vec2 pos = (hash2d(i) - .5) * iResolution.xy / iResolution.y;
+
         float brightness = .0004;
 
         /* your implementation starts */
@@ -210,7 +211,7 @@ vec3 renderFireworks(vec2 fragPos)
         float t = mod(relTime, DURATION);
         float idx = floor(relTime / DURATION);
 
-        vec2 launchPos = vec2((hash1d(idx) * 2. - 1.) * 0.7, -0.5);
+        vec2 launchPos = vec2((hash1d(idx) - .5) * iResolution.x / iResolution.y, -0.5);
         vec2 launchVel = vec2(-launchPos.x * 0.66, hash1d(lauchTime + 1.) * 0.3 + .9);
         vec3 color = sin(40. * hash3d(lauchTime) * idx) * 0.25 + 0.75;
 

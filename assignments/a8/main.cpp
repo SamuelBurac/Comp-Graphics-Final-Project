@@ -48,7 +48,7 @@ public:
     //// Update the uniformed variables used in shader
     void Uniform_Update()
     {
-        // screen_cover->setResolution((float)Win_Width(), (float)Win_Height());
+        screen_cover->setResolution((float)Win_Width(), (float)Win_Height());
         screen_cover->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
         screen_cover->setFrame(frame++);
     }
