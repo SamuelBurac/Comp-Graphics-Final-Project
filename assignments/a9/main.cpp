@@ -71,6 +71,9 @@ public:
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/window.png", "window_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/buzz_color.png", "buzz_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/star.png", "star_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/Elk_color.png", "Elk_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/Elk_normal.png", "Elk_Normal");
+
 
         //// Add all the lights you need for the scene (no more than 4 lights)
         //// The four parameters are position, ambient, diffuse, and specular.
@@ -92,97 +95,103 @@ public:
         //// By default, Option (2) (Buzz stars) is turned on, and all the other three are commented out.
         
         //// Background Option (1): Gradient color
-        /*
+        
         {
             auto bg = Add_Interactive_Object<OpenGLBackground>();
             bg->Set_Color(OpenGLColor(0.1f, 0.1f, 0.1f, 1.f), OpenGLColor(0.3f, 0.1f, .1f, 1.f));
             bg->Initialize();
         }
-        */
+        
 
         //// Background Option (2): Programmable Canvas
         //// By default, we load a GT buzz + a number of stars
-        {
-            bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
-            bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
-            bgEffect->Add_Texture("tex_buzz", OpenGLTextureLibrary::Get_Texture("buzz_color")); // bgEffect can also Add_Texture
-            bgEffect->Initialize();
-        }
+        // {
+        //     bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
+        //     bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
+        //     bgEffect->Add_Texture("tex_buzz", OpenGLTextureLibrary::Get_Texture("buzz_color")); // bgEffect can also Add_Texture
+        //     bgEffect->Initialize();
+        // }
         
-        //// Background Option (3): Sky box
-        //// Here we provide a default implementation of a sky box; customize it for your own sky box
-        /*
-        {
-            // from https://www.humus.name/index.php?page=Textures
-            const std::vector<std::string> cubemap_files{
-                "cubemap/posx.jpg",     //// + X
-                "cubemap/negx.jpg",     //// - X
-                "cubemap/posy.jpg",     //// + Y
-                "cubemap/negy.jpg",     //// - Y
-                "cubemap/posz.jpg",     //// + Z
-                "cubemap/negz.jpg",     //// - Z 
-            };
-            OpenGLTextureLibrary::Instance()->Add_CubeMap_From_Files(cubemap_files, "cube_map");
 
-            skybox = Add_Interactive_Object<OpenGLSkybox>();
-            skybox->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("skybox"));
-            skybox->Initialize();
-        }
-        */
 
-        //// Background Option (4): Sky sphere
-        //// Here we provide a default implementation of a textured sphere; customize it for your own sky sphere
         {
             //// create object by reading an obj mesh
-            auto sphere = Add_Obj_Mesh_Object("obj/sphere.obj");
+            auto elkOne = Add_Obj_Mesh_Object("obj/elk.obj");
 
             //// set object's transform
             Matrix4f t;
-            t << 1, 0, 0, -1.5,
-                0, 1, 0, -1,
-                0, 0, 1, 0.5,
+            t << 0, 0, 0.5, -2,
+                0, 0.5, 0, -1,
+                0.5, 0, 0, 1.8,
                 0, 0, 0, 1;
-            sphere->Set_Model_Matrix(t);
+            elkOne->Set_Model_Matrix(t);
 
             //// set object's material
-            sphere->Set_Ka(Vector3f(0.1, 0.1, 0.1));
-            sphere->Set_Kd(Vector3f(0.7, 0.7, 0.7));
-            sphere->Set_Ks(Vector3f(2, 2, 2));
-            sphere->Set_Shininess(128);
+            elkOne->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            elkOne->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            elkOne->Set_Ks(Vector3f(2, 2, 2));
+            elkOne->Set_Shininess(128);
 
             //// bind texture to object
-            sphere->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("sphere_color"));
-            sphere->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("sphere_normal"));
+            elkOne->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("Elk_color"));
+            elkOne->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("Elk_Normal"));
 
             //// bind shader to object
-            sphere->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+            elkOne->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
+         //// Here we load a bunny object with the basic shader to show how to add an object into the scene
+        {
+            //// create object by reading an obj mesh
+            auto elkTwo = Add_Obj_Mesh_Object("obj/elk.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << 0, 0, 0.55, -1.5,
+                0, 0.55, 0, -0.8,
+                0.55, 0, 0, 0.4,
+                0, 0, 0, 1;
+            elkTwo->Set_Model_Matrix(t);
+
+            //// set object's material
+            elkTwo->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            elkTwo->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            elkTwo->Set_Ks(Vector3f(2, 2, 2));
+            elkTwo->Set_Shininess(128);
+
+            //// bind texture to object
+            elkTwo->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("Elk_color"));
+            elkTwo->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("Elk_Normal"));
+
+            //// bind shader to object
+            elkTwo->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+       
         //// Here we load a bunny object with the basic shader to show how to add an object into the scene
         {
             //// create object by reading an obj mesh
-            auto bunny = Add_Obj_Mesh_Object("obj/bunny.obj");
+            auto elkThree = Add_Obj_Mesh_Object("obj/elk.obj");
 
             //// set object's transform
             Matrix4f t;
-            t << 1, 0, 0, 1.5,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
+            t << 0, 0, 0.6, -0.5,
+                0, 0.6, 0, -1,
+                0.6, 0, 0, 1,
                 0, 0, 0, 1;
-            bunny->Set_Model_Matrix(t);
+            elkThree->Set_Model_Matrix(t);
 
             //// set object's material
-            bunny->Set_Ka(Vector3f(0.1, 0.1, 0.1));
-            bunny->Set_Kd(Vector3f(0.7, 0.7, 0.7));
-            bunny->Set_Ks(Vector3f(2, 2, 2));
-            bunny->Set_Shininess(128);
+            elkThree->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            elkThree->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            elkThree->Set_Ks(Vector3f(2, 2, 2));
+            elkThree->Set_Shininess(128);
 
             //// bind texture to object
-            bunny->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("bunny_color"));
-            bunny->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("bunny_normal"));
+            elkThree->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("Elk_color"));
+            elkThree->Add_Texture("tex_normal", OpenGLTextureLibrary::Get_Texture("Elk_Normal"));
 
             //// bind shader to object
-            bunny->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+            elkThree->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
@@ -216,91 +225,28 @@ public:
             terrain->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
         }
 
-        //// Here we show an example of adding a transparent object with alpha blending
-        //// This example will be useful if you implement objects such as tree leaves, grass blades, flower pedals, etc.
-        //// Alpha blending will be turned on automatically if your texture has the alpha channel
-        {
-            //// create object by reading an obj mesh
-            auto sqad = Add_Obj_Mesh_Object("obj/sqad.obj");
-
-            //// set object's transform
-            Matrix4f t;
-            t << 1, 0, 0, -0.5,
-                0, 1, 0, 0,
-                0, 0, 1, 1.5,
-                0, 0, 0, 1;
-            sqad->Set_Model_Matrix(t);
-
-            //// bind texture to object
-            sqad->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("window_color"));
-
-            //// bind shader to object
-            sqad->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("blend"));
-        }
-
-        //// Here we show an example of adding a billboard particle with a star shape using alpha blending
-        //// The billboard is rendered with its texture and is always facing the camera.
-        //// This example will be useful if you plan to implement a CPU-based particle system.
-        {
-            //// create object by reading an obj mesh
-            auto sqad = Add_Obj_Mesh_Object("obj/sqad.obj");
-
-            //// set object's transform
-            Matrix4f t;
-            t << 1, 0, 0, 0,
-                 0, 1, 0, 0,
-                 0, 0, 1, 2.5,
-                 0, 0, 0, 1;
-            sqad->Set_Model_Matrix(t);
-
-            //// bind texture to object
-            sqad->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("star_color"));
-
-            //// bind shader to object
-            sqad->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("billboard"));
-        }
-
-        //// Here we show an example of shading (ray-tracing) a sphere with environment mapping
-        /*
-        {
-            //// create object by reading an obj mesh
-            auto sphere2 = Add_Obj_Mesh_Object("obj/sphere.obj");
-
-            //// set object's transform
-            Matrix4f t;
-            t << .6, 0, 0, 0,
-                0, .6, 0, -.5,
-                0, 0, .6, 1,
-                0, 0, 0, 1;
-            sphere2->Set_Model_Matrix(t);
-
-            //// bind shader to object
-            sphere2->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("environment")); // bind shader to object
-        }
-        */
-
         //// Here we create a mesh object with two triangle specified using a vertex array and a triangle array.
         //// This is an example showing how to create a mesh object without reading an .obj file. 
         //// If you are creating your own L-system, you may use this function to visualize your mesh.
-        {
-            std::vector<Vector3> vertices = { Vector3(0.5, 0, 0), Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(0, 1, 0) };
-            std::vector<Vector3i> elements = { Vector3i(0, 1, 2), Vector3i(0, 2, 3) };
-            auto obj = Add_Tri_Mesh_Object(vertices, elements);
-            // ! you can also set uvs 
-            obj->mesh.Uvs() = { Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1) };
+        // {
+        //     std::vector<Vector3> vertices = { Vector3(0.5, 0, 0), Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(0, 1, 0) };
+        //     std::vector<Vector3i> elements = { Vector3i(0, 1, 2), Vector3i(0, 2, 3) };
+        //     auto obj = Add_Tri_Mesh_Object(vertices, elements);
+        //     // ! you can also set uvs 
+        //     obj->mesh.Uvs() = { Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1) };
 
-            Matrix4f t;
-            t << 1, 0, 0, -0.5,
-                0, 1, 0, -1.5,
-                0, 0, 1, 0,
-                0, 0, 0, 1;
+        //     Matrix4f t;
+        //     t << 1, 0, 0, -0.5,
+        //         0, 1, 0, -1.5,
+        //         0, 0, 1, 0,
+        //         0, 0, 0, 1;
 
-            obj->Set_Model_Matrix(t);
+        //     obj->Set_Model_Matrix(t);
 
-            obj->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("buzz_color"));
+        //     obj->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("buzz_color"));
 
-            obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
-        }
+        //     obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        // }
 
         //// This for-loop updates the rendering model for each object on the list
         for (auto &mesh_obj : mesh_object_array){
