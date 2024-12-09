@@ -50,7 +50,18 @@ out vec4 frag_color;
 
 vec3 shading_texture_with_phong(light li, vec3 e, vec3 p, vec3 s, vec3 n)
 {
-    return vec3(0.0);
+    vec3 q = ka * vec3(li.amb.xyz);
+    //lambertian shading    
+    vec3 l = normalize(s-p);
+    vec3 nn = normalize(n);
+    vec3 d = kd * li.dif.xyz * max(0, dot(l,nn));
+    vec3 lambert = q + d;
+
+    vec3 v = normalize(e-p);
+    vec3 r = reflect(-l,nn);
+    vec3 fin = lambert + (ks * li.spec.xyz * (pow(max(0,dot(v,r)),shininess)));
+
+    return fin;
 }
 
 vec3 read_normal_texture()

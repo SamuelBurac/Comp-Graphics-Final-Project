@@ -36,10 +36,161 @@ public:
         OpenGLViewer::Initialize();
     }
 
+    std::pair<std::vector<Vector3>, std::vector<Vector3i>> generate_l_system(int iterations, vec3 p)
+    {
+        float segment_length = 0.1f;
+        float segment_width = 0.01f;
+
+        std::vector<Vector3> vertices;
+        std::vector<Vector3i> elements;
+
+        Vector3 pos = Vector3(p.x, p.y, p.z);
+        Vector3 dir = Vector3(0, 1, 0);
+
+        float angle = 25.0 * M_PI / 180;
+
+        std::string axiom = "VZFFF"; // VZFFF
+        std::string command = "";
+
+        // create command via iteration on first axiom
+        for (int i = 0; i < iterations; i++)
+        {
+            command = "";
+
+            for (char c : axiom)
+            {
+                if (c == 'V')
+                    command += "[+++W][---W]F[++W][--W]F[+W][-W]YV";
+                else if (c == 'X')
+                    command += "-W[+X]Z";
+                else if (c == 'W')
+                    command += "+X[-W]Z";
+                else if (c == 'Y')
+                    command += "Y[++W][--W]Z";
+                else if (c == 'Z')
+                    command += "[-FFF][+FFF]F";
+                else
+                    command += c;
+            }
+
+            axiom = command;
+        }
+
+        // create vertices and triangles
+        std::stack<std::pair<Vector3, Vector3>> buildStack; // hold direction and position
+        int vertex_count = 0;
+
+        for (char c : command)
+        {
+            switch (c)
+            {
+            case '-':
+                dir = Vector3(dir.x() * cos(-angle) - dir.y() * sin(-angle),
+                              dir.x() * sin(-angle) + dir.y() * cos(-angle), dir.z());
+                break;
+            case '+':
+                dir = Vector3(dir.x() * cos(angle) - dir.y() * sin(angle),
+                              dir.x() * sin(angle) + dir.y() * cos(angle), dir.z());
+                break;
+            case '[':
+                buildStack.push(std::make_pair(dir, pos));
+                break;
+            case ']':
+                {
+                    std::pair<Vector3, Vector3> dp = buildStack.top();
+                    buildStack.pop();
+                    dir = dp.first;
+                    pos = dp.second;
+                }
+
+                break;
+            default:
+
+                if (c == 'F' || c == 'X' || c == 'W' || c == 'Y' || c == 'V' || c == 'Z')
+                {
+                    Vector3 next_pos = pos + dir * segment_length;
+                    Vector3 perp(-dir.y(), dir.x(), 0);
+
+                    // Create rectangle vertices
+                    Vector3 v0 = pos + perp * segment_width;
+                    Vector3 v1 = pos - perp * segment_width;
+                    Vector3 v2 = next_pos + perp * segment_width;
+                    Vector3 v3 = next_pos - perp * segment_width;
+
+
+                    vertices.push_back(v0);
+                    vertices.push_back(v1);
+                    vertices.push_back(v2);
+                    vertices.push_back(v3);
+
+                    Vector3i tri1 = Vector3i(vertex_count, vertex_count + 1, vertex_count + 2);
+                    Vector3i tri2 = Vector3i(vertex_count + 1, vertex_count + 3, vertex_count + 2);
+
+                    elements.push_back(tri1);
+                    elements.push_back(tri2);
+
+                    pos = next_pos;
+                    vertex_count += 4;
+                }
+
+                break;
+            }
+        }
+
+        return {vertices, elements};
+    }
+
+    void placeTree(vec3 p)
+    {
+        // trunk
+        {
+            std::vector<Vector3> vertices = {Vector3(p.x, p.y - 1, p.z), Vector3(p.x + 0.3, p.y - 1, p.z), Vector3(p.x, p.y + 3, p.z), Vector3(p.x + 0.2, p.y + 3, p.z)};
+            std::vector<Vector3i> elements = {Vector3i(0, 1, 2), Vector3i(1, 3, 2)};
+            auto trunk = Add_Tri_Mesh_Object(vertices, elements);
+            // ! you can also set uvs
+            trunk->mesh.Uvs() = {Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)};
+
+            Matrix4f t;
+            t << 0.75, 0, 0, -0.070,
+                0, 0.75, 0, 0,
+                0, 0, 0.75, -0.01,
+                0, 0, 0, 1;
+
+            trunk->Set_Model_Matrix(t);
+
+            trunk->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("brown"));
+
+            trunk->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+
+        // Pine needles
+        {
+            auto [vertices, elements] = generate_l_system(7, p);
+            auto obj = Add_Tri_Mesh_Object(vertices, elements);
+
+            Matrix4f t;
+            t << 0.75, 0, 0, 0,
+                0, 0.75, 0, 0,
+                0, 0, 0.75, 0,
+                0, 0, 0, 1;
+
+            obj->Set_Model_Matrix(t);
+
+            // Add material properties
+            obj->Set_Ka(Vector3f(0.0f, 0.0f, 1.0f));
+            obj->Set_Kd(Vector3f(0.0f, 0.0f, 1.0f));
+            obj->Set_Ks(Vector3f(0.0f, 0.0f, 1.0f));
+            obj->Set_Shininess(32.0f);
+
+            obj->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("green"));
+            obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+    }
+
     virtual void Initialize_Data()
     {
-        //// Load all the shaders you need for the scene 
-        //// In the function call of Add_Shader_From_File(), we specify three names: 
+        //// Load all the shaders you need for the scene
+        //// In the function call of Add_Shader_From_File(), we specify three names:
         //// (1) vertex shader file name
         //// (2) fragment shader file name
         //// (3) shader name used in the shader library
@@ -73,7 +224,8 @@ public:
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/star.png", "star_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/Elk_color.png", "Elk_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/Elk_normal.png", "Elk_Normal");
-
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/brown.png", "brown");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/green.png", "green");
 
         //// Add all the lights you need for the scene (no more than 4 lights)
         //// The four parameters are position, ambient, diffuse, and specular.
@@ -82,7 +234,7 @@ public:
         //// You can also create your own lights by directly declaring them in a shader without using Add_Light().
         //// Here we declared three default lights for you. Feel free to add/delete/change them at your will.
 
-        opengl_window->Add_Light(Vector3f(3, 1, 3), Vector3f(0.1, 0.1, 0.1), Vector3f(1, 1, 1), Vector3f(0.5, 0.5, 0.5)); 
+        opengl_window->Add_Light(Vector3f(3, 1, 3), Vector3f(0.1, 0.1, 0.1), Vector3f(1, 1, 1), Vector3f(0.5, 0.5, 0.5));
         opengl_window->Add_Light(Vector3f(0, 0, -5), Vector3f(0.1, 0.1, 0.1), Vector3f(0.9, 0.9, 0.9), Vector3f(0.5, 0.5, 0.5));
         opengl_window->Add_Light(Vector3f(-5, 1, 3), Vector3f(0.1, 0.1, 0.1), Vector3f(0.9, 0.9, 0.9), Vector3f(0.5, 0.5, 0.5));
 
@@ -93,15 +245,14 @@ public:
         //// (3) Sky box (cubemap; if you want to load six background images for a skybox, use this one)
         //// (4) Sky sphere (if you want to implement a sky sphere, enlarge the size of the sphere to make it colver the entire scene and update its shaders for texture colors)
         //// By default, Option (2) (Buzz stars) is turned on, and all the other three are commented out.
-        
+
         //// Background Option (1): Gradient color
-        
+
         {
             auto bg = Add_Interactive_Object<OpenGLBackground>();
-            bg->Set_Color(OpenGLColor(0.1f, 0.1f, 0.1f, 1.f), OpenGLColor(0.3f, 0.1f, .1f, 1.f));
+            bg->Set_Color(OpenGLColor(0.3f, 0.3f, 0.3f, 1.f), OpenGLColor(0.6f, 0.6f, .9f, 1.f));
             bg->Initialize();
         }
-        
 
         //// Background Option (2): Programmable Canvas
         //// By default, we load a GT buzz + a number of stars
@@ -111,8 +262,6 @@ public:
         //     bgEffect->Add_Texture("tex_buzz", OpenGLTextureLibrary::Get_Texture("buzz_color")); // bgEffect can also Add_Texture
         //     bgEffect->Initialize();
         // }
-        
-
 
         {
             //// create object by reading an obj mesh
@@ -140,7 +289,7 @@ public:
             elkOne->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
-         //// Here we load a bunny object with the basic shader to show how to add an object into the scene
+        //// Here we load a elk object with the basic shader to show how to add an object into the scene
         {
             //// create object by reading an obj mesh
             auto elkTwo = Add_Obj_Mesh_Object("obj/elk.obj");
@@ -166,8 +315,8 @@ public:
             //// bind shader to object
             elkTwo->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
-       
-        //// Here we load a bunny object with the basic shader to show how to add an object into the scene
+
+        //// Here we load a elk object with the basic shader to show how to add an object into the scene
         {
             //// create object by reading an obj mesh
             auto elkThree = Add_Obj_Mesh_Object("obj/elk.obj");
@@ -210,10 +359,10 @@ public:
                 0, 0, 0.5, 0,
                 0, 0, 0, 1;
             t << 1, 0, 0, -2,
-                 0, 1, 0, 0.5,
-                 0, 0, 1, 0,
-                 0, 0, 0, 1,
-            terrain->Set_Model_Matrix(t * s * r);
+                0, 1, 0, 0.5,
+                0, 0, 1, 0,
+                0, 0, 0, 1,
+                terrain->Set_Model_Matrix(t * s * r);
 
             //// set object's material
             terrain->Set_Ka(Vector3f(0.1f, 0.1f, 0.1f));
@@ -226,30 +375,17 @@ public:
         }
 
         //// Here we create a mesh object with two triangle specified using a vertex array and a triangle array.
-        //// This is an example showing how to create a mesh object without reading an .obj file. 
+        //// This is an example showing how to create a mesh object without reading an .obj file.
         //// If you are creating your own L-system, you may use this function to visualize your mesh.
-        // {
-        //     std::vector<Vector3> vertices = { Vector3(0.5, 0, 0), Vector3(1, 0, 0), Vector3(1, 1, 0), Vector3(0, 1, 0) };
-        //     std::vector<Vector3i> elements = { Vector3i(0, 1, 2), Vector3i(0, 2, 3) };
-        //     auto obj = Add_Tri_Mesh_Object(vertices, elements);
-        //     // ! you can also set uvs 
-        //     obj->mesh.Uvs() = { Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1) };
 
-        //     Matrix4f t;
-        //     t << 1, 0, 0, -0.5,
-        //         0, 1, 0, -1.5,
-        //         0, 0, 1, 0,
-        //         0, 0, 0, 1;
-
-        //     obj->Set_Model_Matrix(t);
-
-        //     obj->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("buzz_color"));
-
-        //     obj->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
-        // }
+        placeTree(vec3(2, 0, 0));
+        placeTree(vec3(-2.4, 0, -1.0));
+        placeTree(vec3(3, 0, -2));
+        placeTree(vec3(-3.4, 0, -2));
 
         //// This for-loop updates the rendering model for each object on the list
-        for (auto &mesh_obj : mesh_object_array){
+        for (auto &mesh_obj : mesh_object_array)
+        {
             Set_Polygon_Mode(mesh_obj, PolygonMode::Fill);
             Set_Shading_Mode(mesh_obj, ShadingMode::TexAlpha);
             mesh_obj->Set_Data_Refreshed();
@@ -274,7 +410,7 @@ public:
     }
 
     //// add mesh object by reading an array of vertices and an array of elements
-    OpenGLTriangleMesh* Add_Tri_Mesh_Object(const std::vector<Vector3>& vertices, const std::vector<Vector3i>& elements)
+    OpenGLTriangleMesh *Add_Tri_Mesh_Object(const std::vector<Vector3> &vertices, const std::vector<Vector3i> &elements)
     {
         auto obj = Add_Interactive_Object<OpenGLTriangleMesh>();
         mesh_object_array.push_back(obj);
@@ -291,15 +427,17 @@ public:
         for (auto &mesh_obj : mesh_object_array)
             mesh_obj->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
 
-        if (bgEffect){
+        if (bgEffect)
+        {
             bgEffect->setResolution((float)Win_Width(), (float)Win_Height());
             bgEffect->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
             bgEffect->setFrame(frame++);
         }
 
-        if (skybox){
+        if (skybox)
+        {
             skybox->setTime(GLfloat(clock() - startTime) / CLOCKS_PER_SEC);
-        }   
+        }
 
         OpenGLViewer::Toggle_Next_Frame();
     }

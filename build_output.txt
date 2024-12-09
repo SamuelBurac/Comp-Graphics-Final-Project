@@ -1,0 +1,923 @@
+Building project a9
+[  0%] Building CXX object assignments/a9/CMakeFiles/a9.dir/main.cpp.o
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:12:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Sparse:26:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/SparseCore:61:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/SparseCore/TriangularSolver.h:273:13: warning: variable 'count' set but not used [-Wunused-but-set-variable]
+  273 |       Index count = 0;
+      |             ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:12:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Sparse:31:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/SparseLU:33:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h:78:9: warning: variable 'nsuper_et_post' set but not used [-Wunused-but-set-variable]
+   78 |   Index nsuper_et_post = 0; // Number of relaxed snodes in postordered etree 
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h:79:9: warning: variable 'nsuper_et' set but not used [-Wunused-but-set-variable]
+   79 |   Index nsuper_et = 0; // Number of relaxed snodes in the original etree 
+      |         ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:3:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMarkerObjects.h:26:7: warning: 'OpenGLBackground::Set_Color' hides overloaded virtual function [-Woverloaded-virtual]
+   26 |         void Set_Color(const OpenGLColor& _color, const OpenGLColor& _mix_color){color=_color; mix_color=_mix_color;}
+      |              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLObject.h:131:15: note: hidden overloaded virtual function 'OpenGLObject::Set_Color' declared here: different number of parameters (1 vs 2)
+  131 |         virtual void Set_Color(const OpenGLColor& c){color=c;}
+      |                      ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:5:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:119:15: warning: 'OpenGLTriangleMesh::Set_Shading_Mode' hides overloaded virtual function [-Woverloaded-virtual]
+  119 |         virtual void Set_Shading_Mode(const ShadingMode& _mode)
+      |                      ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLObject.h:108:15: note: hidden overloaded virtual function 'OpenGLObject::Set_Shading_Mode' declared here: type mismatch at 1st parameter ('const ShadingMode' vs 'const ShadingMode &')
+  108 |         virtual void Set_Shading_Mode(const ShadingMode _mode){shading_mode=_mode;}
+      |                      ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:5:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:122:10: warning: 14 enumeration values not handled in switch: 'None', 'Lighting', 'TexOnly'... [-Wswitch]
+  122 |                 switch(shading_mode){
+      |                        ^~~~~~~~~~~~
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:122:10: note: add missing switch cases
+  122 |                 switch(shading_mode){
+      |                        ^
+  123 |                 case ShadingMode::Shadow:{use_preprocess=true;use_depth_fbo=true;}break;}
+      |                                                                                         
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:171:10: warning: 8 enumeration values not handled in switch: 'TexOnly', 'TexLighting', 'Sprite'... [-Wswitch]
+  171 |                 switch(shading_mode){
+      |                        ^~~~~~~~~~~~
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:171:10: note: add missing switch cases
+  171 |                 switch(shading_mode){
+      |                        ^
+  172 |                 case ShadingMode::None:
+  173 |                 {use_vtx_color=true;use_vtx_normal=false;use_vtx_tangent=false; use_vtx_tex =false;}break;
+  174 |                 case ShadingMode::Lighting:
+  175 |                 {use_vtx_color=false;use_vtx_normal=true; use_vtx_tangent=false; use_vtx_tex=false; }break;
+  176 |                 case ShadingMode::A2:
+  177 |                 case ShadingMode::Phong:
+  178 |                 {use_vtx_color=true;use_vtx_normal=true; use_vtx_tangent=false; use_vtx_tex=false;}break;
+  179 |                 case ShadingMode::Texture:
+  180 |                 case ShadingMode::TexAlpha:
+  181 |                 {use_vtx_color=true; use_vtx_normal=true; use_vtx_tangent=true; use_vtx_tex=true; }break;
+  182 |                 case ShadingMode::Shadow:
+  183 |                 {use_vtx_color=true;use_vtx_normal=true;use_vtx_tangent=true;use_vtx_tex=true;}break;
+  184 |                 }
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:240:10: warning: 9 enumeration values not handled in switch: 'Lighting', 'TexOnly', 'TexLighting'... [-Wswitch]
+  240 |                 switch(shading_mode){
+      |                        ^~~~~~~~~~~~
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:240:10: note: add missing switch cases
+  240 |                 switch(shading_mode){
+      |                        ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:396:7: warning: unused variable 'i' [-Wunused-variable]
+  396 |                 int i=0; for (auto& p : mesh.Vertices()) OpenGL_Vertex4(p, opengl_vertices);    ////position, 4 floats
+      |                     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLMesh.h:400:7: warning: variable 'idx' set but not used [-Wunused-but-set-variable]
+  400 |                 int idx=0; {Set_OpenGL_Vertex_Attribute(0, 4, stride_size, 0); idx++; } ////position
+      |                     ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:9:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLSkybox.h:31:10: warning: 'Initialize' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+   31 |     void Initialize()
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLObject.h:94:15: note: overridden virtual function is here
+   94 |         virtual void Initialize(){Initialize_OpenGL_Buffers();initialized=true;}
+      |                      ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:9:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLSkybox.h:98:10: warning: 'Display' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+   98 |     void Display() const
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLObject.h:99:18: note: overridden virtual function is here
+   99 |     virtual void Display() const {}
+      |                  ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:21:9: warning: 'CLOCKS_PER_SEC' macro redefined [-Wmacro-redefined]
+   21 | #define CLOCKS_PER_SEC 100000
+      |         ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/_time.h:90:9: note: previous definition is here
+   90 | #define CLOCKS_PER_SEC  ((clock_t)1000000)      /* [XSI] */
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:105:13: error: cannot jump from switch statement to this case label
+  105 |             default:
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:99:45: note: jump bypasses variable initialization
+   99 |                 std::pair<Vector3, Vector3> dp = buildStack.top();
+      |                                             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:161:18: warning: decomposition declarations are a C++17 extension [-Wc++17-extensions]
+  161 |             auto [vertices, elements] = generate_l_system(7, p);
+      |                  ^~~~~~~~~~~~~~~~~~~~
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::_set_noalias<Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::PlainObjectBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Dot.h:128:12: note: in instantiation of function template specialization 'Eigen::Matrix<double, 3, 1>::Matrix<Eigen::CwiseBinaryOp<Eigen::internal::scalar_quotient_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  128 |     return n / numext::sqrt(z);
+      |            ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:203:106: note: in instantiation of member function 'Eigen::MatrixBase<Eigen::Matrix<double, 3, 1>>::normalized' requested here
+  203 | inline Vector3 Normal(const Vector3& p1,const Vector3& p2,const Vector3& p3){return (p2-p1).cross(p3-p1).normalized();}
+      |                                                                                                          ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::_set_noalias<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::PlainObjectBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:207:43: note: in instantiation of function template specialization 'Eigen::Matrix<double, 3, 1>::Matrix<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>' requested here
+  207 |     normals.resize(mesh.Vertices().size(),Vector3::Zero());
+      |                                           ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:278:15: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::_set_noalias<Eigen::Matrix<double, 3, 1>>' requested here
+  278 |         Base::_set_noalias(other);
+      |               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:208:48: note: in instantiation of member function 'Eigen::Matrix<double, 3, 1>::Matrix' requested here
+  208 |     for(const auto& v:mesh.elements){Vector3 n=Normal(mesh.Vertices()[v[0]],mesh.Vertices()[v[1]],mesh.Vertices()[v[2]]);for(int j=0;j<3;j++){normals[v[j]]+=n;}}
+      |                                                ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::add_assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::add_assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::add_assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::add_assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::add_assign_op<double, double>>' requested here
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/CwiseBinaryOp.h:177:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::add_assign_op<double, double>>' requested here
+  177 |   call_assignment(derived(), other.derived(), internal::add_assign_op<Scalar,typename OtherDerived::Scalar>());
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:208:156: note: in instantiation of function template specialization 'Eigen::MatrixBase<Eigen::Matrix<double, 3, 1>>::operator+=<Eigen::Matrix<double, 3, 1>>' requested here
+  208 |     for(const auto& v:mesh.elements){Vector3 n=Normal(mesh.Vertices()[v[0]],mesh.Vertices()[v[1]],mesh.Vertices()[v[2]]);for(int j=0;j<3;j++){normals[v[j]]+=n;}}
+      |                                                                                                                                                            ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>, Eigen::internal::div_assign_op<double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>, Eigen::internal::div_assign_op<double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::div_assign_op<double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::div_assign_op<double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::div_assign_op<double>>' requested here
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/SelfCwiseBinaryOp.h:45:13: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::div_assign_op<double>>' requested here
+   45 |   internal::call_assignment(this->derived(), PlainObject::Constant(rows(),cols(),other), internal::div_assign_op<Scalar,Scalar>());
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Dot.h:147:15: note: in instantiation of member function 'Eigen::DenseBase<Eigen::Matrix<double, 3, 1>>::operator/=' requested here
+  147 |     derived() /= numext::sqrt(z);
+      |               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:209:28: note: in instantiation of member function 'Eigen::MatrixBase<Eigen::Matrix<double, 3, 1>>::normalize' requested here
+  209 |     for(auto& n:normals){n.normalize();}
+      |                            ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 4, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 4, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 4, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 4, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 4, 1>, Eigen::Matrix<double, 4, 1>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 4, 1>, Eigen::Matrix<double, 4, 1>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 4, 1>, Eigen::Matrix<double, 4, 1>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:278:15: note: (skipping 3 contexts in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  278 |         Base::_set_noalias(other);
+      |               ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/__memory/uninitialized_algorithms.h:612:31: note: in instantiation of function template specialization 'std::allocator_traits<std::allocator<Eigen::Matrix<double, 4, 1>>>::construct<Eigen::Matrix<double, 4, 1>, Eigen::Matrix<double, 4, 1>, void>' requested here
+  612 |     allocator_traits<_Alloc>::construct(__alloc, std::__to_address(__first2), std::move_if_noexcept(*__first1));
+      |                               ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector:990:25: note: in instantiation of function template specialization 'std::__uninitialized_allocator_move_if_noexcept<std::allocator<Eigen::Matrix<double, 4, 1>>, std::reverse_iterator<Eigen::Matrix<double, 4, 1> *>, std::reverse_iterator<Eigen::Matrix<double, 4, 1> *>, std::reverse_iterator<Eigen::Matrix<double, 4, 1> *>>' requested here
+  990 |   __v.__begin_   = std::__uninitialized_allocator_move_if_noexcept(
+      |                         ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector:1097:5: note: in instantiation of member function 'std::vector<Eigen::Matrix<double, 4, 1>>::__swap_out_circular_buffer' requested here
+ 1097 |     __swap_out_circular_buffer(__v);
+      |     ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector:1750:11: note: in instantiation of member function 'std::vector<Eigen::Matrix<double, 4, 1>>::__append' requested here
+ 1750 |     this->__append(__sz - __cs);
+      |           ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:214:18: note: in instantiation of member function 'std::vector<Eigen::Matrix<double, 4, 1>>::resize' requested here
+  214 |         mesh.Tangents().resize(mesh.Vertices().size());
+      |                         ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 2, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 2, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 2, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 2, 1>>::_set_noalias<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 2, 1>>::PlainObjectBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:285:37: note: in instantiation of function template specialization 'Eigen::Matrix<double, 2, 1>::Matrix<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>>' requested here
+  285 |         uvs.resize(mesh.Vertices().size(), Vector2::Zero());
+      |                                            ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::swap_assign_op<int>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Swap.h:20:11: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::swap_assign_op<int>, 1>' requested here
+   20 |  : public generic_dense_assignment_kernel<DstEvaluatorTypeT, SrcEvaluatorTypeT, swap_assign_op<typename DstEvaluatorTypeT::Scalar>, BuiltIn>
+      |           ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::swap_assign_op<int>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, Eigen::internal::swap_assign_op<int>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, Eigen::internal::swap_assign_op<int>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: (skipping 1 context in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/DenseBase.h:429:7: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, Eigen::internal::swap_assign_op<int>>' requested here
+  429 |       call_assignment(derived(), other.derived(), internal::swap_assign_op<Scalar>());
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:1013:14: note: in instantiation of function template specialization 'Eigen::DenseBase<Eigen::Matrix<int, 2, 1>>::swap<Eigen::Matrix<int, 2, 1>>' requested here
+ 1013 |     a.base().swap(b);
+      |              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:885:78: note: in instantiation of member function 'Eigen::internal::matrix_swap_impl<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, false>::run' requested here
+  885 |       internal::matrix_swap_impl<Derived, OtherDerived, bool(SwapPointers)>::run(this->derived(), other.derived());
+      |                                                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:283:13: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<int, 2, 1>>::swap<Eigen::Matrix<int, 2, 1>>' requested here
+  283 |       other.swap(*this);
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:289:10: note: in instantiation of member function 'Eigen::Matrix<int, 2, 1>::operator=' requested here
+  289 | {edges[0]=Vector2i(v[0],v[1]);edges[1]=Vector2i(v[1],v[2]);edges[2]=Vector2i(v[2],v[0]);return 3;}
+      |          ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::assign_op<int, int>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 2, 1>>, Eigen::internal::assign_op<int, int>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, Eigen::internal::assign_op<int, int>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, Eigen::internal::assign_op<int, int>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<int, 2, 1>, Eigen::Matrix<int, 2, 1>, Eigen::internal::assign_op<int, int>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:278:15: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<int, 2, 1>>::_set_noalias<Eigen::Matrix<int, 2, 1>>' requested here
+  278 |         Base::_set_noalias(other);
+      |               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:291:62: note: in instantiation of member function 'Eigen::Matrix<int, 2, 1>::Matrix' requested here
+  291 | inline Vector2i Sorted(const Vector2i& v){return v[0]>v[1]?v:Vector2i(v[1],v[0]);}
+      |                                                              ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:782:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  782 |   call_assignment(dst, src, internal::assign_op<typename Dst::Scalar,typename Src::Scalar>());
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:710:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  710 |       internal::call_assignment(this->derived(), other.derived());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:225:20: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::_set<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  225 |       return Base::_set(other);
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:331:96: note: in instantiation of function template specialization 'Eigen::Matrix<double, 3, 1>::operator=<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  331 |         int vtx_num=12;mesh->Vertices().resize(vtx_num);for(int i=0;i<vtx_num;i++){mesh->Vertices()[i]=Vector3(vtx_pos[i][0],vtx_pos[i][1],vtx_pos[i][2])*scale;}
+      |                                                                                                       ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::swap_assign_op<int>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Swap.h:20:11: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::swap_assign_op<int>, 1>' requested here
+   20 |  : public generic_dense_assignment_kernel<DstEvaluatorTypeT, SrcEvaluatorTypeT, swap_assign_op<typename DstEvaluatorTypeT::Scalar>, BuiltIn>
+      |           ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::swap_assign_op<int>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, Eigen::internal::swap_assign_op<int>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, Eigen::internal::swap_assign_op<int>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: (skipping 1 context in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/DenseBase.h:429:7: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, Eigen::internal::swap_assign_op<int>>' requested here
+  429 |       call_assignment(derived(), other.derived(), internal::swap_assign_op<Scalar>());
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:1013:14: note: in instantiation of function template specialization 'Eigen::DenseBase<Eigen::Matrix<int, 3, 1>>::swap<Eigen::Matrix<int, 3, 1>>' requested here
+ 1013 |     a.base().swap(b);
+      |              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:885:78: note: in instantiation of member function 'Eigen::internal::matrix_swap_impl<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, false>::run' requested here
+  885 |       internal::matrix_swap_impl<Derived, OtherDerived, bool(SwapPointers)>::run(this->derived(), other.derived());
+      |                                                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:283:13: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<int, 3, 1>>::swap<Eigen::Matrix<int, 3, 1>>' requested here
+  283 |       other.swap(*this);
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:332:91: note: in instantiation of member function 'Eigen::Matrix<int, 3, 1>::operator=' requested here
+  332 |         int ele_num=20;mesh->elements.resize(ele_num);for(int i=0;i<ele_num;i++)mesh->elements[i]=Vector3i(ele[i][0],ele[i][1],ele[i][2]);
+      |                                                                                                  ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::_set_noalias<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::PlainObjectBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:307:22: note: in instantiation of function template specialization 'Eigen::Matrix<double, 3, 1>::Matrix<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::Matrix<double, 3, 1>>>>' requested here
+  307 |                 Vector<real,d> pos=(real).5*(mesh->Vertices()[e[0]]+mesh->Vertices()[e[1]]);
+      |                                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:337:60: note: in instantiation of function template specialization 'Subdivide<3>' requested here
+  337 |         Initialize_Icosahedron_Mesh(r,mesh);for(int i=0;i<sub;i++)Subdivide(mesh);
+      |                                                                   ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>, Eigen::internal::mul_assign_op<double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>>, Eigen::internal::mul_assign_op<double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::mul_assign_op<double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::mul_assign_op<double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::mul_assign_op<double>>' requested here
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/SelfCwiseBinaryOp.h:21:13: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 3, 1>>, Eigen::internal::mul_assign_op<double>>' requested here
+   21 |   internal::call_assignment(this->derived(), PlainObject::Constant(rows(),cols(),other), internal::mul_assign_op<Scalar,Scalar>());
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:338:71: note: in instantiation of member function 'Eigen::DenseBase<Eigen::Matrix<double, 3, 1>>::operator*=' requested here
+  338 |         for(auto& v:mesh->Vertices()){real length=v.norm();real rs=r/length;v*=rs;}
+      |                                                                              ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::swap_assign_op<double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Swap.h:20:11: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::swap_assign_op<double>, 1>' requested here
+   20 |  : public generic_dense_assignment_kernel<DstEvaluatorTypeT, SrcEvaluatorTypeT, swap_assign_op<typename DstEvaluatorTypeT::Scalar>, BuiltIn>
+      |           ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::swap_assign_op<double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, Eigen::internal::swap_assign_op<double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, Eigen::internal::swap_assign_op<double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: (skipping 1 context in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/DenseBase.h:429:7: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, Eigen::internal::swap_assign_op<double>>' requested here
+  429 |       call_assignment(derived(), other.derived(), internal::swap_assign_op<Scalar>());
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:1013:14: note: in instantiation of function template specialization 'Eigen::DenseBase<Eigen::Matrix<double, 2, 1>>::swap<Eigen::Matrix<double, 2, 1>>' requested here
+ 1013 |     a.base().swap(b);
+      |              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:885:78: note: in instantiation of member function 'Eigen::internal::matrix_swap_impl<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, false>::run' requested here
+  885 |       internal::matrix_swap_impl<Derived, OtherDerived, bool(SwapPointers)>::run(this->derived(), other.derived());
+      |                                                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:283:13: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 2, 1>>::swap<Eigen::Matrix<double, 2, 1>>' requested here
+  283 |       other.swap(*this);
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:104:23: note: in instantiation of member function 'Eigen::Matrix<double, 2, 1>::operator=' requested here
+  104 | template<int d> class Box
+      |                       ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::assign_op<float, float>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::assign_op<float, float>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, Eigen::internal::assign_op<float, float>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, Eigen::internal::assign_op<float, float>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, Eigen::internal::assign_op<float, float>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:278:15: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<float, 2, 1>>::_set_noalias<Eigen::Matrix<float, 2, 1>>' requested here
+  278 |         Base::_set_noalias(other);
+      |               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLBgEffect.h:22:26: note: in instantiation of member function 'Eigen::Matrix<float, 2, 1>::Matrix' requested here
+   22 |     Vector2f iResolution = Vector2f(1280, 960);
+      |                          ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 2, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 2, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 2, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 2, 1>>::_set_noalias<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 2, 1>>::PlainObjectBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLBgEffect.h:27:22: note: in instantiation of function template specialization 'Eigen::Matrix<double, 2, 1>::Matrix<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, 2, 1>>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 2, 1>>>>' requested here
+   27 |         box = Box<2>(Vector2::Ones() * (real)-1, Vector2::Ones());
+      |                      ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::swap_assign_op<float>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Swap.h:20:11: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::swap_assign_op<float>, 1>' requested here
+   20 |  : public generic_dense_assignment_kernel<DstEvaluatorTypeT, SrcEvaluatorTypeT, swap_assign_op<typename DstEvaluatorTypeT::Scalar>, BuiltIn>
+      |           ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<float, 2, 1>>, Eigen::internal::swap_assign_op<float>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, Eigen::internal::swap_assign_op<float>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, Eigen::internal::swap_assign_op<float>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: (skipping 1 context in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/DenseBase.h:429:7: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, Eigen::internal::swap_assign_op<float>>' requested here
+  429 |       call_assignment(derived(), other.derived(), internal::swap_assign_op<Scalar>());
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:1013:14: note: in instantiation of function template specialization 'Eigen::DenseBase<Eigen::Matrix<float, 2, 1>>::swap<Eigen::Matrix<float, 2, 1>>' requested here
+ 1013 |     a.base().swap(b);
+      |              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:885:78: note: in instantiation of member function 'Eigen::internal::matrix_swap_impl<Eigen::Matrix<float, 2, 1>, Eigen::Matrix<float, 2, 1>, false>::run' requested here
+  885 |       internal::matrix_swap_impl<Derived, OtherDerived, bool(SwapPointers)>::run(this->derived(), other.derived());
+      |                                                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:283:13: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<float, 2, 1>>::swap<Eigen::Matrix<float, 2, 1>>' requested here
+  283 |       other.swap(*this);
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLBgEffect.h:32:56: note: in instantiation of member function 'Eigen::Matrix<float, 2, 1>::operator=' requested here
+   32 |     void setResolution(float w, float h) { iResolution = Vector2f(w, h); }
+      |                                                        ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 2, 1>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 2, 1>, Eigen::Matrix<double, 2, 1>, Eigen::internal::assign_op<double, double>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:278:15: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 2, 1>>::_set_noalias<Eigen::Matrix<double, 2, 1>>' requested here
+  278 |         Base::_set_noalias(other);
+      |               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/OpenGLBgEffect.h:49:30: note: in instantiation of member function 'Eigen::Matrix<double, 2, 1>::Matrix' requested here
+   49 |         Array<Vector2> uv = {Vector2((real)0., (real)0.), Vector2((real)1., (real)0.), Vector2((real)1., (real)1.),
+      |                              ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::swap_assign_op<double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Swap.h:20:11: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::swap_assign_op<double>, 1>' requested here
+   20 |  : public generic_dense_assignment_kernel<DstEvaluatorTypeT, SrcEvaluatorTypeT, swap_assign_op<typename DstEvaluatorTypeT::Scalar>, BuiltIn>
+      |           ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::swap_assign_op<double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::swap_assign_op<double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::swap_assign_op<double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: (skipping 1 context in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/DenseBase.h:429:7: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, Eigen::internal::swap_assign_op<double>>' requested here
+  429 |       call_assignment(derived(), other.derived(), internal::swap_assign_op<Scalar>());
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:1013:14: note: in instantiation of function template specialization 'Eigen::DenseBase<Eigen::Matrix<double, 3, 1>>::swap<Eigen::Matrix<double, 3, 1>>' requested here
+ 1013 |     a.base().swap(b);
+      |              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:885:78: note: in instantiation of member function 'Eigen::internal::matrix_swap_impl<Eigen::Matrix<double, 3, 1>, Eigen::Matrix<double, 3, 1>, false>::run' requested here
+  885 |       internal::matrix_swap_impl<Derived, OtherDerived, bool(SwapPointers)>::run(this->derived(), other.derived());
+      |                                                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:283:13: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::swap<Eigen::Matrix<double, 3, 1>>' requested here
+  283 |       other.swap(*this);
+      |             ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:88:21: note: in instantiation of member function 'Eigen::Matrix<double, 3, 1>::operator=' requested here
+   88 |                 dir = Vector3(dir.x() * cos(-angle) - dir.y() * sin(-angle),
+      |                     ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::assign_op<int, int>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 3, 1>>, Eigen::internal::assign_op<int, int>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, Eigen::internal::assign_op<int, int>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, Eigen::internal::assign_op<int, int>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<int, 3, 1>, Eigen::Matrix<int, 3, 1>, Eigen::internal::assign_op<int, int>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:278:15: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<int, 3, 1>>::_set_noalias<Eigen::Matrix<int, 3, 1>>' requested here
+  278 |         Base::_set_noalias(other);
+      |               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:119:37: note: in instantiation of member function 'Eigen::Matrix<int, 3, 1>::Matrix' requested here
+  119 |                     Vector3i tri1 = Vector3i(vertex_count, vertex_count + 1, vertex_count + 2);
+      |                                     ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<double, 3, 1>>, Eigen::internal::evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:782:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>, Eigen::internal::assign_op<double, double>>' requested here
+  782 |   call_assignment(dst, src, internal::assign_op<typename Dst::Scalar,typename Src::Scalar>());
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:710:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment<Eigen::Matrix<double, 3, 1>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>>' requested here
+  710 |       internal::call_assignment(this->derived(), other.derived());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:225:20: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<double, 3, 1>>::_set<Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>>' requested here
+  225 |       return Base::_set(other);
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:125:25: note: in instantiation of function template specialization 'Eigen::Matrix<double, 3, 1>::operator=<Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double>, const Eigen::Matrix<double, 3, 1>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 3, 1>>>>>' requested here
+  125 |                     pos = pos + dir * segment_length;
+      |                         ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<float, 4, 4>>, Eigen::internal::evaluator<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>, 1>>, Eigen::internal::assign_op<float, float>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<float, 4, 4>>, Eigen::internal::evaluator<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>, 1>>, Eigen::internal::assign_op<float, float>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>, 1>, Eigen::internal::assign_op<float, float>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>, 1>, Eigen::internal::assign_op<float, float>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/ProductEvaluators.h:397:5: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>, 1>, Eigen::internal::assign_op<float, float>>' requested here
+  397 |     call_assignment_no_alias(dst, lhs.lazyProduct(rhs), internal::assign_op<typename Dst::Scalar,Scalar>());
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/ProductEvaluators.h:148:37: note: (skipping 1 context in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  148 |     generic_product_impl<Lhs, Rhs>::evalTo(dst, src.lhs(), src.rhs());
+      |                                     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>, Eigen::internal::assign_op<float, float>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>, Eigen::internal::assign_op<float, float>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<float, 4, 4>>::_set_noalias<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<float, 4, 4>>::PlainObjectBase<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:358:43: note: in instantiation of function template specialization 'Eigen::Matrix<float, 4, 4>::Matrix<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>>' requested here
+  358 |                 terrain->Set_Model_Matrix(t * s * r);
+      |                                           ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<float, 4, 4>>, Eigen::internal::evaluator<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>, 1>>, Eigen::internal::assign_op<float, float>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<float, 4, 4>>, Eigen::internal::evaluator<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>, 1>>, Eigen::internal::assign_op<float, float>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>, 1>, Eigen::internal::assign_op<float, float>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>, 1>, Eigen::internal::assign_op<float, float>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/ProductEvaluators.h:397:5: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>, 1>, Eigen::internal::assign_op<float, float>>' requested here
+  397 |     call_assignment_no_alias(dst, lhs.lazyProduct(rhs), internal::assign_op<typename Dst::Scalar,Scalar>());
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/ProductEvaluators.h:148:37: note: (skipping 12 contexts in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  148 |     generic_product_impl<Lhs, Rhs>::evalTo(dst, src.lhs(), src.rhs());
+      |                                     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>, Eigen::internal::assign_op<float, float>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:728:17: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<float, 4, 4>, Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>, Eigen::internal::assign_op<float, float>>' requested here
+  728 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |                 ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/PlainObjectBase.h:537:7: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<float, 4, 4>>::_set_noalias<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>>' requested here
+  537 |       _set_noalias(other);
+      |       ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/Matrix.h:379:9: note: in instantiation of function template specialization 'Eigen::PlainObjectBase<Eigen::Matrix<float, 4, 4>>::PlainObjectBase<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>>' requested here
+  379 |       : Base(other.derived())
+      |         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:358:43: note: in instantiation of function template specialization 'Eigen::Matrix<float, 4, 4>::Matrix<Eigen::Product<Eigen::Product<Eigen::Matrix<float, 4, 4>, Eigen::Matrix<float, 4, 4>>, Eigen::Matrix<float, 4, 4>>>' requested here
+  358 |                 terrain->Set_Model_Matrix(t * s * r);
+      |                                           ^
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/main.cpp:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Common.h:11:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Dense:1:
+In file included from /Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/Core:420:
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:86:63: warning: converting the enum constant to a boolean [-Wint-in-bool-context]
+   86 |     MayLinearVectorize = bool(MightVectorize) && MayLinearize && DstHasDirectAccess
+      |                                                               ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:607:20: note: in instantiation of template class 'Eigen::internal::copy_using_evaluator_traits<Eigen::internal::evaluator<Eigen::Matrix<int, 4, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 4, 1>>, Eigen::internal::assign_op<int, int>>' requested here
+  607 |   typedef typename AssignmentTraits::PacketType PacketType;
+      |                    ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:739:10: note: in instantiation of template class 'Eigen::internal::generic_dense_assignment_kernel<Eigen::internal::evaluator<Eigen::Matrix<int, 4, 1>>, Eigen::internal::evaluator<Eigen::Matrix<int, 4, 1>>, Eigen::internal::assign_op<int, int>>' requested here
+  739 |   Kernel kernel(dstEvaluator, srcEvaluator, func, dst.const_cast_derived());
+      |          ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:879:5: note: in instantiation of function template specialization 'Eigen::internal::call_dense_assignment_loop<Eigen::Matrix<int, 4, 1>, Eigen::Matrix<int, 4, 1>, Eigen::internal::assign_op<int, int>>' requested here
+  879 |     call_dense_assignment_loop(dst, src, func);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:836:46: note: in instantiation of member function 'Eigen::internal::Assignment<Eigen::Matrix<int, 4, 1>, Eigen::Matrix<int, 4, 1>, Eigen::internal::assign_op<int, int>>::run' requested here
+  836 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |                                              ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:804:3: note: in instantiation of function template specialization 'Eigen::internal::call_assignment_no_alias<Eigen::Matrix<int, 4, 1>, Eigen::Matrix<int, 4, 1>, Eigen::internal::assign_op<int, int>>' requested here
+  804 |   call_assignment_no_alias(dst, src, func);
+      |   ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../ext/eigen/Eigen/src/Core/AssignEvaluator.h:782:3: note: (skipping 7 contexts in backtrace; use -ftemplate-backtrace-limit=0 to see all)
+  782 |   call_assignment(dst, src, internal::assign_op<typename Dst::Scalar,typename Src::Scalar>());
+      |   ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector:1340:26: note: in instantiation of function template specialization 'std::__copy<std::_ClassicAlgPolicy, Eigen::Matrix<int, 4, 1> *, Eigen::Matrix<int, 4, 1> *, Eigen::Matrix<int, 4, 1> *>' requested here
+ 1340 |       pointer __m = std::__copy<_ClassicAlgPolicy>(__first, __last, this->__begin_).second;
+      |                          ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector:1326:3: note: in instantiation of function template specialization 'std::vector<Eigen::Matrix<int, 4, 1>>::__assign_with_size<Eigen::Matrix<int, 4, 1> *, Eigen::Matrix<int, 4, 1> *>' requested here
+ 1326 |   __assign_with_size(__first, __last, std::distance(__first, __last));
+      |   ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.1.sdk/usr/include/c++/v1/vector:1297:5: note: in instantiation of function template specialization 'std::vector<Eigen::Matrix<int, 4, 1>>::assign<Eigen::Matrix<int, 4, 1> *, 0>' requested here
+ 1297 |     assign(__x.__begin_, __x.__end_);
+      |     ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:65:11: note: in instantiation of member function 'std::vector<Eigen::Matrix<int, 4, 1>>::operator=' requested here
+   65 |                 *joints =*(copy.joints);
+      |                         ^
+/Users/samuelburac/Desktop/comp graphics final project/cs3451-computer-graphics-starter-code/assignments/a9/../../src/Mesh.h:157:23: note: in instantiation of member function 'SimplicialMesh<3, 3>::operator=' requested here
+  157 | template<int d> class TriangleMesh : public SimplicialMesh<d,3>
+      |                       ^
+38 warnings and 1 error generated.
+make[3]: *** [assignments/a9/CMakeFiles/a9.dir/main.cpp.o] Error 1
+make[2]: *** [assignments/a9/CMakeFiles/a9.dir/all] Error 2
+make[1]: *** [assignments/a9/CMakeFiles/a9.dir/rule] Error 2
+make: *** [a9] Error 2
