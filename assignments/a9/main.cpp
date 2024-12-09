@@ -39,7 +39,7 @@ public:
     std::pair<std::vector<Vector3>, std::vector<Vector3i>> generate_l_system(int iterations, vec3 p)
     {
         float segment_length = 0.1f;
-        float segment_width = 0.01f;
+        float segment_width = 0.03f;
 
         std::vector<Vector3> vertices;
         std::vector<Vector3i> elements;
@@ -108,14 +108,16 @@ public:
 
                 if (c == 'F' || c == 'X' || c == 'W' || c == 'Y' || c == 'V' || c == 'Z')
                 {
-                    Vector3 next_pos = pos + dir * segment_length;
-                    Vector3 perp(-dir.y(), dir.x(), 0);
+                    
 
                     // Create rectangle vertices
-                    Vector3 v0 = pos + perp * segment_width;
-                    Vector3 v1 = pos - perp * segment_width;
-                    Vector3 v2 = next_pos + perp * segment_width;
-                    Vector3 v3 = next_pos - perp * segment_width;
+                    Vector3 v0 = pos;
+                    Vector3 v1 = Vector3(pos.x() + segment_width, pos.y(),pos.z());
+
+                    Vector3 next_pos = pos + dir * segment_length;
+                    
+                    Vector3 v2 = next_pos;
+                    Vector3 v3 = Vector3(next_pos.x() + segment_width, next_pos.y(),next_pos.z());
 
 
                     vertices.push_back(v0);
