@@ -55,7 +55,7 @@ public:
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain.vert", "shaders/terrain.frag", "terrain");
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/skybox.vert", "shaders/skybox.frag", "skybox");
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain2.vert", "shaders/terrain2.frag", "terrain2");
-         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain3.vert", "shaders/terrain3.frag", "terrain3");
+        OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain3.vert", "shaders/terrain3.frag", "terrain3");
         //// Load all the textures you need for the scene
         //// In the function call of Add_Shader_From_File(), we specify two names:
         //// (1) the texture's file name
@@ -106,12 +106,11 @@ public:
 
         //// Background Option (2): Programmable Canvas
         //// By default, we load a GT buzz + a number of stars
-        // {
-        //     bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
-        //     bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
-        //     bgEffect->Add_Texture("tex_buzz", OpenGLTextureLibrary::Get_Texture("buzz_color")); // bgEffect can also Add_Texture
-        //     bgEffect->Initialize();
-        // }
+        {
+             bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
+             bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
+             bgEffect->Initialize();
+        }
         
 
 
