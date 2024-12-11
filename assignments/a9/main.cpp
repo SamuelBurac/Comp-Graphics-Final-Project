@@ -38,8 +38,8 @@ public:
 
     std::pair<std::vector<Vector3>, std::vector<Vector3i>> generate_l_system(int iterations, vec3 p)
     {
-        float segment_length = 0.1f;
-        float segment_width = 0.03f;
+        float segment_length = 0.025f;
+        float segment_width = 0.02f;
 
         std::vector<Vector3> vertices;
         std::vector<Vector3i> elements;
@@ -49,7 +49,7 @@ public:
 
         float angle = 25.0 * M_PI / 180;
 
-        std::string axiom = "VZFFF"; // VZFFF
+        std::string axiom = "VZ"; // VZFFF
         std::string command = "";
 
         // create command via iteration on first axiom
@@ -62,11 +62,11 @@ public:
                 if (c == 'V')
                     command += "[+++W][---W]F[++W][--W]F[+W][-W]YV";
                 else if (c == 'X')
-                    command += "-W[+X]Z";
+                    command += "-W[+X]Z[+F][-F]";
                 else if (c == 'W')
-                    command += "+X[-W]Z";
+                    command += "+X[-W]Z[+F][-F]";
                 else if (c == 'Y')
-                    command += "Y[++W][--W]Z";
+                    command += "Y[++W][--W]Z[++W][--W]Z[++W][--W]Z";
                 else if (c == 'Z')
                     command += "[-FFF][+FFF]F";
                 else
@@ -146,16 +146,16 @@ public:
     {
         // trunk
         {
-            std::vector<Vector3> vertices = {Vector3(p.x, p.y - 1, p.z), Vector3(p.x + 0.3, p.y - 1, p.z), Vector3(p.x, p.y + 3, p.z), Vector3(p.x + 0.2, p.y + 3, p.z)};
+            std::vector<Vector3> vertices = {Vector3(p.x, p.y - 1, p.z), Vector3(p.x + 0.1, p.y - 1, p.z), Vector3(p.x, p.y + 1, p.z), Vector3(p.x + 0.05, p.y + 1, p.z)};
             std::vector<Vector3i> elements = {Vector3i(0, 1, 2), Vector3i(1, 3, 2)};
             auto trunk = Add_Tri_Mesh_Object(vertices, elements);
             // ! you can also set uvs
             trunk->mesh.Uvs() = {Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)};
 
             Matrix4f t;
-            t << 0.75, 0, 0, -0.070,
-                0, 0.75, 0, 0,
-                0, 0, 0.75, -0.01,
+            t << 0.5, 0, 0, -0.05,
+                0, 0.5, 0, 0,
+                0, 0, 0.5, -0.02,
                 0, 0, 0, 1;
 
             trunk->Set_Model_Matrix(t);
@@ -167,13 +167,13 @@ public:
 
         // Pine needles
         {
-            auto [vertices, elements] = generate_l_system(7, p);
+            auto [vertices, elements] = generate_l_system(9, p);
             auto obj = Add_Tri_Mesh_Object(vertices, elements);
 
             Matrix4f t;
-            t << 0.75, 0, 0, 0,
-                0, 0.75, 0, 0,
-                0, 0, 0.75, 0,
+            t << 0.5, 0, 0, 0,
+                0, 0.5, 0, 0,
+                0, 0, 0.5, 0,
                 0, 0, 0, 1;
 
             obj->Set_Model_Matrix(t);
@@ -273,9 +273,9 @@ public:
 
             //// set object's transform
             Matrix4f t;
-            t << 0, 0, 0.5, -2,
-                0, 0.5, 0, -1,
-                0.5, 0, 0, 1.8,
+            t << 0, 0, 0.23, -0.5,
+                0, 0.23, 0, -1,
+                0.23, 0, 0, 3.4,
                 0, 0, 0, 1;
             elkOne->Set_Model_Matrix(t);
 
@@ -300,9 +300,9 @@ public:
 
             //// set object's transform
             Matrix4f t;
-            t << 0, 0, 0.55, -1.5,
-                0, 0.55, 0, -1,
-                0.55, 0, 0, 0.4,
+            t << 0, 0, 0.25, -0.2,
+                0, 0.25, 0, -1,
+                0.25, 0, 0, 1.6,
                 0, 0, 0, 1;
             elkTwo->Set_Model_Matrix(t);
 
@@ -327,9 +327,9 @@ public:
 
             //// set object's transform
             Matrix4f t;
-            t << 0, 0, 0.6, -0.5,
-                0, 0.6, 0, -1,
-                0.6, 0, 0, 1,
+            t << 0, 0, 0.3, 0.1,
+                0, 0.3, 0, -1,
+                0.3, 0, 0, 3,
                 0, 0, 0, 1;
             elkThree->Set_Model_Matrix(t);
 
@@ -364,7 +364,7 @@ public:
                 0, 0, 0, 1;
             t << 1, 0, 0, -3.5,
                  0, 1, 0, -1.15,
-                 0, 0, 1, 3,
+                 0, 0, 1, -9,
                  0, 0, 0, 1,
             terrain->Set_Model_Matrix(t * s * r);
 
@@ -392,9 +392,9 @@ public:
                 0, 1.5, 0, 0,
                 0, 0, 1.5, 0,
                 0, 0, 0, 1;
-            t << 1, 0, 0, -3.5,
+            t << 0, 0, 1, -3.5,
                  0, 1, 0, -0.85,
-                 0, 0, 1, 7,
+                 1, 0, 0, -9,
                  0, 0, 0, 1,
             terrain2->Set_Model_Matrix(t * s * r);
 
@@ -422,7 +422,7 @@ public:
                 0, 2.5, 0, 0,
                 0, 0, 2.5, 0,
                 0, 0, 0, 1;
-            t << 1, 0, 0, -5,
+            t << 1, 0, 0, -3.5,
                  0, 1, 0, -1,
                  0, 0, 1, -6,
                  0, 0, 0, 1,
@@ -442,10 +442,12 @@ public:
         //// This is an example showing how to create a mesh object without reading an .obj file.
         //// If you are creating your own L-system, you may use this function to visualize your mesh.
 
-        placeTree(vec3(2, 0, 0));
-        placeTree(vec3(-2.4, 0, -1.0));
-        placeTree(vec3(3, 0, -2));
-        placeTree(vec3(-3.4, 0, -2));
+        placeTree(vec3(3.5, -1.5, 1.5));
+        placeTree(vec3(2, -1.5, 0));
+        placeTree(vec3(3.2, -1.5, -1.5));
+        placeTree(vec3(-1.5, -1.5, 0));
+        placeTree(vec3(-2.3, -1.5, -0.40));
+        placeTree(vec3(-0.7, -1.5, -1.5));
 
         //// This for-loop updates the rendering model for each object on the list
         for (auto &mesh_obj : mesh_object_array)

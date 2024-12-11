@@ -13,7 +13,7 @@ out vec4 frag_color;
 
 #define NUM_SNOW 100.0
 #define GRAVITY 0.1
-#define FALL_SPEED 0.1 // Adjust this value to control the fall speed
+#define FALL_SPEED 0.3 // Adjust this value to control the fall speed
 
 // return random vec2 between 0 and 1
 vec2 hash2d(float t)
