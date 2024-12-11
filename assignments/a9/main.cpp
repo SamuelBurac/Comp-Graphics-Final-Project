@@ -207,7 +207,8 @@ public:
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/billboard.vert", "shaders/alphablend.frag", "billboard");
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain.vert", "shaders/terrain.frag", "terrain");
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/skybox.vert", "shaders/skybox.frag", "skybox");
-
+        OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain2.vert", "shaders/terrain2.frag", "terrain2");
+        OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain3.vert", "shaders/terrain3.frag", "terrain3");
         //// Load all the textures you need for the scene
         //// In the function call of Add_Shader_From_File(), we specify two names:
         //// (1) the texture's file name
@@ -258,12 +259,13 @@ public:
 
         //// Background Option (2): Programmable Canvas
         //// By default, we load a GT buzz + a number of stars
-        // {
-        //     bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
-        //     bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
-        //     bgEffect->Add_Texture("tex_buzz", OpenGLTextureLibrary::Get_Texture("buzz_color")); // bgEffect can also Add_Texture
-        //     bgEffect->Initialize();
-        // }
+        {
+             bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
+             bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
+             bgEffect->Initialize();
+        }
+        
+
 
         {
             //// create object by reading an obj mesh
@@ -299,7 +301,7 @@ public:
             //// set object's transform
             Matrix4f t;
             t << 0, 0, 0.55, -1.5,
-                0, 0.55, 0, -0.8,
+                0, 0.55, 0, -1,
                 0.55, 0, 0, 0.4,
                 0, 0, 0, 1;
             elkTwo->Set_Model_Matrix(t);
@@ -353,29 +355,89 @@ public:
             //// set object's transform
             Matrix4f r, s, t;
             r << 1, 0, 0, 0,
-                0, 0.5, 0.67, 0,
-                0, -0.67, 0.5, 0,
-                0, 0, 0, 1;
-            s << 0.5, 0, 0, 0,
-                0, 0.5, 0, 0,
-                0, 0, 0.5, 0,
-                0, 0, 0, 1;
-            t << 1, 0, 0, -2,
-                0, 1, 0, 0.5,
                 0, 0, 1, 0,
-                0, 0, 0, 1,
-                terrain->Set_Model_Matrix(t * s * r);
+                0, 1, 0, 0,
+                0, 0, 0, 1;
+            s << 1.5, 0, 0, 0,
+                0, 1.5, 0, 0,
+                0, 0, 1.5, 0,
+                0, 0, 0, 1;
+            t << 1, 0, 0, -3.5,
+                 0, 1, 0, -1.15,
+                 0, 0, 1, 3,
+                 0, 0, 0, 1,
+            terrain->Set_Model_Matrix(t * s * r);
 
             //// set object's material
-            terrain->Set_Ka(Vector3f(0.1f, 0.1f, 0.1f));
-            terrain->Set_Kd(Vector3f(0.7f, 0.7f, 0.7f));
+            terrain->Set_Ka(Vector3f(0.2f, 0.2f, 0.2f));
+            terrain->Set_Kd(Vector3f(0.8f, 0.8f, 0.8f));
             terrain->Set_Ks(Vector3f(1, 1, 1));
-            terrain->Set_Shininess(128.f);
+            terrain->Set_Shininess(64.f);
 
             //// bind shader to object (we do not bind texture for this object because we create noise for texture)
             terrain->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
+             //// create object by reading an obj mesh
         }
+         {
+            //// create object by reading an obj mesh
+            auto terrain2 = Add_Obj_Mesh_Object("obj/plane.obj");
 
+            //// set object's transform
+            Matrix4f r, s, t;
+            r << 1, 0, 0, 0,
+                0, 0, 1, 0,
+                0, 1, 0, 0,
+                0, 0, 0, 1;
+            s << 1.5, 0, 0, 0,
+                0, 1.5, 0, 0,
+                0, 0, 1.5, 0,
+                0, 0, 0, 1;
+            t << 1, 0, 0, -3.5,
+                 0, 1, 0, -0.85,
+                 0, 0, 1, 7,
+                 0, 0, 0, 1,
+            terrain2->Set_Model_Matrix(t * s * r);
+
+            //// set object's material
+            terrain2->Set_Ka(Vector3f(0.2f, 0.2f, 0.2f));
+            terrain2->Set_Kd(Vector3f(0.8f, 0.8f, 0.8f));
+            terrain2->Set_Ks(Vector3f(1, 1, 1));
+            terrain2->Set_Shininess(64.f);
+
+            //// bind shader to object (we do not bind texture for this object because we create noise for texture)
+            terrain2->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain2"));
+             //// create object by reading an obj mesh
+        }
+        {
+            //// create object by reading an obj mesh
+            auto terrain3 = Add_Obj_Mesh_Object("obj/plane.obj");
+
+            //// set object's transform
+            Matrix4f r, s, t;
+            r << 1, 0, 0, 0,
+                0, 0, 1, 0,
+                0, 1, 0, 0,
+                0, 0, 0, 1;
+            s << 2.5, 0, 0, 0,
+                0, 2.5, 0, 0,
+                0, 0, 2.5, 0,
+                0, 0, 0, 1;
+            t << 1, 0, 0, -5,
+                 0, 1, 0, -1,
+                 0, 0, 1, -6,
+                 0, 0, 0, 1,
+            terrain3->Set_Model_Matrix(t * s * r);
+
+            //// set object's material
+            terrain3->Set_Ka(Vector3f(0.2f, 0.2f, 0.2f));
+            terrain3->Set_Kd(Vector3f(0.8f, 0.8f, 0.8f));
+            terrain3->Set_Ks(Vector3f(1, 1, 1));
+            terrain3->Set_Shininess(64.f);
+
+            //// bind shader to object (we do not bind texture for this object because we create noise for texture)
+            terrain3->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain3"));
+             //// create object by reading an obj mesh
+        }
         //// Here we create a mesh object with two triangle specified using a vertex array and a triangle array.
         //// This is an example showing how to create a mesh object without reading an .obj file.
         //// If you are creating your own L-system, you may use this function to visualize your mesh.
