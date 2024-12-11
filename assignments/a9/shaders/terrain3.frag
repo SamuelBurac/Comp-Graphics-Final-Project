@@ -73,11 +73,17 @@ float noiseOctave(vec2 v, int num)
 	return sum;
 }
 
-float height(vec2 v){
+float height(vec2 v) {
     float h = 0;
-	h = 0.8 * noiseOctave(v, 12);
-	if(h<0) h *= 0.5;
-	return h;
+
+    // Use a lower frequency for the noise to create slight bumps
+    float frequency = 2.0;
+    float noiseValue = noiseOctave(v * frequency, 8);
+
+    // Scale down the noise value to create slight bumps
+    h = noiseValue * 0.1;
+
+    return h;
 }
 vec3 compute_normal(vec2 v, float d)
 {	
@@ -122,44 +128,10 @@ vec3 shading_terrain(vec3 pos) {
     vec3 midColor = vec3(0.7647059, 0.7137255, 0.6588235); // Light gray
     vec3 topColor = vec3(1.0, 1.0, 1.0);                   // Bright white
 
-    vec3 emissiveColor;
-
-    if (h < 0.5) {
-        emissiveColor = mix(baseColor, midColor, h / 0.5);
-    } else {
-        float snowBlend = smoothstep(0.4, 0.8, h);
-        emissiveColor = mix(midColor, topColor, snowBlend);
-    }
-	return color * emissiveColor;
+    vec3 emissiveColor = topColor;
+	return emissiveColor;
 }
 
-vec3 shading_terrain2(vec3 pos) {
-	vec3 n = compute_normal(pos.xy, 0.01);
-	vec3 e = position.xyz;
-	vec3 p = pos.xyz;
-	vec3 s = lt[0].pos.xyz;
-
-    n = normalize((model * vec4(n, 0)).xyz);
-    p = (model * vec4(p, 1)).xyz;
-
-    vec3 color = shading_phong(lt[0], e, p, s, n).xyz;
-	vec3 emissive_color = vec3(0.0,0.0,0.0);
-	float h = pos.z;
-	h = clamp(h, 0.0, 1.0);
-	vec3 baseColor = vec3(0.9137255, 0.8901961, 0.8627451); // Light beige
-    vec3 midColor = vec3(0.7647059, 0.7137255, 0.6588235); // Light gray
-    vec3 topColor = vec3(1.0, 1.0, 1.0);                   // Bright white
-
-    vec3 emissiveColor;
-
-    if (h < 0.5) {
-        emissiveColor = mix(baseColor, midColor, h / 0.5);
-    } else {
-        float snowBlend = smoothstep(0.6, 0.8, h);
-        emissiveColor = mix(midColor, topColor, snowBlend);
-    }
-	return color * emissiveColor;
-}
 void main()
 {
     frag_color = vec4(shading_terrain(vtx_pos), 1.0);

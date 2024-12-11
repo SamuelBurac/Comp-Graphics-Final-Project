@@ -50,11 +50,17 @@ float noiseOctave(vec2 v, int num)
     return sum;
 }
 
-float height(vec2 v){
+float height(vec2 v) {
     float h = 0;
-	h = 0.8 * noiseOctave(v, 12);
-	if(h<0) h *= 0.5;
-	return h * 2.;
+
+    // Use a lower frequency for the noise to create slight bumps
+    float frequency = 2.0;
+    float noiseValue = noiseOctave(v * frequency, 8);
+
+    // Scale down the noise value to create slight bumps
+    h = noiseValue * 0.1;
+
+    return h;
 }
 
 uniform mat4 model;		/*model matrix*/
